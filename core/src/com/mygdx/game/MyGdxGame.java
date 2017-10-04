@@ -131,7 +131,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		// On right or left arrow set the velocity at a fixed rate in that
 		// direction
 		if(keycode == Input.Keys.RIGHT)
-			body.setLinearVelocity(1f, 0f);
+			body.setLinearVelocity(1.2f, 0f);
 		if(keycode == Input.Keys.LEFT)
 			body.setLinearVelocity(-1f,0f);
 
