@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.DAL.*;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
@@ -34,7 +35,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public void create() {
 
 		batch = new SpriteBatch();
-		img = new Texture("C:\\Users\\Pedro\\Documents\\SKRRRT\\core\\assets\\badlogic.jpg");
+		img = new Texture("C:\\Users\\mark\\Desktop\\56c.jpg");
 		sprite = new Sprite(img);
 
 		sprite.setPosition(-sprite.getWidth()/2,-sprite.getHeight()/2);
@@ -67,6 +68,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		debugRenderer = new Box2DDebugRenderer();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.
 				getHeight());
+
+		Repository r = new Repository();
+		for(Highscore h : r.getHighscores())
+		{
+			System.out.println(h.toString());
+		}
 	}
 
 	private float elapsed = 0;

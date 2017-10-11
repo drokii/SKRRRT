@@ -23,6 +23,7 @@ public abstract class MysqlClass {
     public Connection connect() throws ClassNotFoundException, SQLException
     {
         System.out.println("success");
+
         Class.forName("com.mysql.jdbc.Driver");
 
         connect = DriverManager.getConnection("jdbc:mysql://studmysql01.fhict.local/dbi322685", username, password);
