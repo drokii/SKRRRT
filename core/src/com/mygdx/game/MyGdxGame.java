@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.Map.Map;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
@@ -24,6 +25,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	Matrix4 debugMatrix;
 	OrthographicCamera camera;
 
+	Map map;
 
 	float torque = 0.0f;
 	boolean drawSprite = true;
@@ -32,9 +34,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void create() {
+		map = new Map();
 
 		batch = new SpriteBatch();
-		img = new Texture("core\\assets\\badlogic.jpg");
+		img = new Texture("assets\\Player.png");
 		sprite = new Sprite(img);
 
 		sprite.setPosition(-sprite.getWidth()/2,-sprite.getHeight()/2);
@@ -60,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		body.createFixture(fixtureDef);
 		shape.dispose();
 
-		Gdx.input.setInputProcessor(this);
+		//Gdx.input.setInputProcessor(this);
 
 		// Create a Box2DDebugRenderer, this allows us to see the physics
 		// simulation controlling the scene
@@ -112,6 +115,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		// Note, this is strictly optional and is, as the name suggests, just
 		// for debugging purposes
 		debugRenderer.render(world, debugMatrix);
+
+		map.render();
 	}
 
 	@Override
