@@ -2,8 +2,18 @@ package Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.RaceGame;
+
+import java.awt.*;
 
 public class MenuScreen implements Screen {
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
@@ -13,6 +23,7 @@ public class MenuScreen implements Screen {
 
     private RaceGame game;
 
+    private SpriteBatch batch;
     private Texture title;
     private Texture playButton;
     private Texture playButtonActive;
@@ -24,24 +35,25 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(RaceGame game){
         this.game = game;
-        title = new Texture("core\\assets\\Skrrrt.png");
-        playButton = new Texture("core\\assets\\PlayButton.png");
-        playButtonActive = new Texture("core\\assets\\PlayButtonActive.png");
-        settingsButton = new Texture("core\\assets\\SettingsButton.png");
-        settingsButtonActive = new Texture("core\\assets\\SettingsButtonActive.png");
-        exitButton = new Texture("core\\assets\\ExitButton.png");
-        exitButtonActive = new Texture("core\\assets\\ExitButtonActive.png");
-        yellowCar = new Texture("core\\assets\\YellowCarBrakes.png");
+        this.batch = new SpriteBatch();
+        this.title = new Texture("core\\assets\\Skrrrt.png");
+        this.playButton = new Texture("core\\assets\\PlayButton.png");
+        this.playButtonActive = new Texture("core\\assets\\PlayButtonActive.png");
+        this.settingsButton = new Texture("core\\assets\\SettingsButton.png");
+        this.settingsButtonActive = new Texture("core\\assets\\SettingsButtonActive.png");
+        this.exitButton = new Texture("core\\assets\\ExitButton.png");
+        this.exitButtonActive = new Texture("core\\assets\\ExitButtonActive.png");
+        this.yellowCar = new Texture("core\\assets\\YellowCarBrakes.png");
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void render(float delta) {
-        MainMenuScreen();
+        menuScreen();
+        isTouched();
     }
 
     @Override
@@ -61,50 +73,72 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 
-    private void MainMenuScreen(){
-        game.batch.begin();
-        game.batch.draw(title, (1440/2) - (665/2), 670);
+    private void menuScreen(){
+        batch.begin();
 
-        // play button
+        // draw title
+        batch.draw(title, (1440/2) - (665/2), 670);
+
+        // draw play button
         if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
             && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
-            game.batch.draw(playButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
-            // go to lobby screen
-            if(Gdx.input.isTouched()){
-                this.dispose();
-                //game.setScreen(new LobbyScreen(game));
-            }
+            batch.draw(playButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
         } else {
-            game.batch.draw(playButton, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
+            batch.draw(playButton, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
+        }
+
+        // draw settings button
+        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > SETTINGS_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (SETTINGS_BUTTON_Y + playButton.getHeight())) {
+            batch.draw(settingsButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
+        } else {
+            batch.draw(settingsButton, PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
+        }
+
+        // draw exit button
+        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > EXIT_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (EXIT_BUTTON_Y + playButton.getHeight())) {
+            batch.draw(exitButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
+        } else {
+            batch.draw(exitButton, PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
+        }
+
+        // draw yellow car
+        batch.draw(yellowCar, (1440 - 398) - 100, 0);
+        batch.end();
+    }
+
+    private void isTouched(){
+        // play button
+        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
+            // go to lobby screen
+            if (Gdx.input.isTouched()) {
+                game.setScreen(new LobbyScreen(game));
+            }
         }
 
         // settings button
         if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > SETTINGS_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (SETTINGS_BUTTON_Y + playButton.getHeight())) {
-            game.batch.draw(settingsButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
-        } else {
-            game.batch.draw(settingsButton, PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
+
         }
 
         // exit button
         if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > EXIT_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (EXIT_BUTTON_Y + playButton.getHeight())) {
-            game.batch.draw(exitButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
             // exit game
-            if(Gdx.input.isTouched()){ Gdx.app.exit(); }
-        } else {
-            game.batch.draw(exitButton, PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
+            if(Gdx.input.isTouched()){
+                Gdx.app.exit();
+            }
         }
-
-        game.batch.draw(yellowCar, (1440 - 398) - 100, 0);
-        game.batch.end();
     }
 }
