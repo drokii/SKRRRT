@@ -34,7 +34,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public void create() {
 
 		batch = new SpriteBatch();
-		img = new Texture("C:\\Users\\Pedro\\Documents\\SKRRRT\\core\\assets\\badlogic.jpg");
+		img = new Texture("core\\assets\\badlogic.jpg");
 		sprite = new Sprite(img);
 
 		sprite.setPosition(-sprite.getWidth()/2,-sprite.getHeight()/2);
