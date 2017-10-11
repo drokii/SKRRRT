@@ -47,6 +47,7 @@ public class Map extends ApplicationAdapter implements InputProcessor{
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
+        finishLayer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
 
         //region Testing purpose
         batch = new SpriteBatch();
@@ -96,6 +97,7 @@ public class Map extends ApplicationAdapter implements InputProcessor{
         camera.update();
 
         CheckCollision();
+        System.out.println(isOnFinnishLine());
     }
 
     @Override
@@ -109,27 +111,27 @@ public class Map extends ApplicationAdapter implements InputProcessor{
             //Left
 
             //Top Left
-            collisionX = isCollisionCell(position.x, position.y + 63);
+            collisionX = isCellOnMap(position.x, position.y + 63, collisionLayer);
             //Middle left
             if (!collisionX)
-                collisionX = isCollisionCell(position.x, position.y + 32);
+                collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
             //Bottom left
             if (!collisionX)
-                collisionX = isCollisionCell(position.x, position.y + 1);
+                collisionX = isCellOnMap(position.x, position.y + 1, collisionLayer);
 
             //Right
 
             //Top right
             if(!collisionX)
-                collisionX = isCollisionCell(position.x + 64, position.y + 63);
+                collisionX = isCellOnMap(position.x + 64, position.y + 63, collisionLayer);
 
             //Middle right
             if(!collisionX)
-                isCollisionCell(position.x + 64, position.y + 32);
+                collisionX = isCellOnMap(position.x + 64, position.y + 32, collisionLayer);
 
             //Bottom right
             if(!collisionX)
-                isCollisionCell(position.x + 64, position.y + 1);
+                collisionX = isCellOnMap(position.x + 64, position.y + 1, collisionLayer);
 
             if(collisionX){
                 body.setLinearVelocity(0, body.getLinearVelocity().y);
@@ -141,29 +143,29 @@ public class Map extends ApplicationAdapter implements InputProcessor{
             //Down
 
             //Bottom left
-            collisionY = isCollisionCell(position.x + 1, position.y);
+            collisionY = isCellOnMap(position.x + 1, position.y, collisionLayer);
 
             //Bottom middle
             if(!collisionY)
-                collisionY = isCollisionCell(position.x + 32, position.y);
+                collisionY = isCellOnMap(position.x + 32, position.y, collisionLayer);
 
             //Bottom right
             if(!collisionY)
-                collisionY = isCollisionCell(position.x + 63, position.y);
+                collisionY = isCellOnMap(position.x + 63, position.y, collisionLayer);
 
             //Up
 
             //Top left
             if(!collisionY)
-                collisionY = isCollisionCell(position.x + 1, position.y + 64);
+                collisionY = isCellOnMap(position.x + 1, position.y + 64, collisionLayer);
 
             //Top middle
             if(!collisionY)
-                collisionY = isCollisionCell(position.x + 32, position.y + 64);
+                collisionY = isCellOnMap(position.x + 32, position.y + 64, collisionLayer);
 
             //Top right
             if(!collisionY)
-                collisionY = isCollisionCell(position.x + 63, position.y + 64);
+                collisionY = isCellOnMap(position.x + 63, position.y + 64, collisionLayer);
 
             if(collisionY){
                 body.setLinearVelocity(body.getLinearVelocity().x, 0);
@@ -173,11 +175,16 @@ public class Map extends ApplicationAdapter implements InputProcessor{
         oldPos = new Vector2(position);
     }
 
-    private boolean isCollisionCell(float x, float y){
+    private boolean isCellOnMap(float x, float y, TiledMapTileLayer layer){
         //TiledMapTileLayer.Cell cell = collisionLayer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
         //return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("Collision");
-        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
+        TiledMapTileLayer.Cell cell = layer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
         return cell != null;
+    }
+
+    public boolean isOnFinnishLine(){
+        Vector2 position = body.getTransform().getPosition();
+        return isCellOnMap(position.x + 32, position.y + 32, finishLayer);
     }
 
     @Override
@@ -188,9 +195,9 @@ public class Map extends ApplicationAdapter implements InputProcessor{
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.RIGHT)
-            body.setLinearVelocity(100f, body.getLinearVelocity().y);
+            body.setLinearVelocity(300f, body.getLinearVelocity().y);
         if(keycode == Input.Keys.LEFT)
-            body.setLinearVelocity(-100f,body.getLinearVelocity().y);
+            body.setLinearVelocity(-300f,body.getLinearVelocity().y);
         if(keycode == Input.Keys.DOWN)
             body.setLinearVelocity(body.getLinearVelocity().x, 100f);
         if(keycode == Input.Keys.UP)
