@@ -1,20 +1,15 @@
 package com.mygdx.game.desktop;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.mygdx.game.RaceGame;
 
-public class DesktopLauncher extends Application {
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
-		primaryStage.setTitle("SKRRRT");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
+public class DesktopLauncher{
+	public static void main (String[] args) {
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = 1440;
+		config.height = 900;
+		config.resizable = false;
+		new LwjglApplication(new RaceGame(), config);
 	}
-
-	public static void main (String[] args) { launch(args); }
 }

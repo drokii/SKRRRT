@@ -1,4 +1,4 @@
-package menu;
+package Menu;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

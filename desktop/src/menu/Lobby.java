@@ -1,4 +1,4 @@
-package menu;
+package Menu;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -21,10 +21,10 @@ public class Lobby {
     public Lobby(String name){
         throw new NotImplementedException();
     }
-
-    public void addPlayer(Player player){
-        throw new NotImplementedException();
-    }
+//
+//    public void addPlayer(Player player){
+//        throw new NotImplementedException();
+//    }
 
     public void startWorld(int lapLimit, Timer timer){
         throw new NotImplementedException();

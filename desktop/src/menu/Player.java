@@ -1,4 +1,4 @@
-package menu;
+package Menu;
 
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Gameplay.Enums.ESkin;
