@@ -76,6 +76,25 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
+        isKeyPressed();
+
+        kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
+        kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
+        //batch.draw(track, 0, 0);
+        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX()/4, kartSprite.getOriginY()/4, 50, 50, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        //batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(),kartSprite.getOriginX(), kartSprite.getOriginY(), kartSprite.getWidth(),kartSprite.getHeight(),kartSprite.getScaleX(),kartSprite.getScaleY(),kartSprite.getRotation());
+
+
+        //batch.draw(kart, kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
+        //batch.draw(kart, kartSprite.getX(), kartSprite.getY());
+        batch.end();
+
+
+        camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
+        camera.update();
+    }
+
+    public void isKeyPressed(){
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if((torque -= 0.025f) < -1f)
             {
@@ -103,6 +122,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 speed = 1;
             } else if (speed * 1.02f >= maxspeed) {
                 speed = maxspeed;
+                System.out.println(maxspeed);
             } else if (speed < 0) {
                 speed = speed * 0.98f;
                 kartBody.setLinearVelocity(0, speed);
@@ -142,20 +162,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 kartBody.setLinearVelocity(0, speed);
             }
         }
-        kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
-        kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        //batch.draw(track, 0, 0);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX()/4, kartSprite.getOriginY()/4, 50, 50, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        //batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(),kartSprite.getOriginX(), kartSprite.getOriginY(), kartSprite.getWidth(),kartSprite.getHeight(),kartSprite.getScaleX(),kartSprite.getScaleY(),kartSprite.getRotation());
-
-
-        //batch.draw(kart, kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        //batch.draw(kart, kartSprite.getX(), kartSprite.getY());
-        batch.end();
-
-
-        camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
-        camera.update();
     }
 
     @Override

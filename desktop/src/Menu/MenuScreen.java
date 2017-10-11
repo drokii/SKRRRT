@@ -122,7 +122,8 @@ public class MenuScreen implements Screen {
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
             // go to lobby screen
             if (Gdx.input.isTouched()) {
-                game.setScreen(new LobbyScreen(game));
+                //game.setScreen(new LobbyScreen(game));
+                game.setScreen(new GameScreen(game));
             }
         }
 
