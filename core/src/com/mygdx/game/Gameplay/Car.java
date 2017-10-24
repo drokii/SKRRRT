@@ -1,7 +1,6 @@
 package com.mygdx.game.Gameplay;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.sun.media.jfxmedia.events.PlayerStateEvent;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Car extends ApplicationAdapter implements ApplicationListener, InputProcessor {
     private SpriteBatch batch;
@@ -23,11 +24,16 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float posX, posY;
 
     private float speed = 1f;
-    private float maxspeed = 200f;
+    private float maxspeed = 500f;
 
     private OrthographicCamera camera;
 
-    float torque = 0f;
+    private float torque = 0f;
+
+    private Timer timerUp = new Timer(true);
+    private Timer timerLeft = new Timer(true);
+    private Timer timerRight = new Timer(true);
+    private Timer timerDown = new Timer(true);
 
     public Car(OrthographicCamera camera) {
         this.camera = camera;
@@ -55,6 +61,28 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         kartBody.setTransform(new Vector2(320, 1152),0);
     }
 
+    @Override
+    public void render() {
+        //torque test
+        world.step(1f / 60f, 6, 2);
+        kartBody.applyTorque(torque, true);
+        kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
+
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+
+        keyPressed();
+
+        kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
+        kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
+        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX()/4, kartSprite.getOriginY()/4, 50, 50, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        batch.end();
+
+        camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
+        camera.update();
+    }
+
     public Body getKartBody(){
         return kartBody;
     }
@@ -64,38 +92,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     }
 
     @Override
-    public void render() {
-        //torque test
-        world.step(1f / 60f, 6, 2);
-        kartBody.applyTorque(torque, true);
-        kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
-
-        //Gdx.gl.glClearColor(1, 1, 1, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-
-        isKeyPressed();
-
-        kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
-        kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        //batch.draw(track, 0, 0);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX()/4, kartSprite.getOriginY()/4, 50, 50, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        //batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(),kartSprite.getOriginX(), kartSprite.getOriginY(), kartSprite.getWidth(),kartSprite.getHeight(),kartSprite.getScaleX(),kartSprite.getScaleY(),kartSprite.getRotation());
-
-
-        //batch.draw(kart, kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        //batch.draw(kart, kartSprite.getX(), kartSprite.getY());
-        batch.end();
-
-
-        camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
-        camera.update();
+    public void dispose() {
+        batch.dispose();
+        track.dispose();
+        kart.dispose();
     }
 
-    public void isKeyPressed(){
+    public void keyPressed()
+    {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(timerRight != null)
+            {
+                timerRight.cancel();
+            }
             if((torque -= 0.025f) < -1f)
             {
                 torque = -1f;
@@ -105,8 +114,20 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 torque -= 0.025f;
             }
             kartBody.setAngularVelocity(torque);
+            if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            {
+                driveForward();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                driveBackward();
+            }
+            keepVelocity();
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if(timerLeft != null)
+            {
+                timerLeft.cancel();
+            }
             if((torque += 0.025f) > 1f)
             {
                 torque = 1f;
@@ -116,59 +137,80 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 torque += 0.025f;
             }
             kartBody.setAngularVelocity(torque);
+            if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            {
+                driveForward();
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                driveBackward();
+            }
+            keepVelocity();
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (speed == 0 || (speed <= 0 && speed >= -3)) {
-                speed = 1;
-            } else if (speed * 1.02f >= maxspeed) {
-                speed = maxspeed;
-                System.out.println(maxspeed);
-            } else if (speed < 0) {
-                speed = speed * 0.98f;
-                kartBody.setLinearVelocity(0, speed);
-            }
-            if (speed >= 0) {
-                speed = speed * 1.02f;
-                float angle;
-                //System.out.println(kartSprite.getRotation());
-                // code hieronder veranderd de rotation wel maar hij is tegelijkertijd ook weer zijn oude value...? BUGGED AF BOI
-                /*if(kartSprite.getRotation() >= 360 || kartSprite.getRotation() <= -360)
-                {
-                    kartSprite.setRotation(0);
-                }*/
-                //System.out.println(kartSprite.getRotation());
-                if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
-                    angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-                } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
-                    angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-                } else {
-                    angle = 0;
-                }
-                //System.out.println("PreCalc angle" + speed * MathUtils.sinDeg(kartSprite.getRotation()));
-                //System.out.println("AfterCalc angle" + angle);
-                kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
-            }
-
+            driveForward();
         }
         //opposite van key up code maken? //wss gwn allebei de values minnen;
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if (speed == 0 || (speed >= 0 && speed <= 3)) {
-                speed = -1;
-            } else if (speed < 0) {
-                speed = speed * 1.02f;
-                kartBody.setLinearVelocity(0, speed);
-            } else if (speed > 0) {
-                speed = speed * 0.98f;
-                kartBody.setLinearVelocity(0, speed);
-            }
+            driveBackward();
         }
     }
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-        track.dispose();
-        kart.dispose();
+    public void driveBackward()
+    {
+        if(timerDown != null)
+        {
+            timerDown.cancel();
+        }
+        if (speed == 0 || (speed >= 0 && speed <= 3)) {
+            speed = -1;
+        } else if (speed < 0) {
+            speed = speed * 1.02f;
+            keepVelocity();
+        } else if (speed > 0) {
+            speed = speed * 0.98f;
+            keepVelocity();
+        }
+    }
+
+    public void driveForward()
+    {
+        if(timerUp != null)
+        {
+            timerUp.cancel();
+        }
+        if (speed == 0 || (speed <= 0 && speed >= -3)) {
+            speed = 1;
+        } else if (speed * 1.05f >= maxspeed) {
+            speed = maxspeed;
+        } else if (speed < 0) {
+            speed = speed * 0.95f;
+            kartBody.setLinearVelocity(0, speed);
+        }
+        if (speed >= 0) {
+            speed = speed * 1.05f;
+            float angle;
+            if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
+                angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+            } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
+                angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+            } else {
+                angle = 0;
+            }
+            kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
+        }
+    }
+
+    public void keepVelocity()
+    {
+        float angle;
+        if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
+            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+        } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
+            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+        } else {
+            angle = 0;
+        }
+        kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
     }
 
     @Override
@@ -178,7 +220,87 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
 
     @Override
     public boolean keyUp(int keycode) {
-        return false;
+
+        if(keycode == Input.Keys.UP)
+        {
+            timerUp = new Timer(true);
+            timerUp.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if(speed > 0)
+                    {
+                        speed = speed * 0.95f;
+                        keepVelocity();
+                    }
+                }
+            }, 0, 100);
+        }
+        if(keycode == Input.Keys.LEFT)
+        {
+            timerLeft = new Timer(true);
+            timerLeft.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if(torque > 0)
+                    {
+                        if ((torque - 0.25f) < 0 || torque < 0.25)
+                        {
+                            torque = 0;
+                            kartBody.setAngularVelocity(torque);
+                        }
+                        else
+                        {
+                            torque = torque - 0.25f;
+                            kartBody.setAngularVelocity(torque);
+                            keepVelocity();
+                        }
+                    }
+                    else
+                    {
+                        timerLeft.cancel();
+                    }
+                }
+            }, 0, 250);
+        }
+        if(keycode == Input.Keys.RIGHT)
+        {
+            timerRight = new Timer(true);
+            timerRight.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if(torque < 0)
+                    {
+                        if ((torque + 0.25f) > 0 || torque > -0.25)
+                        {
+                            torque = 0;
+                            kartBody.setAngularVelocity(torque);
+                        }
+                        else
+                        {
+                            torque = torque + 0.25f;
+                            kartBody.setAngularVelocity(torque);
+                            keepVelocity();
+                        }
+                    }
+                    else
+                    {
+                        timerRight.cancel();
+                    }
+                }
+            }, 0, 250);
+        }
+        if(keycode == Input.Keys.DOWN)
+        {
+            timerDown = new Timer(true);
+            timerDown.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    speed = speed * 0.95f;
+                    keepVelocity();
+                }
+            },0, 100);
+        }
+        return true;
     }
 
     @Override
