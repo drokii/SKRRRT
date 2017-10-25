@@ -19,6 +19,8 @@ public class MenuScreen implements Screen {
     private final int SETTINGS_BUTTON_Y = 400;
     private final int EXIT_BUTTON_Y = 300;
 
+    private int count;
+
     private RaceGame game;
     private Stage stage;
 
@@ -171,6 +173,8 @@ public class MenuScreen implements Screen {
         playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new LobbyScreen(game));
             }
         });

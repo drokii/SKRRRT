@@ -1,6 +1,7 @@
 package Menu;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Gameplay.Car;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class StatisticsHandler implements ApplicationListener {
      * that can be requested by a menu to display the car run times through the track.
      */
     private ArrayList<Car> cars;
-    private Timer raceTimer;
+    private float raceTimer;
 
     public ArrayList<String> getFinishLogList() {
         return finishLogList;
@@ -31,7 +32,7 @@ public class StatisticsHandler implements ApplicationListener {
     public StatisticsHandler(ArrayList<Car> cars) {
         this.cars = cars;
         finishLogList = new ArrayList<String>();
-        raceTimer = new Timer("racetime");
+        raceTimer = 0;
     }
 
 
@@ -48,6 +49,7 @@ public class StatisticsHandler implements ApplicationListener {
     @Override
     public void render() {
         finishLineCheck();
+        raceTimer += Gdx.graphics.getDeltaTime();
     }
 
     @Override
@@ -70,6 +72,7 @@ public class StatisticsHandler implements ApplicationListener {
                 ) {
             if (car.getIsOnFinishLine()) {
                 logFinishCarStatistics(car);
+
             }
 
         }
@@ -80,7 +83,7 @@ public class StatisticsHandler implements ApplicationListener {
         StringBuilder strbuild = new StringBuilder();
         String finishLog;
 
-        finishLog = strbuild.append(car.getName() + " Finished at " + raceTimer.toString()).toString();
+        finishLog = strbuild.append(car.getName() + " Finished at " + Math.round((double)raceTimer) + " seconds.").toString();
         finishLogList.add(finishLog);
     }
 }

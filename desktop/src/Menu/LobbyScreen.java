@@ -25,6 +25,8 @@ public class LobbyScreen implements Screen {
     private final int JOIN_BUTTON_Y = 671;
     private final int BACK_BUTTON_Y = 43;
 
+    private int count;
+
     private RaceGame game;
     private Stage stage;
 
@@ -284,6 +286,8 @@ public class LobbyScreen implements Screen {
         joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new MatchScreen(game));
             }
         });

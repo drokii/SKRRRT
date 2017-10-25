@@ -27,6 +27,8 @@ public class LogInScreen implements Screen{
     private final int TEXTFIELD_PASSWORD_Y = 400;
     private final int LOGIN_BUTTON_Y = 300;
 
+    int count = 0;
+
     private RaceGame game;
     private Stage stage;
 
@@ -109,7 +111,8 @@ public class LogInScreen implements Screen{
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        logInScreen();
+        DrawLogInScreen();
+
         isClicked();
 
         // draw stage
@@ -149,7 +152,7 @@ public class LogInScreen implements Screen{
         batch.dispose();
     }
 
-    private void logInScreen(){
+    private void DrawLogInScreen(){
         batch.begin();
 
         // draw title
@@ -176,6 +179,8 @@ public class LogInScreen implements Screen{
         loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new MenuScreen(game));
             }
         });
