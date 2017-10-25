@@ -141,6 +141,22 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose() {
+        title.dispose();
+        firstColumnLight.dispose();
+        firstColumnLightActive.dispose();
+        middleColumnDark.dispose();
+        middleColumnDarkActive.dispose();
+        middleColumnLight.dispose();
+        middleColumnLightActive.dispose();
+        lastColumnDark.dispose();
+        lastColumnDarkActive.dispose();
+        createButton.dispose();
+        createButtonActive.dispose();
+        joinButton.dispose();
+        joinButtonActive.dispose();
+        backButton.dispose();
+        backButtonActive.dispose();
+        stage.dispose();
         batch.dispose();
     }
 
