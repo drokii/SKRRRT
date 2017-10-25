@@ -8,7 +8,7 @@ import com.badlogic.gdx.Game;
 public class  RaceGame extends Game{
     @Override
     public void create() {
-        this.setScreen(new GameScreen(this));
+        this.setScreen(new LogInScreen(this));
     }
 
     @Override
