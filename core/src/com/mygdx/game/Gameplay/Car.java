@@ -75,7 +75,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         kartBody.createFixture(fixtureDef);
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(320, 1152),0);
+        kartBody.setTransform(new Vector2(384, 1152),0);
     }
 
     @Override
