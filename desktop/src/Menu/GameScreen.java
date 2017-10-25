@@ -34,7 +34,7 @@ public class GameScreen implements Screen{
         carList = new ArrayList<Car>();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1000,1000);
+        camera.setToOrtho(false, 600,400);
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world); // SinglePlayer Only
         carList.add(car);
