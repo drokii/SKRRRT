@@ -302,40 +302,33 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(count < 1) {
-                    count++;
-                    //game.setScreen(new GameScreen(game));
-                }
+//                count++;
+//                if(count == 1)
             }
         });
 
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(count < 1) {
-                    count++;
-                    //
-                }
+//                count++;
+//                if(count == 1)
             }
         });
 
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(count < 1) {
-                    count++;
-                    //
-                }
+//                count++;
+//                if(count == 1)
             }
         });
 
         leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(count < 1) {
-                    count++;
+                count++;
+                if(count == 1)
                     game.setScreen(new LobbyScreen(game));
-                }
             }
         });
     }

@@ -22,11 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class LogInScreen implements Screen{
-    private int count = 0;
     private final int TEXTFIELD_LOGINBUTTON_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int TEXTFIELD_USERNAME_Y = 500;
     private final int TEXTFIELD_PASSWORD_Y = 400;
     private final int LOGIN_BUTTON_Y = 300;
+
+    private int count;
 
     private RaceGame game;
     private Stage stage;
@@ -177,10 +178,9 @@ public class LogInScreen implements Screen{
         loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(count < 1) {
-                    count++;
+                count++;
+                if(count == 1)
                     game.setScreen(new MenuScreen(game));
-                }
             }
         });
     }
