@@ -115,6 +115,12 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         kart.dispose();
     }
 
+    public void cancelUpTimer(){
+        timerUp.cancel();
+    }
+    public void cancelDownTimer(){
+        timerDown.cancel();
+    }
     public void keyPressed()
     {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {

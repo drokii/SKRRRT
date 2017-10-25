@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Map.Map;
-import com.sun.prism.image.ViewPort;
+
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
