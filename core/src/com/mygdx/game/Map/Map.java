@@ -47,7 +47,7 @@ public class Map extends ApplicationAdapter{
 
     @Override
     public void create() {
-        tiledMap = new TmxMapLoader().load("core\\assets\\testmap2.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\Map1.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
