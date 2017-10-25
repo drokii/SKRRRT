@@ -182,13 +182,16 @@ public class MenuScreen implements Screen {
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+//                count++;
+//                if(count == 1)
             }
         });
 
         exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 Gdx.app.exit();
             }
         });

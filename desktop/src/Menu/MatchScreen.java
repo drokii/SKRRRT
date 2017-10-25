@@ -313,19 +313,24 @@ public class MatchScreen implements Screen{
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+//                count++;
+//                if(count == 1)
             }
         });
 
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+//                count++;
+//                if(count == 1)
             }
         });
 
         leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new LobbyScreen(game));
             }
         });

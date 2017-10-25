@@ -279,7 +279,8 @@ public class LobbyScreen implements Screen {
         createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+//                count++;
+//                if(count == 1)
             }
         });
 
@@ -295,6 +296,8 @@ public class LobbyScreen implements Screen {
         backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new MenuScreen(game));
             }
         });

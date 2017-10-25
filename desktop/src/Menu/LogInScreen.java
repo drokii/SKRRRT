@@ -27,7 +27,7 @@ public class LogInScreen implements Screen{
     private final int TEXTFIELD_PASSWORD_Y = 400;
     private final int LOGIN_BUTTON_Y = 300;
 
-    int count = 0;
+    int count;
 
     private RaceGame game;
     private Stage stage;
