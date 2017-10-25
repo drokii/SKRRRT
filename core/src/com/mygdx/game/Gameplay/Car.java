@@ -26,16 +26,33 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float speed = 1f;
     private float maxspeed = 1000f;
 
+    public String getName() {
+        return name;
+    }
+    private String name = "CarBoy";
+
+
+    public boolean getIsOnFinishLine() {
+        return isOnFinishLine;
+    }
+
+    public void setOnFinishLine(boolean onFinishLine) {
+        isOnFinishLine = onFinishLine;
+    }
+
+    private boolean isOnFinishLine;
     private OrthographicCamera camera;
 
     private float torque = 0f;
-
+    //Timers for deacceleration and torque correction
     private Timer timerUp = new Timer(true);
     private Timer timerLeft = new Timer(true);
     private Timer timerRight = new Timer(true);
     private Timer timerDown = new Timer(true);
 
+    //Constructor for Car
     public Car(OrthographicCamera camera, World world) {
+        // Reference to game Camera
         this.camera = camera;
 
         batch = new SpriteBatch();
@@ -324,5 +341,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
 
