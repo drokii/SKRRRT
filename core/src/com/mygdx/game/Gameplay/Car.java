@@ -24,7 +24,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float posX, posY;
 
     private float speed = 1f;
-    private float maxspeed = 500f;
+    private float maxspeed = 1000f;
 
     private OrthographicCamera camera;
 
@@ -35,7 +35,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private Timer timerRight = new Timer(true);
     private Timer timerDown = new Timer(true);
 
-    public Car(OrthographicCamera camera) {
+    public Car(OrthographicCamera camera, World world) {
         this.camera = camera;
 
         batch = new SpriteBatch();
@@ -48,7 +48,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, posY);
-        world = new World(new Vector2(0, 0), true);
+        //world = new World(new Vector2(0, 0), true);
+        this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(kartSprite.getWidth() / 2, kartSprite.getHeight() / 2);

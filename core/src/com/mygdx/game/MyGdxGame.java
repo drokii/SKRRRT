@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Map.Map;
 
@@ -16,12 +17,14 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Car car;
 	private Map map;
 	private OrthographicCamera camera;
+	private World world;
 
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 600,600);
-		car = new Car(camera);
+		world = new World(new Vector2(0, 0), true);
+		car = new Car(camera, world);
 		map = new Map(car, camera);
 	}
 
