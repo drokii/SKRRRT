@@ -34,14 +34,15 @@ public class GameScreen implements Screen{
         carList = new ArrayList<Car>();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1440,1440);
+        camera.setToOrtho(false, 1000,1000);
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world); // SinglePlayer Only
         carList.add(car);
         map = new Map(car, camera);
         stats = new StatisticsHandler(carList);
-//        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
-//        sound.play();
+        System.out.println("good job lucas");
+        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
+        sound.play();
     }
 
     @Override
@@ -84,6 +85,5 @@ public class GameScreen implements Screen{
     public void dispose() {
         car.dispose();
         map.dispose();
-
     }
 }

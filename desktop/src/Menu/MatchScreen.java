@@ -3,6 +3,7 @@ package Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +20,8 @@ public class MatchScreen implements Screen{
     private final int MIDDLE_COLUMN_DARK_Y = 532;
     private final int MIDDLE_COLUMN_LIGHT_Y = 409;
     private final int LAST_COLUMN_DARK_Y = 43;
+
+    private int count= 0;
 
     private final int BUTTONS_X = 1223;
     private final int START_BUTTON_Y = 731;
@@ -283,6 +286,8 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
                 game.setScreen(new GameScreen(game));
             }
         });
@@ -290,7 +295,6 @@ public class MatchScreen implements Screen{
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
             }
         });
 
