@@ -52,7 +52,7 @@ public class Map extends ApplicationAdapter{
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
         finishLayer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
-
+        isOnFinnishLine();
         //camera = new OrthographicCamera();
         //camera.setToOrtho(false, 600,600);
         //camera.update();
@@ -150,8 +150,10 @@ public class Map extends ApplicationAdapter{
         return cell != null;
     }
 
-    public boolean isOnFinnishLine(){
+    public void isOnFinnishLine(){
         Vector2 position = car.getKartBody().getTransform().getPosition();
-        return isCellOnMap(position.x + 32, position.y + 32, finishLayer);
+         if(isCellOnMap(position.x + 32, position.y + 32, finishLayer)){
+             car.setOnFinishLine(true);
+        }
     }
 }
