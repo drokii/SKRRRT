@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class LobbyScreen implements Screen {
+    private int count = 0;
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
@@ -274,27 +275,35 @@ public class LobbyScreen implements Screen {
             }
         }
 
-        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+                if(count < 1) {
+                    count++;
+                    //
+                }
             }
         });
 
-        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MatchScreen(game));
+                if(count < 1) {
+                    count++;
+                    game.setScreen(new MatchScreen(game));
+                }
             }
         });
 
-        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
+                if(count < 1) {
+                    System.out.println("Test");
+                    count++;
+                    game.setScreen(new MenuScreen(game));
+                }
             }
         });
-
-
     }
 }

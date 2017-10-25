@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class MenuScreen implements Screen {
+    private int count = 0;
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int PLAY_BUTTON_Y = 500;
     private final int SETTINGS_BUTTON_Y = 400;
@@ -168,24 +169,33 @@ public class MenuScreen implements Screen {
     }
 
     private void isClicked(){
-        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LobbyScreen(game));
+                if(count < 1) {
+                    count++;
+                    game.setScreen(new LobbyScreen(game));
+                }
             }
         });
 
-        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+                if(count < 1) {
+                    count++;
+                    //
+                }
             }
         });
 
-        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                if(count < 1) {
+                    count++;
+                    Gdx.app.exit();
+                }
             }
         });
     }

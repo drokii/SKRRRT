@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class MatchScreen implements Screen{
+    private int count = 0;
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
@@ -298,31 +299,43 @@ public class MatchScreen implements Screen{
             }
         }
 
-        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(new GameScreen(game));
+                if(count < 1) {
+                    count++;
+                    //game.setScreen(new GameScreen(game));
+                }
             }
         });
 
-        kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+                if(count < 1) {
+                    count++;
+                    //
+                }
             }
         });
 
-        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+                if(count < 1) {
+                    count++;
+                    //
+                }
             }
         });
 
-        leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LobbyScreen(game));
+                if(count < 1) {
+                    count++;
+                    game.setScreen(new LobbyScreen(game));
+                }
             }
         });
     }
