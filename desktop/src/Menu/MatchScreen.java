@@ -283,7 +283,7 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game));
             }
         });
 
