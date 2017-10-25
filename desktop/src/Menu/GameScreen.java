@@ -12,26 +12,32 @@ import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.RaceGame;
 
+import java.util.ArrayList;
+
 public class GameScreen implements Screen{
 
     RaceGame game;
-
+    private ArrayList<Car> carList;
     private Car car;
     private Map map;
     private OrthographicCamera camera;
     private World world;
     private Sound sound;
     private Sound skrrrt;
+    private StatisticsHandler stats;
 
     public GameScreen(RaceGame game){
         this.game = game;
+        carList = new ArrayList<Car>();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1000,1000);
         world = new World(new Vector2(0, 0), true);
-        car = new Car(camera, world);
+        car = new Car(camera, world); // SinglePlayer Only
+        carList.add(car);
         map = new Map(car, camera);
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
+        stats = new StatisticsHandler(carList);
     }
 
     @Override
@@ -46,6 +52,7 @@ public class GameScreen implements Screen{
         world.step(1f/60f, 6, 2);
         map.render();
         car.render();
+        stats.render();
     }
 
     @Override
@@ -70,6 +77,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-
+        car.dispose();
+        map.dispose();
     }
 }
