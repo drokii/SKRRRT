@@ -47,7 +47,7 @@ public class Map extends ApplicationAdapter{
 
     @Override
     public void create() {
-        tiledMap = new TmxMapLoader().load("core\\assets\\testmap2.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\Map1.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
@@ -102,7 +102,7 @@ public class Map extends ApplicationAdapter{
                 collisionX = isCellOnMap(position.x + 64, position.y + 1, collisionLayer);
 
             if(collisionX){
-                //car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
+                car.getKartBody().setLinearVelocity(-1000, car.getKartBody().getLinearVelocity().y);
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }
@@ -136,7 +136,7 @@ public class Map extends ApplicationAdapter{
                 collisionY = isCellOnMap(position.x + 63, position.y + 64, collisionLayer);
 
             if(collisionY){
-                //car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, 0);
+                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, -1000);
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }
