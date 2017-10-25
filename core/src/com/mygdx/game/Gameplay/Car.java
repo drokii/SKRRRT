@@ -150,7 +150,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             driveForward();
         }
-        //opposite van key up code maken? //wss gwn allebei de values minnen;
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             driveBackward();
         }
@@ -189,15 +188,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         }
         if (speed >= 0) {
             speed = speed * 1.05f;
-            float angle;
-            if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
-                angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-            } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
-                angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-            } else {
-                angle = 0;
-            }
-            kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
+            keepVelocity();
         }
     }
 

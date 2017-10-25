@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
     public GameScreen(RaceGame game){
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 600,600);
+        camera.setToOrtho(false, 1000,1000);
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world);
         map = new Map(car, camera);
