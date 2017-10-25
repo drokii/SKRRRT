@@ -79,19 +79,19 @@ public class Map extends ApplicationAdapter{
             //Left
 
             //Top Left
-            collisionX = isCellOnMap(position.x, position.y + 63, collisionLayer);
+            collisionX = isCellOnMap(position.x, position.y + 64, collisionLayer);
             //Middle left
             if (!collisionX)
                 collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
             //Bottom left
             if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y + 1, collisionLayer);
+                collisionX = isCellOnMap(position.x, position.y, collisionLayer);
 
             //Right
 
             //Top right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 63, collisionLayer);
+                collisionX = isCellOnMap(position.x + 64, position.y + 64, collisionLayer);
 
             //Middle right
             if(!collisionX)
@@ -99,11 +99,13 @@ public class Map extends ApplicationAdapter{
 
             //Bottom right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 1, collisionLayer);
+                collisionX = isCellOnMap(position.x + 64, position.y, collisionLayer);
 
             if(collisionX){
-                car.getKartBody().setLinearVelocity(-1000, car.getKartBody().getLinearVelocity().y);
+                car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
+                car.cancelUpTimer();
+                car.cancelDownTimer();
             }
         }
 
@@ -136,7 +138,9 @@ public class Map extends ApplicationAdapter{
                 collisionY = isCellOnMap(position.x + 63, position.y + 64, collisionLayer);
 
             if(collisionY){
-                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, -1000);
+                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, 0);
+                car.cancelUpTimer();
+                car.cancelDownTimer();
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }
