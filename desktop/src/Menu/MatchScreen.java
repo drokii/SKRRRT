@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
-public class LobbyScreen implements Screen {
+public class MatchScreen implements Screen{
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
@@ -21,9 +21,10 @@ public class LobbyScreen implements Screen {
     private final int LAST_COLUMN_DARK_Y = 43;
 
     private final int BUTTONS_X = 1223;
-    private final int CREATE_BUTTON_Y = 731;
-    private final int JOIN_BUTTON_Y = 671;
-    private final int BACK_BUTTON_Y = 43;
+    private final int START_BUTTON_Y = 731;
+    private final int KICK_BUTTON_Y = 671;
+    private final int SETTINGS_BUTTON_Y = 611;
+    private final int LEAVE_BUTTON_Y = 43;
 
     private RaceGame game;
     private Stage stage;
@@ -38,19 +39,22 @@ public class LobbyScreen implements Screen {
     private Texture middleColumnLightActive;
     private Texture lastColumnDark;
     private Texture lastColumnDarkActive;
-    private Texture createButton;
-    private Texture createButtonActive;
-    private Texture joinButton;
-    private Texture joinButtonActive;
-    private Texture backButton;
-    private Texture backButtonActive;
+    private Texture startButton;
+    private Texture startButtonActive;
+    private Texture kickButton;
+    private Texture kickButtonActive;
+    private Texture settingsButton;
+    private Texture settingsButtonActive;
+    private Texture leaveButton;
+    private Texture leaveButtonActive;
 
     private TextButton.TextButtonStyle textButtonStyle;
-    private TextButton createButtonInvisible;
-    private TextButton joinButtonInvisible;
-    private TextButton backButtonInvisible;
+    private TextButton startButtonInvisible;
+    private TextButton kickButtonInvisible;
+    private TextButton settingsButtonInvisible;
+    private TextButton leaveButtonInvisible;
 
-    public LobbyScreen(RaceGame game){
+    public MatchScreen(RaceGame game){
         this.game = game;
         setUp();
     }
@@ -69,38 +73,48 @@ public class LobbyScreen implements Screen {
         this.middleColumnLightActive = new Texture("core\\assets\\Menu\\MiddleColumnLightActive.png");
         this.lastColumnDark = new Texture("core\\assets\\Menu\\LastColumnDark.png");
         this.lastColumnDarkActive = new Texture("core\\assets\\Menu\\LastColumnDarkActive.png");
-        this.createButton = new Texture("core\\assets\\Menu\\CreateButton.png");
-        this.createButtonActive = new Texture("core\\assets\\Menu\\CreateButtonActive.png");
-        this.joinButton = new Texture("core\\assets\\Menu\\JoinButton.png");
-        this.joinButtonActive = new Texture("core\\assets\\Menu\\JoinButtonActive.png");
-        this.backButton = new Texture("core\\assets\\Menu\\BackButton.png");
-        this.backButtonActive = new Texture("core\\assets\\Menu\\BackButtonActive.png");
+        this.startButton = new Texture("core\\assets\\Menu\\StartButton.png");
+        this.startButtonActive = new Texture("core\\assets\\Menu\\StartButtonActive.png");
+        this.kickButton = new Texture("core\\assets\\Menu\\KickButton.png");
+        this.kickButtonActive = new Texture("core\\assets\\Menu\\KickButtonActive.png");
+        this.settingsButton = new Texture("core\\assets\\Menu\\SettingsButtonSmall.png");
+        this.settingsButtonActive = new Texture("core\\assets\\Menu\\SettingsButtonSmallActive.png");
+        this.leaveButton = new Texture("core\\assets\\Menu\\LeaveButton.png");
+        this.leaveButtonActive = new Texture("core\\assets\\Menu\\LeaveButtonActive.png");
 
         // textbuttons invisible
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
 
-        // create button
-        this.createButtonInvisible = new TextButton("", textButtonStyle);
-        this.createButtonInvisible.setPosition(BUTTONS_X, CREATE_BUTTON_Y);
-        this.createButtonInvisible.setWidth(createButton.getWidth());
-        this.createButtonInvisible.setHeight(createButton.getHeight());
+        // start button
+        this.startButtonInvisible = new TextButton("", textButtonStyle);
+        this.startButtonInvisible.setPosition(BUTTONS_X, START_BUTTON_Y);
+        this.startButtonInvisible.setWidth(startButton.getWidth());
+        this.startButtonInvisible.setHeight(startButton.getHeight());
 
-        // join button
-        this.joinButtonInvisible = new TextButton("", textButtonStyle);
-        this.joinButtonInvisible.setPosition(BUTTONS_X, JOIN_BUTTON_Y);
-        this.joinButtonInvisible.setWidth(joinButton.getWidth());
-        this.joinButtonInvisible.setHeight(joinButton.getHeight());
+        // kick button
+        this.kickButtonInvisible = new TextButton("", textButtonStyle);
+        this.kickButtonInvisible.setPosition(BUTTONS_X, KICK_BUTTON_Y);
+        this.kickButtonInvisible.setWidth(kickButton.getWidth());
+        this.kickButtonInvisible.setHeight(kickButton.getHeight());
 
-        // back button
-        this.backButtonInvisible = new TextButton("", textButtonStyle);
-        this.backButtonInvisible.setPosition(BUTTONS_X, BACK_BUTTON_Y);
-        this.backButtonInvisible.setWidth(backButton.getWidth());
-        this.backButtonInvisible.setHeight(backButton.getHeight());
+        // settings button
+        this.settingsButtonInvisible = new TextButton("", textButtonStyle);
+        this.settingsButtonInvisible.setPosition(BUTTONS_X, SETTINGS_BUTTON_Y);
+        this.settingsButtonInvisible.setWidth(settingsButton.getWidth());
+        this.settingsButtonInvisible.setHeight(settingsButton.getHeight());
 
-        stage.addActor(createButtonInvisible);
-        stage.addActor(joinButtonInvisible);
-        stage.addActor(backButtonInvisible);
+        // leave button
+        this.leaveButtonInvisible = new TextButton("", textButtonStyle);
+        this.leaveButtonInvisible.setPosition(BUTTONS_X, LEAVE_BUTTON_Y);
+        this.leaveButtonInvisible.setWidth(leaveButton.getWidth());
+        this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
+
+
+        stage.addActor(startButtonInvisible);
+        stage.addActor(kickButtonInvisible);
+        stage.addActor(settingsButtonInvisible);
+        stage.addActor(leaveButtonInvisible);
     }
 
     @Override
@@ -111,7 +125,7 @@ public class LobbyScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        lobbyScreen();
+        matchScreen();
         isClicked();
 
         // draw stage
@@ -144,7 +158,7 @@ public class LobbyScreen implements Screen {
         batch.dispose();
     }
 
-    private void lobbyScreen(){
+    private void matchScreen(){
         batch.begin();
 
         // draw title
@@ -191,28 +205,36 @@ public class LobbyScreen implements Screen {
             batch.draw(lastColumnDark, COLUMNS_X, LAST_COLUMN_DARK_Y);
         }
 
-        // draw create button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + createButton.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > CREATE_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (CREATE_BUTTON_Y + createButton.getHeight())) {
-            batch.draw(createButtonActive, BUTTONS_X, CREATE_BUTTON_Y);
+        // draw start button
+        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + startButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > START_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (START_BUTTON_Y + startButton.getHeight())) {
+            batch.draw(startButtonActive, BUTTONS_X, START_BUTTON_Y);
         } else {
-            batch.draw(createButton, BUTTONS_X, CREATE_BUTTON_Y);
+            batch.draw(startButton, BUTTONS_X, START_BUTTON_Y);
         }
 
-        // draw join button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + joinButton.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > JOIN_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (JOIN_BUTTON_Y + joinButton.getHeight())) {
-            batch.draw(joinButtonActive, BUTTONS_X, JOIN_BUTTON_Y);
+        // draw kick button
+        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + kickButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > KICK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (KICK_BUTTON_Y + kickButton.getHeight())) {
+            batch.draw(kickButtonActive, BUTTONS_X, KICK_BUTTON_Y);
         } else {
-            batch.draw(joinButton, BUTTONS_X, JOIN_BUTTON_Y);
+            batch.draw(kickButton, BUTTONS_X, KICK_BUTTON_Y);
         }
 
-        // draw back button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + backButton.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > BACK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (BACK_BUTTON_Y + backButton.getHeight())) {
-            batch.draw(backButtonActive, BUTTONS_X, BACK_BUTTON_Y);
+        // draw settings button
+        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + settingsButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > SETTINGS_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (SETTINGS_BUTTON_Y + settingsButton.getHeight())) {
+            batch.draw(settingsButtonActive, BUTTONS_X, SETTINGS_BUTTON_Y);
         } else {
-            batch.draw(backButton, BUTTONS_X, BACK_BUTTON_Y);
+            batch.draw(settingsButton, BUTTONS_X, SETTINGS_BUTTON_Y);
+        }
+
+        // draw leave button
+        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + leaveButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LEAVE_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LEAVE_BUTTON_Y + leaveButton.getHeight())) {
+            batch.draw(leaveButtonActive, BUTTONS_X, LEAVE_BUTTON_Y);
+        } else {
+            batch.draw(leaveButton, BUTTONS_X, LEAVE_BUTTON_Y);
         }
 
         batch.end();
@@ -258,27 +280,32 @@ public class LobbyScreen implements Screen {
             }
         }
 
-        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
+
+        kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //
             }
         });
 
-        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MatchScreen(game));
+                //
             }
         });
 
-        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
+                game.setScreen(new LobbyScreen(game));
             }
         });
-
-
     }
 }

@@ -37,9 +37,9 @@ public class GameScreen implements Screen{
         car = new Car(camera, world); // SinglePlayer Only
         carList.add(car);
         map = new Map(car, camera);
-        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
-        sound.play();
         stats = new StatisticsHandler(carList);
+//        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
+//        sound.play();
     }
 
     @Override
