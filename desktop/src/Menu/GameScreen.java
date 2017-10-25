@@ -21,6 +21,7 @@ public class GameScreen implements Screen{
     private OrthographicCamera camera;
     private World world;
     private Sound sound;
+    private Sound skrrrt;
 
     public GameScreen(RaceGame game){
         this.game = game;
