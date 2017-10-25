@@ -175,7 +175,7 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                game.setScreen(new LobbyScreen(game));
+                    game.setScreen(new LobbyScreen(game));
             }
         });
 
@@ -192,7 +192,7 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                Gdx.app.exit();
+                    Gdx.app.exit();
             }
         });
     }

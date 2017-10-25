@@ -306,7 +306,7 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game));
             }
         });
 
@@ -331,7 +331,7 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                game.setScreen(new LobbyScreen(game));
+                    game.setScreen(new LobbyScreen(game));
             }
         });
     }

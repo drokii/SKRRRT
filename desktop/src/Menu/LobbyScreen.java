@@ -289,7 +289,7 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                game.setScreen(new MatchScreen(game));
+                    game.setScreen(new MatchScreen(game));
             }
         });
 
@@ -298,7 +298,7 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                game.setScreen(new MenuScreen(game));
+                    game.setScreen(new MenuScreen(game));
             }
         });
 
