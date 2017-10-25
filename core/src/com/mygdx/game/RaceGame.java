@@ -1,12 +1,12 @@
 package com.mygdx.game;
 
-import Menu.MenuScreen;
+import Menu.LogInScreen;
 import com.badlogic.gdx.Game;
 
-public class RaceGame extends Game{
+public class  RaceGame extends Game{
     @Override
     public void create() {
-        this.setScreen(new MenuScreen(this));
+        this.setScreen(new LogInScreen(this));
     }
 
     @Override
