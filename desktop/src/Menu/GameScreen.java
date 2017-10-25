@@ -2,6 +2,8 @@ package Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +12,7 @@ import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.RaceGame;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
 
     RaceGame game;
 
@@ -18,6 +20,7 @@ public class GameScreen implements Screen {
     private Map map;
     private OrthographicCamera camera;
     private World world;
+    private Sound sound;
 
     public GameScreen(RaceGame game){
         this.game = game;
@@ -26,6 +29,8 @@ public class GameScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world);
         map = new Map(car, camera);
+        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
+        sound.play();
     }
 
     @Override
