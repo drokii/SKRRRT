@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Map.Map;
-
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;

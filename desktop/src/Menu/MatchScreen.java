@@ -158,6 +158,24 @@ public class MatchScreen implements Screen{
 
     @Override
     public void dispose() {
+        title.dispose();
+        firstColumnLight.dispose();
+        firstColumnLightActive.dispose();
+        middleColumnDark.dispose();
+        middleColumnDarkActive.dispose();
+        middleColumnLight.dispose();
+        middleColumnLightActive.dispose();
+        lastColumnDark.dispose();
+        lastColumnDarkActive.dispose();
+        startButton.dispose();
+        startButtonActive.dispose();
+        kickButton.dispose();
+        kickButtonActive.dispose();
+        settingsButton.dispose();
+        settingsButtonActive.dispose();
+        leaveButton.dispose();
+        leaveButtonActive.dispose();
+        stage.dispose();
         batch.dispose();
     }
 

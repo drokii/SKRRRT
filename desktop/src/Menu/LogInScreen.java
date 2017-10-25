@@ -142,6 +142,13 @@ public class LogInScreen implements Screen{
 
     @Override
     public void dispose() {
+        title.dispose();
+        bitmapFont.dispose();
+        backgroundTextField.dispose();
+        loginButton.dispose();
+        loginButtonActive.dispose();
+        yellowCar.dispose();
+        stage.dispose();
         batch.dispose();
     }
 

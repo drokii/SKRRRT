@@ -59,6 +59,9 @@ public class GameScreen implements Screen{
         car.render();
         map.CheckCollision();
         stats.render();
+        if (car.getIsOnFinishLine()){
+            game.setScreen(new FinishScreen(game, stats.getFinishLogList()));
+        }
     }
 
     @Override
@@ -78,12 +81,13 @@ public class GameScreen implements Screen{
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override
     public void dispose() {
         car.dispose();
         map.dispose();
+        sound.stop();
     }
 }
