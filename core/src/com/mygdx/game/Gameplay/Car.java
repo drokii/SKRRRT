@@ -111,7 +111,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     @Override
     public void dispose() {
         batch.dispose();
-        track.dispose();
+        //track.dispose();
         kart.dispose();
     }
 

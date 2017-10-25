@@ -64,7 +64,7 @@ public class Map extends ApplicationAdapter{
         tiledMapRenderer.setView(camera);
 
         //camera.update();
-
+        isOnFinnishLine();
         //CheckCollision();
     }
 
