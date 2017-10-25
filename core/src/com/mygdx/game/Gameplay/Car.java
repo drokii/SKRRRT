@@ -57,7 +57,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
 
         batch = new SpriteBatch();
         track = new Texture("core\\assets\\Map.png");
-        kart = new Texture("core\\assets\\Kart.png");
+        kart = new Texture("core\\assets\\Car.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
         Gdx.input.setInputProcessor(this);
@@ -93,7 +93,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
 
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX()/4, kartSprite.getOriginY()/4, 50, 50, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 64, 64, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         batch.end();
 
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
@@ -315,6 +315,11 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
             },0, 100);
         }
         return true;
+    }
+
+    public void cancelUpTimer()
+    {
+        timerUp.cancel();
     }
 
     @Override
