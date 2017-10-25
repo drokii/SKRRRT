@@ -27,19 +27,22 @@ public class GameScreen implements Screen{
     private Sound skrrrt;
     private StatisticsHandler stats;
 
+    final float PIXELS_TO_METERS = 100f;
+
     public GameScreen(RaceGame game){
         this.game = game;
         carList = new ArrayList<Car>();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800,800);
+        camera.setToOrtho(false, 1000,1000);
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world); // SinglePlayer Only
         carList.add(car);
         map = new Map(car, camera);
+        stats = new StatisticsHandler(carList);
+        System.out.println("good job lucas");
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
-        stats = new StatisticsHandler(carList);
     }
 
     @Override
@@ -51,9 +54,10 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step( 1f / 60f, 6, 2);
+        world.step( Gdx.graphics.getDeltaTime(), 6, 2);
         map.render();
         car.render();
+        map.CheckCollision();
         stats.render();
         if (car.getIsOnFinishLine()){
             game.setScreen(new FinishScreen(game, stats.getFinishLogList()));

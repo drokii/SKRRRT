@@ -47,7 +47,7 @@ public class Map extends ApplicationAdapter{
 
     @Override
     public void create() {
-        tiledMap = new TmxMapLoader().load("core\\assets\\Map1.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\SmallTestMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
@@ -64,8 +64,8 @@ public class Map extends ApplicationAdapter{
         tiledMapRenderer.setView(camera);
 
         //camera.update();
-        isOnFinnishLine();
-        CheckCollision();
+
+        //CheckCollision();
     }
 
     @Override
@@ -79,31 +79,33 @@ public class Map extends ApplicationAdapter{
             //Left
 
             //Top Left
-            collisionX = isCellOnMap(position.x, position.y + 63, collisionLayer);
+            collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
             //Middle left
             if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
+                collisionX = isCellOnMap(position.x, position.y + 16, collisionLayer);
             //Bottom left
             if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y + 1, collisionLayer);
+                collisionX = isCellOnMap(position.x, position.y, collisionLayer);
 
             //Right
 
             //Top right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 63, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
 
             //Middle right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 32, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y + 16, collisionLayer);
 
             //Bottom right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 1, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y, collisionLayer);
 
             if(collisionX){
-                car.getKartBody().setLinearVelocity(-1000, car.getKartBody().getLinearVelocity().y);
+                car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
+                car.cancelUpTimer();
+                car.cancelDownTimer();
             }
         }
 
@@ -111,32 +113,34 @@ public class Map extends ApplicationAdapter{
             //Down
 
             //Bottom left
-            collisionY = isCellOnMap(position.x + 1, position.y, collisionLayer);
+            collisionY = isCellOnMap(position.x, position.y, collisionLayer);
 
             //Bottom middle
             if(!collisionY)
-                collisionY = isCellOnMap(position.x + 32, position.y, collisionLayer);
+                collisionY = isCellOnMap(position.x + 16, position.y, collisionLayer);
 
             //Bottom right
             if(!collisionY)
-                collisionY = isCellOnMap(position.x + 63, position.y, collisionLayer);
+                collisionY = isCellOnMap(position.x + 32, position.y, collisionLayer);
 
             //Up
 
             //Top left
             if(!collisionY)
-                collisionY = isCellOnMap(position.x + 1, position.y + 64, collisionLayer);
+                collisionY = isCellOnMap(position.x, position.y + 32, collisionLayer);
 
             //Top middle
             if(!collisionY)
-                collisionY = isCellOnMap(position.x + 32, position.y + 64, collisionLayer);
+                collisionY = isCellOnMap(position.x + 16, position.y + 32, collisionLayer);
 
             //Top right
             if(!collisionY)
-                collisionY = isCellOnMap(position.x + 63, position.y + 64, collisionLayer);
+                collisionY = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
 
             if(collisionY){
-                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, -1000);
+                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, 0);
+                car.cancelUpTimer();
+                car.cancelDownTimer();
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }
@@ -155,6 +159,5 @@ public class Map extends ApplicationAdapter{
          if(isCellOnMap(position.x + 32, position.y + 32, finishLayer)){
              car.setOnFinishLine(true);
         }
-        System.out.println("ik ben er");
     }
 }

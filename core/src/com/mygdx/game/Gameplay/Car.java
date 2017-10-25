@@ -24,7 +24,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float posX, posY;
 
     private float speed = 1f;
-    private float maxspeed = 10000f;
+    private float maxspeed = 1000f;
 
     public String getName() {
         return name;
@@ -56,8 +56,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         this.camera = camera;
 
         batch = new SpriteBatch();
-        track = new Texture("core\\assets\\Map.png");
-        kart = new Texture("core\\assets\\Car.png");
+        kart = new Texture("core\\assets\\MiniCar.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
         Gdx.input.setInputProcessor(this);
@@ -69,19 +68,20 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(kartSprite.getWidth() / 2, kartSprite.getHeight() / 2);
+        shape.setAsBox(kartSprite.getWidth(), kartSprite.getHeight());
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.01f;
+        fixtureDef.density = 0.1f;
         kartBody.createFixture(fixtureDef);
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(320, 1152),0);
+        kartBody.setTransform(new Vector2(384, 1152),0);
     }
 
     @Override
     public void render() {
         //torque test
+        world.step(1f / 60f, 6, 2);
         kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
 
@@ -93,7 +93,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
 
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 64, 64, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         batch.end();
 
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
@@ -115,6 +115,12 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         kart.dispose();
     }
 
+    public void cancelUpTimer(){
+        timerUp.cancel();
+    }
+    public void cancelDownTimer(){
+        timerDown.cancel();
+    }
     public void keyPressed()
     {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -315,11 +321,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
             },0, 100);
         }
         return true;
-    }
-
-    public void cancelUpTimer()
-    {
-        timerUp.cancel();
     }
 
     @Override
