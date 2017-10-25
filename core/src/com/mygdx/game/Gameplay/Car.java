@@ -24,7 +24,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float posX, posY;
 
     private float speed = 1f;
-    private float maxspeed = 1000f;
+    private float maxspeed = 10000f;
 
     public String getName() {
         return name;
@@ -72,7 +72,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         shape.setAsBox(kartSprite.getWidth() / 2, kartSprite.getHeight() / 2);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.1f;
+        fixtureDef.density = 0.01f;
         kartBody.createFixture(fixtureDef);
         shape.dispose();
 
@@ -82,7 +82,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     @Override
     public void render() {
         //torque test
-        world.step(1f / 60f, 6, 2);
         kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
 
@@ -213,9 +212,15 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     {
         float angle;
         if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+
+            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
+                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+
         } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) - (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+
+            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
+                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+
         } else {
             angle = 0;
         }
