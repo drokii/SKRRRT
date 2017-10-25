@@ -65,7 +65,7 @@ public class Map extends ApplicationAdapter{
 
         //camera.update();
 
-        CheckCollision();
+        //CheckCollision();
     }
 
     @Override

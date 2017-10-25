@@ -54,6 +54,7 @@ public class GameScreen implements Screen{
         world.step( 1f / 60f, 6, 2);
         map.render();
         car.render();
+        map.CheckCollision();
         stats.render();
     }
 
