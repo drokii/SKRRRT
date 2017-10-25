@@ -141,7 +141,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 
     private void lobbyScreen(){
