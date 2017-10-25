@@ -1,6 +1,5 @@
 package Menu;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -19,7 +18,7 @@ public class Lobby {
     }
 
     public Lobby(String name){
-        throw new NotImplementedException();
+
     }
 //
 //    public void addPlayer(Player player){
@@ -27,7 +26,7 @@ public class Lobby {
 //    }
 
     public void startWorld(int lapLimit, Timer timer){
-        throw new NotImplementedException();
+
     }
 
 }
