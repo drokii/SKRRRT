@@ -125,7 +125,7 @@ public class MatchScreen implements Screen{
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        lobbyScreen();
+        matchScreen();
         isClicked();
 
         // draw stage
@@ -155,10 +155,10 @@ public class MatchScreen implements Screen{
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 
-    private void lobbyScreen(){
+    private void matchScreen(){
         batch.begin();
 
         // draw title
@@ -283,7 +283,7 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //
+                //game.setScreen(new GameScreen(game));
             }
         });
 
