@@ -101,7 +101,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
 
     public void keyPressed()
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if(timerRight != null)
             {
                 timerRight.cancel();
@@ -115,16 +115,16 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 torque -= 0.025f;
             }
             kartBody.setAngularVelocity(torque);
-            if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            if(Gdx.input.isKeyPressed(Input.Keys.W))
             {
                 driveForward();
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 driveBackward();
             }
             keepVelocity();
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if(timerLeft != null)
             {
                 timerLeft.cancel();
@@ -138,19 +138,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 torque += 0.025f;
             }
             kartBody.setAngularVelocity(torque);
-            if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            if(Gdx.input.isKeyPressed(Input.Keys.W))
             {
                 driveForward();
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 driveBackward();
             }
             keepVelocity();
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             driveForward();
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             driveBackward();
         }
     }
@@ -213,7 +213,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     @Override
     public boolean keyUp(int keycode) {
 
-        if(keycode == Input.Keys.UP)
+        if(keycode == Input.Keys.W)
         {
             timerUp = new Timer(true);
             timerUp.scheduleAtFixedRate(new TimerTask() {
@@ -227,7 +227,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 }
             }, 0, 100);
         }
-        if(keycode == Input.Keys.LEFT)
+        if(keycode == Input.Keys.A)
         {
             timerLeft = new Timer(true);
             timerLeft.scheduleAtFixedRate(new TimerTask() {
@@ -254,7 +254,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 }
             }, 0, 250);
         }
-        if(keycode == Input.Keys.RIGHT)
+        if(keycode == Input.Keys.D)
         {
             timerRight = new Timer(true);
             timerRight.scheduleAtFixedRate(new TimerTask() {
@@ -281,7 +281,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
                 }
             }, 0, 250);
         }
-        if(keycode == Input.Keys.DOWN)
+        if(keycode == Input.Keys.S)
         {
             timerDown = new Timer(true);
             timerDown.scheduleAtFixedRate(new TimerTask() {
