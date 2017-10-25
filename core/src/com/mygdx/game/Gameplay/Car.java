@@ -56,7 +56,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         this.camera = camera;
 
         batch = new SpriteBatch();
-        kart = new Texture("core\\assets\\Car.png");
+        kart = new Texture("core\\assets\\MiniCar.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
         Gdx.input.setInputProcessor(this);
@@ -68,7 +68,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(kartSprite.getWidth() / 2, kartSprite.getHeight() / 2);
+        shape.setAsBox(kartSprite.getWidth(), kartSprite.getHeight());
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;

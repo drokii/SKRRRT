@@ -79,10 +79,10 @@ public class Map extends ApplicationAdapter{
             //Left
 
             //Top Left
-            collisionX = isCellOnMap(position.x, position.y + 64, collisionLayer);
+            collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
             //Middle left
             if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
+                collisionX = isCellOnMap(position.x, position.y + 16, collisionLayer);
             //Bottom left
             if (!collisionX)
                 collisionX = isCellOnMap(position.x, position.y, collisionLayer);
@@ -91,15 +91,15 @@ public class Map extends ApplicationAdapter{
 
             //Top right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 64, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
 
             //Middle right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y + 32, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y + 16, collisionLayer);
 
             //Bottom right
             if(!collisionX)
-                collisionX = isCellOnMap(position.x + 64, position.y, collisionLayer);
+                collisionX = isCellOnMap(position.x + 32, position.y, collisionLayer);
 
             if(collisionX){
                 car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
