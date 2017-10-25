@@ -27,12 +27,14 @@ public class GameScreen implements Screen{
     private Sound skrrrt;
     private StatisticsHandler stats;
 
+    final float PIXELS_TO_METERS = 100f;
+
     public GameScreen(RaceGame game){
         this.game = game;
         carList = new ArrayList<Car>();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800,800);
+        camera.setToOrtho(false, 1440,1440);
         world = new World(new Vector2(0, 0), true);
         car = new Car(camera, world); // SinglePlayer Only
         carList.add(car);
@@ -51,7 +53,7 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step( 1f / 60f, 6, 2);
+        world.step( Gdx.graphics.getDeltaTime(), 6, 2);
         map.render();
         car.render();
         stats.render();
@@ -81,5 +83,6 @@ public class GameScreen implements Screen{
     public void dispose() {
         car.dispose();
         map.dispose();
+
     }
 }
