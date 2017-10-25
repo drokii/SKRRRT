@@ -64,7 +64,7 @@ public class Map extends ApplicationAdapter{
         tiledMapRenderer.setView(camera);
 
         //camera.update();
-
+        isOnFinnishLine();
         CheckCollision();
     }
 
@@ -155,5 +155,6 @@ public class Map extends ApplicationAdapter{
          if(isCellOnMap(position.x + 32, position.y + 32, finishLayer)){
              car.setOnFinishLine(true);
         }
+        System.out.println("ik ben er");
     }
 }
