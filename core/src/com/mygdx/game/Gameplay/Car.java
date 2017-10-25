@@ -312,6 +312,11 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
         return true;
     }
 
+    public void cancelUpTimer()
+    {
+        timerUp.cancel();
+    }
+
     @Override
     public boolean keyTyped(char character) {
         return false;
