@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import Menu.GameScreen;
 import Menu.LogInScreen;
 import com.badlogic.gdx.Game;
+
 
 public class  RaceGame extends Game{
     @Override

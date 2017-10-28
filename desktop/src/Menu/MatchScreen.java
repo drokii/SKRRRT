@@ -14,12 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class MatchScreen implements Screen{
-    private int count = 0;
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
     private final int MIDDLE_COLUMN_LIGHT_Y = 409;
     private final int LAST_COLUMN_DARK_Y = 43;
+
+    private int count= 0;
 
     private final int BUTTONS_X = 1223;
     private final int START_BUTTON_Y = 731;
@@ -311,8 +312,9 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
+                count++;
+                if(count == 1)
+                    game.setScreen(new GameScreen(game));
             }
         });
 

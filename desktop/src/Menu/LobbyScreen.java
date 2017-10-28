@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class LobbyScreen implements Screen {
-    private int count = 0;
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
@@ -25,6 +24,8 @@ public class LobbyScreen implements Screen {
     private final int CREATE_BUTTON_Y = 731;
     private final int JOIN_BUTTON_Y = 671;
     private final int BACK_BUTTON_Y = 43;
+
+    private int count;
 
     private RaceGame game;
     private Stage stage;
