@@ -27,7 +27,7 @@ public class LogInScreen implements Screen{
     private final int TEXTFIELD_PASSWORD_Y = 400;
     private final int LOGIN_BUTTON_Y = 300;
 
-    int count;
+    private int count;
 
     private RaceGame game;
     private Stage stage;
@@ -47,31 +47,41 @@ public class LogInScreen implements Screen{
     private TextButton loginButtonInvisible;
 
     public LogInScreen(RaceGame game){
+        // set up
         this.game = game;
-        setUp();
-    }
-
-    private void setUp(){
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        loadImages();
+        textFields();
+        invisibleButtons();
+    }
+
+    // load some images
+    private void loadImages(){
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\Skrrrt.png");
-        this.textFieldStyle = new TextField.TextFieldStyle();
+        this.backgroundTextField = new Texture("core\\assets\\Menu\\TextFieldBackground.png");
+        this.loginButton = new Texture("core\\assets\\Menu\\LoginButton.png");
+        this.loginButtonActive = new Texture("core\\assets\\Menu\\LoginButtonActive.png");
+        this.yellowCar = new Texture("core\\assets\\Menu\\YellowCarBrakes.png");
+    }
 
+    // draw username & password textfield
+    private void textFields(){
+        // text field style
+        this.textFieldStyle = new TextField.TextFieldStyle();
         // load font
         FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
         FTFP.size = 55;
         this.bitmapFont = FTFG.generateFont(FTFP);
         FTFG.dispose();
-
-        // set font
+        // set font / settings
         this.textFieldStyle.font = bitmapFont;
         this.textFieldStyle.fontColor = Color.valueOf("a3a3a3");
 
-        // create textfield
-        this.backgroundTextField = new Texture("core\\assets\\Menu\\TextFieldBackground.png");
+        // settings textfield username & password
         this.username = new TextField("",textFieldStyle);
         this.username.setMessageText("Username");
         this.username.setPosition(TEXTFIELD_LOGINBUTTON_X, TEXTFIELD_USERNAME_Y);
@@ -85,19 +95,21 @@ public class LogInScreen implements Screen{
         this.password.setWidth(322);
         this.password.setHeight(75);
         this.password.setAlignment(3);
+    }
 
-        this.loginButton = new Texture("core\\assets\\Menu\\LoginButton.png");
-        this.loginButtonActive = new Texture("core\\assets\\Menu\\LoginButtonActive.png");
-        this.yellowCar = new Texture("core\\assets\\Menu\\YellowCarBrakes.png");
-
-        // invisible textbutton
+    // draw some invisible buttons
+    private void invisibleButtons(){
+        // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = bitmapFont;
+
+        // draw invisible login button
         this.loginButtonInvisible = new TextButton("", textButtonStyle);
         this.loginButtonInvisible.setPosition(TEXTFIELD_LOGINBUTTON_X, LOGIN_BUTTON_Y);
         this.loginButtonInvisible.setWidth(loginButton.getWidth());
         this.loginButtonInvisible.setHeight(loginButton.getHeight());
 
+        // add actors to stage
         stage.addActor(username);
         stage.addActor(password);
         stage.addActor(loginButtonInvisible);
@@ -111,8 +123,7 @@ public class LogInScreen implements Screen{
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        DrawLogInScreen();
-
+        logInScreen();
         isClicked();
 
         // draw stage
@@ -152,7 +163,8 @@ public class LogInScreen implements Screen{
         batch.dispose();
     }
 
-    private void DrawLogInScreen(){
+    // draw login screen
+    private void logInScreen(){
         batch.begin();
 
         // draw title
@@ -175,8 +187,10 @@ public class LogInScreen implements Screen{
         batch.end();
     }
 
+    // check if some button is clicked
     private void isClicked(){
-        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        // login button
+        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
