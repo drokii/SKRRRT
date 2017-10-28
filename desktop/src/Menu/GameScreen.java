@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Gameplay.Car;
+import com.mygdx.game.Gameplay.GameWorld;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.RaceGame;
 
@@ -18,31 +19,13 @@ import java.util.ArrayList;
 public class GameScreen implements Screen{
 
     RaceGame game;
-    private ArrayList<Car> carList;
-    private Car car;
-    private Map map;
-    private OrthographicCamera camera;
-    private World world;
-    private Sound sound;
-    private Sound skrrrt;
-    private StatisticsHandler stats;
+    GameWorld gameWorld;
 
     final float PIXELS_TO_METERS = 100f;
 
     public GameScreen(RaceGame game){
         this.game = game;
-        carList = new ArrayList<Car>();
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 600,400);
-        world = new World(new Vector2(0, 0), true);
-        car = new Car(camera, world); // SinglePlayer Only
-        carList.add(car);
-        map = new Map(car, camera);
-        stats = new StatisticsHandler(carList);
-        System.out.println("good job lucas");
-        sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
-        sound.play();
+        gameWorld = new GameWorld(game);
     }
 
     @Override
@@ -52,16 +35,10 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step( Gdx.graphics.getDeltaTime(), 6, 2);
-        map.render();
-        car.render();
-        map.CheckCollision();
-        stats.render();
-        if (car.getIsOnFinishLine()){
-            game.setScreen(new FinishScreen(game, stats.getFinishLogList()));
-        }
+        gameWorld.render();
     }
 
     @Override
@@ -86,8 +63,6 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-        car.dispose();
-        map.dispose();
-        sound.stop();
+        gameWorld.dispose();
     }
 }

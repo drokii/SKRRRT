@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Gameplay.Car;
+import com.mygdx.game.Gameplay.CarInputProcessorHelper;
 
 public class Map extends ApplicationAdapter{
     private TiledMap tiledMap;
@@ -30,7 +31,7 @@ public class Map extends ApplicationAdapter{
     private Vector2 oldPos;
 
     private OrthographicCamera camera;
-
+    CarInputProcessorHelper input;
     //Testing purpose
 //    SpriteBatch batch;
 //    Body body;
@@ -40,8 +41,10 @@ public class Map extends ApplicationAdapter{
     private Car car;
 
     public Map(Car car, OrthographicCamera camera){
+
         this.camera = camera;
         this.car = car;
+        this.input = car.getInput();
         create();
     }
 
@@ -53,19 +56,13 @@ public class Map extends ApplicationAdapter{
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
         finishLayer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
         isOnFinnishLine();
-        //camera = new OrthographicCamera();
-        //camera.setToOrtho(false, 600,600);
-        //camera.update();
     }
 
     @Override
     public void render() {
         tiledMapRenderer.render();
         tiledMapRenderer.setView(camera);
-
-        //camera.update();
         isOnFinnishLine();
-        //CheckCollision();
     }
 
     @Override
@@ -104,8 +101,8 @@ public class Map extends ApplicationAdapter{
             if(collisionX){
                 car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
-                car.cancelUpTimer();
-                car.cancelDownTimer();
+                input.cancelUpTimer();
+                input.cancelDownTimer();
             }
         }
 
@@ -139,8 +136,8 @@ public class Map extends ApplicationAdapter{
 
             if(collisionY){
                 car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, 0);
-                car.cancelUpTimer();
-                car.cancelDownTimer();
+                input.cancelUpTimer();
+                input.cancelDownTimer();
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }
@@ -148,8 +145,6 @@ public class Map extends ApplicationAdapter{
     }
 
     private boolean isCellOnMap(float x, float y, TiledMapTileLayer layer){
-        //TiledMapTileLayer.Cell cell = collisionLayer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
-        //return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("Collision");
         TiledMapTileLayer.Cell cell = layer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
         return cell != null;
     }
