@@ -62,7 +62,7 @@ public class MatchScreen implements Screen{
         Gdx.input.setInputProcessor(stage);
 
         loadImages();
-        InvisibleButtons();
+        invisibleButtons();
     }
 
     // load some images
@@ -88,7 +88,7 @@ public class MatchScreen implements Screen{
     }
 
     // draw some invisibleButtons
-    private void InvisibleButtons(){
+    private void invisibleButtons(){
         // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
