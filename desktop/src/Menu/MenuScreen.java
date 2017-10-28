@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 public class MenuScreen implements Screen {
-    private int count = 0;
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int PLAY_BUTTON_Y = 500;
     private final int SETTINGS_BUTTON_Y = 400;
