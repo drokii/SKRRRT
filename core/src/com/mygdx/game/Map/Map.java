@@ -99,10 +99,12 @@ public class Map extends ApplicationAdapter{
                 collisionX = isCellOnMap(position.x + 32, position.y, collisionLayer);
 
             if(collisionX){
-                car.getKartBody().setLinearVelocity(0, car.getKartBody().getLinearVelocity().y);
-                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
                 input.cancelUpTimer();
                 input.cancelDownTimer();
+                car.setSpeed(0f);
+                car.keepVelocity();
+                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
+
             }
         }
 
@@ -135,9 +137,11 @@ public class Map extends ApplicationAdapter{
                 collisionY = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
 
             if(collisionY){
-                car.getKartBody().setLinearVelocity(car.getKartBody().getLinearVelocity().x, 0);
                 input.cancelUpTimer();
                 input.cancelDownTimer();
+
+                car.setSpeed(0f);
+                car.keepVelocity();
                 car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
             }
         }

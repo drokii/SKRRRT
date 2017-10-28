@@ -12,7 +12,6 @@ import java.util.TimerTask;
 public class CarInputProcessorHelper implements InputProcessor, ApplicationListener {
 
     private Car car;
-    private float speed;
     private float torque;
     private Body kartBody;
 
@@ -22,7 +21,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
         Gdx.input.setInputProcessor(this);
         this.car = car;
-        speed = car.getSpeed();
         torque = car.getTorque();
         kartBody = car.getKartBody();
 
@@ -98,7 +96,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
     }
 
     @Override
-
     public boolean keyUp(int keycode) {
 
         if (keycode == Input.Keys.W) {
@@ -106,8 +103,8 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             timerUp.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (speed > 0) {
-                        speed = speed * 0.95f;
+                    if (car.getSpeed() > 0) {
+                        car.setSpeed(car.getSpeed() * 0.95f);
                         car.keepVelocity();
                     }
                 }
@@ -158,7 +155,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             timerDown.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    speed = speed * 0.95f;
+                    car.setSpeed(car.getSpeed() * 0.95f);
                     car.keepVelocity();
                 }
             }, 0, 100);

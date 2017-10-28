@@ -32,12 +32,17 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     }
 
 
+    private float speed = 1f;
 
     public float getSpeed() {
         return speed;
     }
 
-    private float speed = 1f;
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+
     private float maxspeed = 1000f;
 
     public String getName() {
