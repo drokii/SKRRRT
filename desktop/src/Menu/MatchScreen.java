@@ -56,14 +56,17 @@ public class MatchScreen implements Screen{
     private TextButton leaveButtonInvisible;
 
     public MatchScreen(RaceGame game){
+        // set up
         this.game = game;
-        setUp();
-    }
-
-    private void setUp(){
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        loadImages();
+        InvisibleButtons();
+    }
+
+    // load some images
+    private void loadImages(){
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\SkrrrtSmall.png");
         this.firstColumnLight = new Texture("core\\assets\\Menu\\FirstColumnLight.png");
@@ -82,36 +85,39 @@ public class MatchScreen implements Screen{
         this.settingsButtonActive = new Texture("core\\assets\\Menu\\SettingsButtonSmallActive.png");
         this.leaveButton = new Texture("core\\assets\\Menu\\LeaveButton.png");
         this.leaveButtonActive = new Texture("core\\assets\\Menu\\LeaveButtonActive.png");
+    }
 
-        // textbuttons invisible
+    // draw some invisibleButtons
+    private void InvisibleButtons(){
+        // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
 
-        // start button
+        // draw invisible start button
         this.startButtonInvisible = new TextButton("", textButtonStyle);
         this.startButtonInvisible.setPosition(BUTTONS_X, START_BUTTON_Y);
         this.startButtonInvisible.setWidth(startButton.getWidth());
         this.startButtonInvisible.setHeight(startButton.getHeight());
 
-        // kick button
+        // draw invisible kick button
         this.kickButtonInvisible = new TextButton("", textButtonStyle);
         this.kickButtonInvisible.setPosition(BUTTONS_X, KICK_BUTTON_Y);
         this.kickButtonInvisible.setWidth(kickButton.getWidth());
         this.kickButtonInvisible.setHeight(kickButton.getHeight());
 
-        // settings button
+        // draw invisible settings button
         this.settingsButtonInvisible = new TextButton("", textButtonStyle);
         this.settingsButtonInvisible.setPosition(BUTTONS_X, SETTINGS_BUTTON_Y);
         this.settingsButtonInvisible.setWidth(settingsButton.getWidth());
         this.settingsButtonInvisible.setHeight(settingsButton.getHeight());
 
-        // leave button
+        // draw invisible leave button
         this.leaveButtonInvisible = new TextButton("", textButtonStyle);
         this.leaveButtonInvisible.setPosition(BUTTONS_X, LEAVE_BUTTON_Y);
         this.leaveButtonInvisible.setWidth(leaveButton.getWidth());
         this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
 
-
+        // add actors to stage
         stage.addActor(startButtonInvisible);
         stage.addActor(kickButtonInvisible);
         stage.addActor(settingsButtonInvisible);
@@ -177,6 +183,7 @@ public class MatchScreen implements Screen{
         batch.dispose();
     }
 
+    // draw match screen
     private void matchScreen(){
         batch.begin();
 
@@ -259,6 +266,7 @@ public class MatchScreen implements Screen{
         batch.end();
     }
 
+    // check if some button is clicked
     private void isClicked(){
         int tempDarkY = MIDDLE_COLUMN_DARK_Y;
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
@@ -299,6 +307,7 @@ public class MatchScreen implements Screen{
             }
         }
 
+        // start button
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -307,6 +316,7 @@ public class MatchScreen implements Screen{
             }
         });
 
+        // kick button
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -315,6 +325,8 @@ public class MatchScreen implements Screen{
             }
         });
 
+
+        // settings button
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -323,6 +335,7 @@ public class MatchScreen implements Screen{
             }
         });
 
+        // leave button
         leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {

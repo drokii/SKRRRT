@@ -52,14 +52,17 @@ public class LobbyScreen implements Screen {
     private TextButton backButtonInvisible;
 
     public LobbyScreen(RaceGame game){
+        // set up
         this.game = game;
-        setUp();
-    }
-
-    private void setUp(){
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        loadImages();
+        invisibleButtons();
+    }
+
+    // load some images
+    private void loadImages(){
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\SkrrrtSmall.png");
         this.firstColumnLight = new Texture("core\\assets\\Menu\\FirstColumnLight.png");
@@ -76,29 +79,33 @@ public class LobbyScreen implements Screen {
         this.joinButtonActive = new Texture("core\\assets\\Menu\\JoinButtonActive.png");
         this.backButton = new Texture("core\\assets\\Menu\\BackButton.png");
         this.backButtonActive = new Texture("core\\assets\\Menu\\BackButtonActive.png");
+    }
 
-        // textbuttons invisible
+    // draw some invisible buttons
+    private void invisibleButtons(){
+        // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
 
-        // create button
+        // draw invisible create button
         this.createButtonInvisible = new TextButton("", textButtonStyle);
         this.createButtonInvisible.setPosition(BUTTONS_X, CREATE_BUTTON_Y);
         this.createButtonInvisible.setWidth(createButton.getWidth());
         this.createButtonInvisible.setHeight(createButton.getHeight());
 
-        // join button
+        // draw invisible join button
         this.joinButtonInvisible = new TextButton("", textButtonStyle);
         this.joinButtonInvisible.setPosition(BUTTONS_X, JOIN_BUTTON_Y);
         this.joinButtonInvisible.setWidth(joinButton.getWidth());
         this.joinButtonInvisible.setHeight(joinButton.getHeight());
 
-        // back button
+        // draw invisible back button
         this.backButtonInvisible = new TextButton("", textButtonStyle);
         this.backButtonInvisible.setPosition(BUTTONS_X, BACK_BUTTON_Y);
         this.backButtonInvisible.setWidth(backButton.getWidth());
         this.backButtonInvisible.setHeight(backButton.getHeight());
 
+        // add actors to stage
         stage.addActor(createButtonInvisible);
         stage.addActor(joinButtonInvisible);
         stage.addActor(backButtonInvisible);
@@ -161,6 +168,7 @@ public class LobbyScreen implements Screen {
         batch.dispose();
     }
 
+    // draw lobby screen
     private void lobbyScreen(){
         batch.begin();
 
@@ -235,6 +243,7 @@ public class LobbyScreen implements Screen {
         batch.end();
     }
 
+    // check if some button is clicked
     private void isClicked(){
         int tempDarkY = MIDDLE_COLUMN_DARK_Y;
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
@@ -275,6 +284,7 @@ public class LobbyScreen implements Screen {
             }
         }
 
+        // create button
         createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -283,6 +293,7 @@ public class LobbyScreen implements Screen {
             }
         });
 
+        // join button
         joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -292,6 +303,7 @@ public class LobbyScreen implements Screen {
             }
         });
 
+        // back button
         backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
