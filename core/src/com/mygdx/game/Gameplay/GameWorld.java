@@ -56,7 +56,7 @@ public class GameWorld implements ApplicationListener {
 
         // Start background music!!
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
-        //sound.play();
+        sound.play();
     }
 
 

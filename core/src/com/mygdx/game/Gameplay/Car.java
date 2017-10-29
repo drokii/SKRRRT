@@ -92,7 +92,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kartBody.createFixture(fixtureDef);
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1728, 768),0);
+        kartBody.setTransform(new Vector2(1728, 768),-3/2);
 
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
@@ -101,18 +101,20 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     @Override
     public void render() {
         input.render();
-        world.step(1f / 60f, 6, 2);
-        kartBody.applyTorque(torque, true);
-        kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+
+        world.step(1f / 60f, 10, 10);
+        kartBody.applyTorque(torque, true);
+        kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
         batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        batch.end();
+
 
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
+        batch.end();
     }
 
     public Body getKartBody(){
