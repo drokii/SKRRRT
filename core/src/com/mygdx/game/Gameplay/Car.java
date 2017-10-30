@@ -24,7 +24,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, Inpu
     private float posX, posY;
 
     private float speed = 1f;
-    private float maxspeed = 1000f;
+    private float maxspeed = 300f;
 
     public String getName() {
         return name;
