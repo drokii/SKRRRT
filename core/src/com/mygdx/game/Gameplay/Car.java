@@ -43,7 +43,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     }
 
 
-    private float maxspeed = 1000f;
+    private float maxspeed = 300f;
 
     public String getName() {
         return name;
