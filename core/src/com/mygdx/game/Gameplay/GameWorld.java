@@ -1,6 +1,7 @@
 package com.mygdx.game.Gameplay;
 
 import Menu.FinishScreen;
+import Menu.LogInScreen;
 import Menu.StatisticsHandler;
 import com.badlogic.gdx.ApplicationAdapter;
 
@@ -15,6 +16,7 @@ import com.mygdx.game.Map.Map;
 import com.mygdx.game.RaceGame;
 
 
+import javax.security.auth.login.LoginContext;
 import java.util.ArrayList;
 
 public class GameWorld implements ApplicationListener {
@@ -55,6 +57,7 @@ public class GameWorld implements ApplicationListener {
         stats = new StatisticsHandler(carList);
 
         // Start background music!!
+        LogInScreen.menuSound.stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
     }

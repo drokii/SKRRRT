@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +29,8 @@ public class LogInScreen implements Screen{
     private final int LOGIN_BUTTON_Y = 300;
 
     private int count;
+
+    public static Sound menuSound;
 
     private RaceGame game;
     private Stage stage;
@@ -194,8 +197,11 @@ public class LogInScreen implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
-                if(count == 1)
+                if(count == 1) {
+                    menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/allstar.ogg"));
+                    menuSound.play();
                     game.setScreen(new MenuScreen(game));
+                }
             }
         });
     }
