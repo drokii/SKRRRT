@@ -16,7 +16,10 @@ import java.util.TimerTask;
 
 public class Car extends ApplicationAdapter implements ApplicationListener {
 
-
+    /**
+     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * Also it calculates new vector values.
+     */
 
     private SpriteBatch batch;
     private Texture track;
@@ -133,6 +136,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     public void driveBackward(Timer timer)
     {
+        /**
+         * The method driveBackward(Timer timer), when called it speeds up the car in a backward motion.
+         * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+         */
         if(timer != null)
         {
             timer.cancel();
@@ -150,6 +157,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     public void driveForward(Timer timer)
     {
+        /**
+         * The method driveForward(Timer timer), when called it speeds up the car in a forward motion.
+         * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+         */
         if(timer != null)
         {
             timer.cancel();
@@ -170,6 +181,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     public void keepVelocity()
     {
+        /**
+         * The method keepVelocity needs to calculate the and set the LinearVelocity for the @param kartBody
+         * @param angle , the angle of the kart.
+         */
         float angle;
         if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
 

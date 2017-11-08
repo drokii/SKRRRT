@@ -10,11 +10,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CarInputProcessorHelper implements InputProcessor, ApplicationListener {
-
+    /**
+     * This class translates the user input into usable calls for the car class.
+     * In addition to translating input, the class is responsible for deacceleration and torque correction of the car.
+     * @param timerUp if the forward key is released a timer schedule is going to bring back the speed to zero.
+     * @param timerLeft if the turn-left key is released a timer schedule is going to bring back the torque to zero.
+     * @param timerRight if the turn-right key is released a timer schedule is going to bring back the torque to zero.
+     * @param timerDown if the backward key is released a timer schedule is going to bring back the speed to zero.
+     */
     private Car car;
     private float torque;
     private Body kartBody;
-
 
 
     public CarInputProcessorHelper(Car car) {
@@ -39,6 +45,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
     }
 
     public void keyPressed() {
+
+        /**
+        * Depending on the key pressed the torque or speed of the car should be updated.
+        */
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if (timerRight != null) {
@@ -97,7 +107,9 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
     @Override
     public boolean keyUp(int keycode) {
-
+        /**
+         * When a key is released the released direction should start to lose its influence on the car over time.
+         */
         if (keycode == Input.Keys.W) {
             timerUp = new Timer(true);
             timerUp.scheduleAtFixedRate(new TimerTask() {

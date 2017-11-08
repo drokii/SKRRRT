@@ -20,6 +20,17 @@ import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Gameplay.CarInputProcessorHelper;
 
 public class Map extends ApplicationAdapter{
+    /**
+     * The Map class is about the map. So where is the finish line, where are the collisionborders, where is the car located on the map.
+     * @param tiledMap the entire map
+     * @param tiledMapRenderer the map renederer
+     * @param collisionLayer the layer that provides the collision tiles
+     * @param finishLayer the layer that provides as finish tiles
+     * @param collisionX boolean that holds a value if a certain x value is on the map
+     * @param collisionY boolean that holds a value if a certain y value is on the map
+     * @param oldPos a Vector2 variable that holds the position of the car gets updated when no collision occured.
+     * @param camera a camera that follows the car
+     */
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
 
@@ -70,6 +81,10 @@ public class Map extends ApplicationAdapter{
     }
 
     public void CheckCollision(){
+        /**
+         * Checks if the car is hitting the collisionLayer of the map.
+         * @param position holds the cars position to be checked during the method
+         */
         Vector2 position = car.getKartBody().getTransform().getPosition();
 
         if(car.getKartBody().getLinearVelocity().x != 0) {
@@ -149,11 +164,17 @@ public class Map extends ApplicationAdapter{
     }
 
     private boolean isCellOnMap(float x, float y, TiledMapTileLayer layer){
+        /**
+         * Checks if a cell is existing on the map
+         */
         TiledMapTileLayer.Cell cell = layer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
         return cell != null;
     }
 
     public void isOnFinnishLine(){
+        /**
+         * Checks if a car is on the finish line.
+         */
         Vector2 position = car.getKartBody().getTransform().getPosition();
          if(isCellOnMap(position.x + 32, position.y + 32, finishLayer)){
              car.setOnFinishLine(true);
