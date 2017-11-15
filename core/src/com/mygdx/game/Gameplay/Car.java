@@ -95,7 +95,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kartBody.createFixture(fixtureDef);
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1728, 768),-3/2);
+        kartBody.setTransform(new Vector2(1050, 800),-3/2);
 
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);

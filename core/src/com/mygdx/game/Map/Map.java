@@ -33,6 +33,7 @@ public class Map extends ApplicationAdapter{
      */
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private MapBodyBuilder mapBodyBuilder;
 
     private TiledMapTileLayer collisionLayer;
     private TiledMapTileLayer finishLayer;
@@ -41,32 +42,31 @@ public class Map extends ApplicationAdapter{
     private boolean collisionY;
     private Vector2 oldPos;
 
+    private World world;
     private OrthographicCamera camera;
     CarInputProcessorHelper input;
-    //Testing purpose
-//    SpriteBatch batch;
-//    Body body;
-//    Sprite sprite;
-//    Texture img;
-//    World world;
+
     private Car car;
 
-    public Map(Car car, OrthographicCamera camera){
-
+    public Map(Car car, OrthographicCamera camera, World world){
         this.camera = camera;
         this.car = car;
         this.input = car.getInput();
+        this.world = world;
+        this.mapBodyBuilder = new MapBodyBuilder();
         create();
     }
 
     @Override
     public void create() {
-        tiledMap = new TmxMapLoader().load("core\\assets\\SmallTestMap.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\Map\\SkrrrtMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
         finishLayer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
         isOnFinnishLine();
+
+        mapBodyBuilder.buildShapes(tiledMap, world);
     }
 
     @Override
@@ -74,101 +74,106 @@ public class Map extends ApplicationAdapter{
         tiledMapRenderer.render();
         tiledMapRenderer.setView(camera);
         isOnFinnishLine();
+        //mapBodyBuilder.buildShapes(tiledMap,64, world);
+
     }
 
     @Override
     public void dispose() {
     }
 
-    public void CheckCollision(){
-        /**
-         * Checks if the car is hitting the collisionLayer of the map.
-         * @param position holds the cars position to be checked during the method
-         */
-        Vector2 position = car.getKartBody().getTransform().getPosition();
-
-        if(car.getKartBody().getLinearVelocity().x != 0) {
-            //Left
-
-            //Top Left
-            collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
-            //Middle left
-            if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y + 16, collisionLayer);
-            //Bottom left
-            if (!collisionX)
-                collisionX = isCellOnMap(position.x, position.y, collisionLayer);
-
-            //Right
-
-            //Top right
-            if(!collisionX)
-                collisionX = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
-
-            //Middle right
-            if(!collisionX)
-                collisionX = isCellOnMap(position.x + 32, position.y + 16, collisionLayer);
-
-            //Bottom right
-            if(!collisionX)
-                collisionX = isCellOnMap(position.x + 32, position.y, collisionLayer);
-
-            if(collisionX){
-                input.cancelUpTimer();
-                input.cancelDownTimer();
-                car.setSpeed(0f);
-                car.keepVelocity();
-                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
-
-            }
-        }
-
-        if(car.getKartBody().getLinearVelocity().y != 0){
-            //Down
-
-            //Bottom left
-            collisionY = isCellOnMap(position.x, position.y, collisionLayer);
-
-            //Bottom middle
-            if(!collisionY)
-                collisionY = isCellOnMap(position.x + 16, position.y, collisionLayer);
-
-            //Bottom right
-            if(!collisionY)
-                collisionY = isCellOnMap(position.x + 32, position.y, collisionLayer);
-
-            //Up
-
-            //Top left
-            if(!collisionY)
-                collisionY = isCellOnMap(position.x, position.y + 32, collisionLayer);
-
-            //Top middle
-            if(!collisionY)
-                collisionY = isCellOnMap(position.x + 16, position.y + 32, collisionLayer);
-
-            //Top right
-            if(!collisionY)
-                collisionY = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
-
-            if(collisionY){
-                input.cancelUpTimer();
-                input.cancelDownTimer();
-
-                car.setSpeed(0f);
-                car.keepVelocity();
-                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
-            }
-        }
-        oldPos = new Vector2(position);
-    }
+//    public void CheckCollision(){
+//        /**
+//         * Checks if the car is hitting the collisionLayer of the map.
+//         * @param position holds the cars position to be checked during the method
+//         */
+//        Vector2 position = car.getKartBody().getTransform().getPosition();
+//
+//        if(car.getKartBody().getLinearVelocity().x != 0) {
+//            //Left
+//
+//            //Top Left
+//            collisionX = isCellOnMap(position.x, position.y + 32, collisionLayer);
+//            //Middle left
+//            if (!collisionX)
+//                collisionX = isCellOnMap(position.x, position.y + 16, collisionLayer);
+//            //Bottom left
+//            if (!collisionX)
+//                collisionX = isCellOnMap(position.x, position.y, collisionLayer);
+//
+//            //Right
+//
+//            //Top right
+//            if(!collisionX)
+//                collisionX = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
+//
+//            //Middle right
+//            if(!collisionX)
+//                collisionX = isCellOnMap(position.x + 32, position.y + 16, collisionLayer);
+//
+//            //Bottom right
+//            if(!collisionX)
+//                collisionX = isCellOnMap(position.x + 32, position.y, collisionLayer);
+//
+//            if(collisionX){
+//                input.cancelUpTimer();
+//                input.cancelDownTimer();
+//                car.setSpeed(0f);
+//                car.keepVelocity();
+//                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
+//
+//            }
+//        }
+//
+//        if(car.getKartBody().getLinearVelocity().y != 0){
+//            //Down
+//
+//            //Bottom left
+//            collisionY = isCellOnMap(position.x, position.y, collisionLayer);
+//
+//            //Bottom middle
+//            if(!collisionY)
+//                collisionY = isCellOnMap(position.x + 16, position.y, collisionLayer);
+//
+//            //Bottom right
+//            if(!collisionY)
+//                collisionY = isCellOnMap(position.x + 32, position.y, collisionLayer);
+//
+//            //Up
+//
+//            //Top left
+//            if(!collisionY)
+//                collisionY = isCellOnMap(position.x, position.y + 32, collisionLayer);
+//
+//            //Top middle
+//            if(!collisionY)
+//                collisionY = isCellOnMap(position.x + 16, position.y + 32, collisionLayer);
+//
+//            //Top right
+//            if(!collisionY)
+//                collisionY = isCellOnMap(position.x + 32, position.y + 32, collisionLayer);
+//
+//            if(collisionY){
+//                input.cancelUpTimer();
+//                input.cancelDownTimer();
+//
+//                car.setSpeed(0f);
+//                car.keepVelocity();
+//                car.getKartBody().setTransform(oldPos, car.getKartBody().getAngle());
+//            }
+//        }
+//        oldPos = new Vector2(position);
+//    }
 
     private boolean isCellOnMap(float x, float y, TiledMapTileLayer layer){
         /**
          * Checks if a cell is existing on the map
          */
-        TiledMapTileLayer.Cell cell = layer.getCell((int)(x / collisionLayer.getTileWidth()), (int)(y / collisionLayer.getTileHeight()));
-        return cell != null;
+        if(layer != null) {
+            TiledMapTileLayer.Cell cell = layer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
+            return cell != null;
+        }
+        return false;
     }
 
     public void isOnFinnishLine(){

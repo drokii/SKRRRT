@@ -25,7 +25,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.setToOrtho(false, 600,600);
 		world = new World(new Vector2(0, 0), true);
 		car = new Car(camera, world);
-		map = new Map(car, camera);
+		map = new Map(car, camera, world );
 	}
 
 	@Override
