@@ -18,7 +18,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     /**
      * This class keeps track of the maxspeed, speed and velocity of the car.
-     * Also it calculates new vector values.
+     * Also it calculates new vector values used to rotate the car.
      */
 
     private SpriteBatch batch;
@@ -28,6 +28,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     private World world;
     private Body kartBody;
     private float posX, posY;
+
+    private Box2DDebugRenderer renderer;
 
     private CarInputProcessorHelper input;
     public CarInputProcessorHelper getInput() {
@@ -88,15 +90,18 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(kartSprite.getWidth(), kartSprite.getHeight());
+        shape.setAsBox(16, 16);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
         kartBody.createFixture(fixtureDef);
+        kartSprite.setCenter(getKartBody().getPosition().x, getKartBody().getPosition().y);
+
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1728, 768),-3/2);
+        kartBody.setTransform(new Vector2(1728, 700),-1.56f);
 
+        renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
@@ -112,12 +117,14 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-
+        //batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
 
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
+
+        renderer.render(world, camera.combined);
     }
 
     public Body getKartBody(){
