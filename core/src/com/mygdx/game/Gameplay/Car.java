@@ -178,7 +178,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
             speed = maxspeed;
         } else if (speed < 0) {
             speed = speed * 0.95f;
-            kartBody.setLinearVelocity(0, speed);
+            keepVelocity();
         }
         if (speed >= 0) {
             speed = speed * 1.05f;
