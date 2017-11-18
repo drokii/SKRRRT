@@ -38,6 +38,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
 
     private float speed = 1f;
+    private boolean drift = false;
 
     public float getSpeed() {
         return speed;
@@ -46,7 +47,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     public void setSpeed(float speed) {
         this.speed = speed;
     }
-
 
     private float maxspeed = 300f;
 
@@ -117,9 +117,14 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        //batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-
+        if(!drift)
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        }
+        else
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
+        }
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
@@ -207,6 +212,18 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
             angle = 0;
         }
         kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
+    }
+
+    public void Drift()
+    {
+        if(drift == false)
+        drift = true;
+    }
+
+    public void stopDrift()
+    {
+        if(drift == true)
+        drift = false;
     }
 
 }
