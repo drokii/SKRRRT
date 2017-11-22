@@ -74,7 +74,7 @@ public class Map extends ApplicationAdapter{
          * Checks if a cell is existing on the map
          */
         if(layer != null) {
-            TiledMapTileLayer.Cell cell = layer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
+            TiledMapTileLayer.Cell cell = layer.getCell((int) (x / finishLayer.getTileWidth()), (int) (y / finishLayer.getTileHeight()));
             return cell != null;
         }
         return false;
@@ -85,7 +85,7 @@ public class Map extends ApplicationAdapter{
          * Checks if a car is on the finish line.
          */
         Vector2 position = car.getKartBody().getTransform().getPosition();
-         if(isCellOnMap(position.x + 32, position.y + 32, finishLayer)){
+         if(isCellOnMap(position.x, position.y, finishLayer)){
              car.setOnFinishLine(true);
         }
     }
