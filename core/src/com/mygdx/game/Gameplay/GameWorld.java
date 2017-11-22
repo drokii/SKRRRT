@@ -1,7 +1,6 @@
 package com.mygdx.game.Gameplay;
 
 import MenuScreen.*;
-import MenuScreen.LogInScreen;
 import Menu.StatisticsHandler;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
