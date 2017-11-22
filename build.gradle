@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        
+
 
     }
 }
@@ -44,6 +44,7 @@ project(":core") {
         compile ("com.esotericsoftware:kryonet:2.22.0-RC1") {
             exclude module : 'kryo'
         }
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.8-dmr'
         compile "com.esotericsoftware:kryo:3.0.1"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

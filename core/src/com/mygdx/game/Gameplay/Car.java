@@ -90,7 +90,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(16, 16);
+        shape.setAsBox(16, 24);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
