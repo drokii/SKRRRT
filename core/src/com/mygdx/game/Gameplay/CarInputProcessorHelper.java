@@ -24,7 +24,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
 
     public CarInputProcessorHelper(Car car) {
-
         Gdx.input.setInputProcessor(this);
         this.car = car;
         torque = car.getTorque();
@@ -44,12 +43,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
         timerDown.cancel();
     }
 
-    public void keyPressed() {
-
-        /**
-        * Depending on the key pressed the torque or speed of the car should be updated.
-        */
-
+    /**
+     * Depending on the key pressed the torque or speed of the car should be updated.
+     */
+    private void keyPressed() {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if (timerRight != null) {
                 timerRight.cancel();
@@ -70,7 +67,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             {
-                car.Drift();
+                car.DriftRight();
             }
 
             car.keepVelocity();
@@ -93,6 +90,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 car.driveBackward(timerDown);
             }
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+            {
+                car.DriftLeft();
+            }
 
             car.keepVelocity();
 
@@ -109,11 +110,12 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
         return false;
     }
 
+    /**
+     * When a key is released the released direction should start to lose its influence on the car over time.
+     */
     @Override
     public boolean keyUp(int keycode) {
-        /**
-         * When a key is released the released direction should start to lose its influence on the car over time.
-         */
+
         if (keycode == Input.Keys.W) {
             timerUp = new Timer(true);
             timerUp.scheduleAtFixedRate(new TimerTask() {
@@ -145,7 +147,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                     }
                 }
             }, 0, 250);
-            car.stopDrift();
         }
         if (keycode == Input.Keys.D) {
             timerRight = new Timer(true);
@@ -166,7 +167,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                     }
                 }
             }, 0, 250);
-            car.stopDrift();
         }
         if (keycode == Input.Keys.S) {
             timerDown = new Timer(true);
@@ -187,12 +187,12 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
     @Override
     public void create() {
-
+        // gets created through constructor
     }
 
     @Override
     public void resize(int width, int height) {
-
+        // never implemented
     }
 
     @Override
@@ -202,16 +202,17 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
     @Override
     public void pause() {
-
+        // no pause implemented
     }
 
     @Override
     public void resume() {
-
+        // Never paused
     }
 
     @Override
     public void dispose() {
+        // Nothing to dispose within this class
 
     }
     @Override
