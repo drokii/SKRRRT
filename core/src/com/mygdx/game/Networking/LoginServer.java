@@ -44,29 +44,25 @@ public class LoginServer extends Application {
 
                     try
                     {
-                        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-                        // hij crasht op de line hieronder
-                        conn = DriverManager.getConnection("jdbc:mysql://studmysql01.fhict.local/dbi360089","dbi360089","PTS3");
+                        Class.forName("com.mysql.jdbc.Driver");
+                        conn = DriverManager.getConnection("jdbc:mysql://studmysql01.fhict.local:3306/dbi360089","dbi360089","PTS3");
                         stmnt = conn.createStatement();
                         resultSet = stmnt.executeQuery("SELECT DisplayName FROM player WHERE DisplayName = '" + request.getUsername() + "'" + "&& Password = '" + request.getPassword() + "'");
-                        if(resultSet != null)
+                        if(resultSet.next())
                         {
                             LoginResponse response = new LoginResponse(true);
-                            System.out.println("succes");
+                            connection.sendTCP(response);
                         }
                         else
                         {
-                            System.out.println("failed");
+                            LoginResponse response = new LoginResponse(false);
+                            connection.sendTCP(response);
                         }
                         conn.close();
                     }
                     catch(SQLException e) {
                         System.out.println(e);
                     } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InstantiationException e) {
                         e.printStackTrace();
                     } finally{
                     }

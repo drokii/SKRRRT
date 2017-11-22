@@ -22,11 +22,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.LoginRequest;
 import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.SampleRequest;
 import com.mygdx.game.Networking.SampleResponse;
 import com.mygdx.game.RaceGame;
+import javafx.application.Platform;
+import org.lwjgl.Sys;
 
 import java.io.IOException;
 
@@ -222,13 +226,35 @@ public class LogInScreen implements Screen{
                     kryoClient.register(LoginRequest.class);
                     kryoClient.register(LoginResponse.class);
 
-                    LoginRequest request = new LoginRequest("Pedro", "pedro");
+                    LoginRequest request = new LoginRequest(username.getText(), password.getText());
                     client.sendTCP(request);
+                    addListeners(client);
+                }
+            }
+        });
+    }
 
-                    //check login
-                    menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
-                    menuSound.play();
-                    game.setScreen(new MenuScreen(game));
+    public void addListeners(final Client client) {
+        client.addListener(new Listener() {
+            public void received(Connection connection, Object object) {
+                if (object instanceof LoginResponse) {
+                    LoginResponse response = (LoginResponse) object;
+                    if(response.getLoginPassed())
+                    {
+                        System.out.println("logged in");
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
+                                menuSound.play();
+                                game.setScreen(new MenuScreen(game));
+                            }
+                        });
+                    }
+                    else
+                    {
+                        System.out.println("login failed");
+                    }
                 }
             }
         });
