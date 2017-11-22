@@ -5,8 +5,16 @@ import com.mygdx.game.Gameplay.Enums.ESkin;
 
 public class Player {
     private Car car;
-    private String name;
     private ESkin carSkin;
+    private String name;
+    private String email;
+    private String password;
+
+    public Player(String name, String email, String password){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -16,15 +24,19 @@ public class Player {
         this.name = name;
     }
 
-    public ESkin getCarSkin() {
-        return carSkin;
+    public String getLogInName() {
+        return email;
     }
 
-    public void setCarSkin(ESkin carSkin) {
-        this.carSkin = carSkin;
+    public void setLogInName(String logInName) {
+        this.email = logInName;
     }
 
-    public Player(String name){
-        this.name = name;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
