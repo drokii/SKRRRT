@@ -1,4 +1,4 @@
-package Menu;
+package MenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,7 +20,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.mygdx.game.Networking.LoginRequest;
+import com.mygdx.game.Networking.LoginResponse;
+import com.mygdx.game.Networking.SampleRequest;
+import com.mygdx.game.Networking.SampleResponse;
 import com.mygdx.game.RaceGame;
+
+import java.io.IOException;
 
 public class LogInScreen implements Screen{
     private final int TEXTFIELD_LOGINBUTTON_X = (Gdx.graphics.getWidth()/2) - (322/2);
@@ -198,6 +206,26 @@ public class LogInScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1) {
+
+                    Client client = new Client();
+                    client.start();
+                    try
+                    {
+                        client.connect(5000, "127.0.0.1", 54555, 54777);
+                    }
+                    catch(IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    Kryo kryoClient = client.getKryo();
+                    kryoClient.register(LoginRequest.class);
+                    kryoClient.register(LoginResponse.class);
+
+                    LoginRequest request = new LoginRequest("Pedro", "pedro");
+                    client.sendTCP(request);
+
+                    //check login
                     menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
                     menuSound.play();
                     game.setScreen(new MenuScreen(game));

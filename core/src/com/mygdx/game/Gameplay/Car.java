@@ -223,12 +223,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     public void DriftRight()
     {
         if(!driftRight)
-        driftRight = true;
+        {
+            stopDrift();
+            driftRight = true;
+        }
+
     }
     public void DriftLeft()
     {
         if(!driftLeft)
+        {
+            stopDrift();
             driftLeft = true;
+        }
     }
 
     public void stopDrift()
