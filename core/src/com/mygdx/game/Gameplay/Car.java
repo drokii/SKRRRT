@@ -80,7 +80,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         // Reference to game Camera
         this.camera = camera;
         batch = new SpriteBatch();
-        kart = new Texture("core\\assets\\MiniCar.png");
+        kart = new Texture("core\\assets\\CarYellow.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
 
@@ -90,7 +90,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(16, 24);
+        shape.setAsBox(16, 16);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
