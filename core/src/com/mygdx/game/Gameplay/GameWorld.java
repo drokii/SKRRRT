@@ -1,12 +1,8 @@
 package com.mygdx.game.Gameplay;
 
-import Menu.FinishScreen;
-import Menu.LogInScreen;
+import MenuScreen.*;
 import Menu.StatisticsHandler;
-import com.badlogic.gdx.ApplicationAdapter;
-
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;

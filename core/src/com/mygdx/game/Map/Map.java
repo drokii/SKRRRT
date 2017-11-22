@@ -36,6 +36,7 @@ public class Map extends ApplicationAdapter{
     private Car car;
 
     public Map(Car car, OrthographicCamera camera, World world){
+        System.out.println("IN");
         this.camera = camera;
         this.car = car;
         this.input = car.getInput();
