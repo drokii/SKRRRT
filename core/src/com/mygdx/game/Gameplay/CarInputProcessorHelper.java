@@ -10,15 +10,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CarInputProcessorHelper implements InputProcessor, ApplicationListener {
-
+    /**
+     * This class translates the user input into usable calls for the car class.
+     * In addition to translating input, the class is responsible for deacceleration and torque correction of the car.
+     * @param timerUp if the forward key is released a timer schedule is going to gradually bring back the speed to zero.
+     * @param timerLeft if the turn-left key is released a timer schedule is going to gradually bring back the torque to zero.
+     * @param timerRight if the turn-right key is released a timer schedule is going to gradually bring back the torque to zero.
+     * @param timerDown if the backward key is released a timer schedule is going to gradually bring back the speed to zero.
+     */
     private Car car;
     private float torque;
     private Body kartBody;
 
 
-
     public CarInputProcessorHelper(Car car) {
-
         Gdx.input.setInputProcessor(this);
         this.car = car;
         torque = car.getTorque();
@@ -38,8 +43,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
         timerDown.cancel();
     }
 
-    public void keyPressed() {
-
+    /**
+     * Depending on the key pressed the torque or speed of the car should be updated.
+     */
+    private void keyPressed() {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if (timerRight != null) {
                 timerRight.cancel();
@@ -57,6 +64,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 car.driveBackward(timerDown);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+            {
+                car.DriftRight();
             }
 
             car.keepVelocity();
@@ -79,6 +90,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 car.driveBackward(timerDown);
             }
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+            {
+                car.DriftLeft();
+            }
 
             car.keepVelocity();
 
@@ -95,6 +110,9 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
         return false;
     }
 
+    /**
+     * When a key is released the released direction should start to lose its influence on the car over time.
+     */
     @Override
     public boolean keyUp(int keycode) {
 
@@ -160,18 +178,21 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }
             }, 0, 100);
         }
+        if (keycode == Input.Keys.SHIFT_LEFT) {
+            car.stopDrift();
+        }
         return true;
     }
 
 
     @Override
     public void create() {
-
+        // gets created through constructor
     }
 
     @Override
     public void resize(int width, int height) {
-
+        // never implemented
     }
 
     @Override
@@ -181,16 +202,17 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
 
     @Override
     public void pause() {
-
+        // no pause implemented
     }
 
     @Override
     public void resume() {
-
+        // Never paused
     }
 
     @Override
     public void dispose() {
+        // Nothing to dispose within this class
 
     }
     @Override

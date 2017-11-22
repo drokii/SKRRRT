@@ -16,15 +16,19 @@ import java.util.TimerTask;
 
 public class Car extends ApplicationAdapter implements ApplicationListener {
 
-
+    /**
+     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * Also it calculates new vector values used to rotate the car.
+     */
 
     private SpriteBatch batch;
-    private Texture track;
     private Texture kart;
     private Sprite kartSprite;
     private World world;
     private Body kartBody;
     private float posX, posY;
+
+    private Box2DDebugRenderer renderer;
 
     private CarInputProcessorHelper input;
     public CarInputProcessorHelper getInput() {
@@ -33,6 +37,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
 
     private float speed = 1f;
+    private boolean driftRight = false;
+    private boolean driftLeft = false;
 
     public float getSpeed() {
         return speed;
@@ -41,7 +47,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     public void setSpeed(float speed) {
         this.speed = speed;
     }
-
 
     private float maxspeed = 300f;
 
@@ -85,15 +90,18 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         this.world = world;
         kartBody = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(kartSprite.getWidth(), kartSprite.getHeight());
+        shape.setAsBox(16, 16);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
         kartBody.createFixture(fixtureDef);
+        kartSprite.setCenter(getKartBody().getPosition().x, getKartBody().getPosition().y);
+
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1728, 768),-3/2);
+        kartBody.setTransform(new Vector2(1050, 800),-1.56f);
 
+        renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
@@ -109,12 +117,23 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        batch.draw(kartSprite, kartSprite.getX(), kartSprite.getY(), kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-
-
+        if(driftRight)
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
+        }
+        else if(driftLeft)
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() + 30);
+        }
+        else
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        }
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
+
+        renderer.render(world, camera.combined);
     }
 
     public Body getKartBody(){
@@ -131,8 +150,13 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         kart.dispose();
     }
 
+    /**
+     * The method driveBackward(Timer timer), when called it speeds up the car in a backward motion.
+     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     */
     public void driveBackward(Timer timer)
     {
+
         if(timer != null)
         {
             timer.cancel();
@@ -148,8 +172,13 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         }
     }
 
+    /**
+     * The method driveForward(Timer timer), when called it speeds up the car in a forward motion.
+     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     */
     public void driveForward(Timer timer)
     {
+
         if(timer != null)
         {
             timer.cancel();
@@ -160,7 +189,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
             speed = maxspeed;
         } else if (speed < 0) {
             speed = speed * 0.95f;
-            kartBody.setLinearVelocity(0, speed);
+            keepVelocity();
         }
         if (speed >= 0) {
             speed = speed * 1.05f;
@@ -170,6 +199,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     public void keepVelocity()
     {
+        /**
+         * The method keepVelocity needs to calculate the and set the LinearVelocity for the @param kartBody
+         * @param angle , the angle of the kart.
+         */
         float angle;
         if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
 
@@ -185,6 +218,25 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
             angle = 0;
         }
         kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
+    }
+
+    public void DriftRight()
+    {
+        if(!driftRight)
+        driftRight = true;
+    }
+    public void DriftLeft()
+    {
+        if(!driftLeft)
+            driftLeft = true;
+    }
+
+    public void stopDrift()
+    {
+        if(driftLeft)
+            driftLeft = false;
+        if(driftRight)
+            driftRight = false;
     }
 
 }

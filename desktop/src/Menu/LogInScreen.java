@@ -198,7 +198,7 @@ public class LogInScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1) {
-                    menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/allstar.ogg"));
+                    menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
                     menuSound.play();
                     game.setScreen(new MenuScreen(game));
                 }
