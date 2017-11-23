@@ -1,4 +1,4 @@
-package Menu;
+package MenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -122,7 +122,6 @@ public class FinishScreen implements Screen {
             // exit game
             if(Gdx.input.isTouched()){
                 game.setScreen(new MenuScreen(game));
-                LogInScreen.menuSound.play();
             }
         }
     }

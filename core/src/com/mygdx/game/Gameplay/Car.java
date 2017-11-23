@@ -80,7 +80,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         // Reference to game Camera
         this.camera = camera;
         batch = new SpriteBatch();
-        kart = new Texture("core\\assets\\MiniCar.png");
+        kart = new Texture("core\\assets\\CarYellow.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
 
@@ -223,12 +223,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     public void DriftRight()
     {
         if(!driftRight)
-        driftRight = true;
+        {
+            stopDrift();
+            driftRight = true;
+        }
+
     }
     public void DriftLeft()
     {
         if(!driftLeft)
+        {
+            stopDrift();
             driftLeft = true;
+        }
     }
 
     public void stopDrift()

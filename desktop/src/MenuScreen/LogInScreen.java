@@ -1,4 +1,4 @@
-package Menu;
+package MenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,7 +20,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Networking.LoginRequest;
+import com.mygdx.game.Networking.LoginResponse;
+import com.mygdx.game.Networking.SampleRequest;
+import com.mygdx.game.Networking.SampleResponse;
 import com.mygdx.game.RaceGame;
+import javafx.application.Platform;
+import org.lwjgl.Sys;
+
+import java.io.IOException;
 
 public class LogInScreen implements Screen{
     private final int TEXTFIELD_LOGINBUTTON_X = (Gdx.graphics.getWidth()/2) - (322/2);
@@ -198,9 +210,51 @@ public class LogInScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1) {
-                    menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
-                    menuSound.play();
-                    game.setScreen(new MenuScreen(game));
+
+                    Client client = new Client();
+                    client.start();
+                    try
+                    {
+                        client.connect(5000, "127.0.0.1", 54555, 54777);
+                    }
+                    catch(IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    Kryo kryoClient = client.getKryo();
+                    kryoClient.register(LoginRequest.class);
+                    kryoClient.register(LoginResponse.class);
+
+                    LoginRequest request = new LoginRequest(username.getText(), password.getText());
+                    client.sendTCP(request);
+                    addListeners(client);
+                }
+            }
+        });
+    }
+
+    public void addListeners(final Client client) {
+        client.addListener(new Listener() {
+            public void received(Connection connection, Object object) {
+                if (object instanceof LoginResponse) {
+                    LoginResponse response = (LoginResponse) object;
+                    if(response.getLoginPassed())
+                    {
+                        System.out.println("logged in");
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
+                                menuSound.play();
+                                game.setScreen(new MenuScreen(game));
+                            }
+                        });
+                    }
+                    else
+                    {
+                        System.out.println("login failed");
+                    }
                 }
             }
         });
