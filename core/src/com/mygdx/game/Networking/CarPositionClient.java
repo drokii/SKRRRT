@@ -24,7 +24,7 @@ class CarPositionClient {
     }
 
     public static void addListeners(Client client) {
-        client.addListener(new Listener() {
+        client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
                 if (object instanceof SampleResponse) {
                     SampleResponse response = (SampleResponse) object;
