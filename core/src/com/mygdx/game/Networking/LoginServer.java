@@ -44,7 +44,7 @@ public class LoginServer extends Application {
 
                     try
                     {
-                        Class.forName("com.mysql.jdbc.Driver");
+                        //Class.forName("com.mysql.jdbc.Driver");
                         conn = DriverManager.getConnection("jdbc:mysql://studmysql01.fhict.local:3306/dbi360089","dbi360089","PTS3");
                         stmnt = conn.createStatement();
                         resultSet = stmnt.executeQuery("SELECT DisplayName FROM player WHERE DisplayName = '" + request.getUsername() + "'" + "&& Password = '" + request.getPassword() + "'");
@@ -62,8 +62,6 @@ public class LoginServer extends Application {
                     }
                     catch(SQLException e) {
                         System.out.println(e);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
                     } finally{
                     }
                 }
