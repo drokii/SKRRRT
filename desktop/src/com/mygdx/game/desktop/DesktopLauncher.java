@@ -10,6 +10,7 @@ public class DesktopLauncher{
 		config.width = 1440;
 		config.height = 900;
 		config.resizable = false;
+		config.vSyncEnabled = false;
 		new LwjglApplication(new RaceGame(), config);
 	}
 }

@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        
+
 
     }
 }
@@ -38,11 +38,27 @@ allprojects {
 project(":core") {
     apply plugin: "java"
 
+    sourceSets.test.java.srcDirs = ["/tests"]
 
     dependencies {
+
+        compile ("com.esotericsoftware:kryonet:2.22.0-RC1") {
+            exclude module : 'kryo'
+        }
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.8-dmr'
+        compile "com.esotericsoftware:kryo:3.0.1"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+        testCompile "junit:junit:4.11"
+        testCompile "org.mockito:mockito-core:2.2.7"
+
+        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        testCompile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -52,6 +68,10 @@ project(":desktop") {
 
     dependencies {
         compile project(":core")
+        compile ("com.esotericsoftware:kryonet:2.22.0-RC1") {
+            exclude module : 'kryo'
+        }
+        compile "com.esotericsoftware:kryo:3.0.1"
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"

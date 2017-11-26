@@ -1,4 +1,4 @@
-package Menu;
+package MenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
+import org.lwjgl.opengl.GLContext;
 
 public class MenuScreen implements Screen {
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
@@ -40,14 +41,17 @@ public class MenuScreen implements Screen {
     private TextButton exitButtonInvisible;
 
     public MenuScreen(RaceGame game){
+        // set up
         this.game = game;
-        setUp();
-    }
-
-    private void setUp(){
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        loadImages();
+        invisibleButtons();
+    }
+
+    // load some images
+    private void loadImages(){
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\Skrrrt.png");
         this.playButton = new Texture("core\\assets\\Menu\\PlayButton.png");
@@ -57,29 +61,33 @@ public class MenuScreen implements Screen {
         this.exitButton = new Texture("core\\assets\\Menu\\ExitButton.png");
         this.exitButtonActive = new Texture("core\\assets\\Menu\\ExitButtonActive.png");
         this.yellowCar = new Texture("core\\assets\\Menu\\YellowCarBrakes.png");
+    }
 
-        // textbuttons invisible
+    // draw some invisible buttons
+    private void invisibleButtons(){
+        // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
 
-        // play button
+        // draw invisible play button
         this.playButtonInvisible = new TextButton("", textButtonStyle);
         this.playButtonInvisible.setPosition(PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
         this.playButtonInvisible.setWidth(playButton.getWidth());
         this.playButtonInvisible.setHeight(playButton.getHeight());
 
-        // settings button
+        // draw invisible settings button
         this.settingsButtonInvisible = new TextButton("", textButtonStyle);
         this.settingsButtonInvisible.setPosition(PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
         this.settingsButtonInvisible.setWidth(settingsButton.getWidth());
         this.settingsButtonInvisible.setHeight(settingsButton.getHeight());
 
-        // exit button
+        // draw invisible exit button
         this.exitButtonInvisible = new TextButton("", textButtonStyle);
         this.exitButtonInvisible.setPosition(PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
         this.exitButtonInvisible.setWidth(exitButton.getWidth());
         this.exitButtonInvisible.setHeight(exitButton.getHeight());
 
+        // add actors to stage
         stage.addActor(playButtonInvisible);
         stage.addActor(settingsButtonInvisible);
         stage.addActor(exitButtonInvisible);
@@ -134,6 +142,7 @@ public class MenuScreen implements Screen {
         batch.dispose();
     }
 
+    // draw menu screen
     private void menuScreen(){
         batch.begin();
 
@@ -142,7 +151,7 @@ public class MenuScreen implements Screen {
 
         // draw play button
         if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
-            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
             batch.draw(playButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
         } else {
             batch.draw(playButton, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
@@ -169,8 +178,10 @@ public class MenuScreen implements Screen {
         batch.end();
     }
 
+    // check if some button is clicked
     private void isClicked(){
-        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        // playbutton
+        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
@@ -179,7 +190,8 @@ public class MenuScreen implements Screen {
             }
         });
 
-        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        // settings button
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                count++;
@@ -187,7 +199,8 @@ public class MenuScreen implements Screen {
             }
         });
 
-        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT){
+        // exit button
+        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
