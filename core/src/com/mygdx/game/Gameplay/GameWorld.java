@@ -6,6 +6,9 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -35,6 +38,17 @@ public class GameWorld implements ApplicationListener {
     private Car car;
     private ArrayList<Car> carList;
 
+    private SpriteBatch batch;
+    private float deltaTime;
+
+    Texture cd1;
+    Texture cd2;
+    Texture cd3;
+    Texture cd4;
+    Texture cd5;
+    Texture cdReady;
+
+
     public GameWorld(RaceGame game) {
         this.game = game;
         // Create physics world
@@ -59,6 +73,18 @@ public class GameWorld implements ApplicationListener {
         LogInScreen.menuSound.stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
+
+        // Create batch
+        batch = new SpriteBatch();
+        deltaTime = 0;
+
+        // Countdown textures
+        cd1 = new Texture(Gdx.files.internal("core/assets/Countdown/1.png"));
+        cd2 = new Texture(Gdx.files.internal("core/assets/Countdown/2.png"));
+        cd3 = new Texture(Gdx.files.internal("core/assets/Countdown/3.png"));
+        cd4 = new Texture(Gdx.files.internal("core/assets/Countdown/4.png"));
+        cd5 = new Texture(Gdx.files.internal("core/assets/Countdown/5.png"));
+        cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.png"));
 
         this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
     }
@@ -87,6 +113,10 @@ public class GameWorld implements ApplicationListener {
         car.render();
         stats.render();
         box2DDebugRenderer.render(world, camera.combined);
+
+        // Draw the Countdown timer.
+        drawCountdown();
+
         //Check if a car reached the finish line
         if (car.getIsOnFinishLine()) {
             game.setScreen(new FinishScreen(game, stats.getFinishLogList()));
@@ -108,5 +138,33 @@ public class GameWorld implements ApplicationListener {
         car.dispose();
         map.dispose();
         sound.stop();
+    }
+
+    private void drawCountdown() {
+        // Draws the Countdown timer at the start of the game
+        deltaTime += Gdx.graphics.getDeltaTime();
+        batch.begin();
+        if (deltaTime <5){
+            batch.draw(cdReady,400,300);
+        }
+        else if(deltaTime < 6){
+            batch.draw(cd5,500,400);
+        }
+        else if(deltaTime < 7){
+            batch.draw(cd4,500,400);
+        }
+        else if(deltaTime < 8){
+            batch.draw(cd3,500,400);
+        }
+        else if(deltaTime < 9){
+            batch.draw(cd2,500,400);
+        }
+        else if(deltaTime < 10){
+            batch.draw(cd1,500,400);
+        }
+        else{
+            car.getInput().setUnlocked(true);
+        }
+        batch.end();
     }
 }
