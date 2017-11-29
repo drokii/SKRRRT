@@ -1,7 +1,7 @@
 package MenuScreen;
 
 import com.mygdx.game.Networking.Lobby;
-import Menu.Player;
+import Menu.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;

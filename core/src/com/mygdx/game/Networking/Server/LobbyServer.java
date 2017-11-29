@@ -30,6 +30,7 @@ public class LobbyServer extends Application {
         kryo = loginServer.getKryo();
         kryo.register(Network.CreateLobbyRequest.class);
         kryo.register(Network.CreateLobbyResponse.class);
+        kryo.register(ArrayList.class);
         addListenersToServer(loginServer);
     }
 

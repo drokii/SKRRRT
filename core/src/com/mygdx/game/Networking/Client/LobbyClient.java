@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LobbyClient {
     private Client client;
@@ -21,13 +22,14 @@ public class LobbyClient {
         Kryo kryoClient = client.getKryo();
         kryoClient.register(Network.CreateLobbyRequest.class);
         kryoClient.register(Network.CreateLobbyResponse.class);
+        kryoClient.register(ArrayList.class);
 
         addListeners(client);
     }
 
     public void CreateLobby(String name)
     {
-        Network.CreateLobbyRequest lobby = new Network.CreateLobbyRequest();
+        Network.CreateLobbyRequest lobby = new Network.CreateLobbyRequest(name);
 
         client.sendTCP(lobby);
     }
