@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Lobby {
     private List<Player> playerList;
-    private int id;
+    private String name;
 
-    public Lobby(int id)
+    public Lobby(String name)
     {
-        this.id = id;
+        this.name = name;
     }
 
     public void joinLobby(Player player)

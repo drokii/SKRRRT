@@ -7,13 +7,9 @@ public class Player {
     private Car car;
     private ESkin carSkin;
     private String name;
-    private String email;
-    private String password;
 
-    public Player(String name, String email, String password){
+    public Player(String name){
         this.name = name;
-        this.email = email;
-        this.password = password;
     }
 
     public String getName() {
@@ -24,19 +20,11 @@ public class Player {
         this.name = name;
     }
 
-    public String getLogInName() {
-        return email;
+    public Car getCar() {
+        return car;
     }
 
-    public void setLogInName(String logInName) {
-        this.email = logInName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCar(Car car) {
+        this.car = car;
     }
 }
