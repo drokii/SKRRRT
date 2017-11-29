@@ -1,5 +1,6 @@
 package MenuScreen;
 
+import Menu.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -24,6 +25,7 @@ public class MenuScreen implements Screen {
 
     private RaceGame game;
     private Stage stage;
+    private Player currentPlayer;
 
     private SpriteBatch batch;
     private Texture title;
@@ -40,8 +42,9 @@ public class MenuScreen implements Screen {
     private TextButton settingsButtonInvisible;
     private TextButton exitButtonInvisible;
 
-    public MenuScreen(RaceGame game){
+    public MenuScreen(RaceGame game, Player player){
         // set up
+        currentPlayer = player;
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
