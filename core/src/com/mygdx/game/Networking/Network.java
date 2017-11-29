@@ -15,9 +15,8 @@ public class Network {
         kryo.register(GameStartResponse.class);
         kryo.register(PlayerInstance.class);
         kryo.register(GameUpdateRequest.class);
-
-
-
+        kryo.register(CreateLobbyRequest.class);
+        kryo.register(CreateLobbyResponse.class);
     }
 
     static public class LoginRequest{
@@ -38,6 +37,15 @@ public class Network {
     static public class JoinLobbyResponse{
 
     }
+
+    static public class CreateLobbyRequest{
+
+    }
+
+    static public class CreateLobbyResponse{
+
+    }
+
     static public class GameStartRequest{
 
         private Vector2 speed;
