@@ -13,11 +13,14 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Map.Map;
+import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.RaceGame;
 
 
 import javax.security.auth.login.LoginContext;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameWorld implements ApplicationListener {
@@ -37,6 +40,7 @@ public class GameWorld implements ApplicationListener {
     private Map map;
     private Car car;
     private ArrayList<ICar> carList;
+    private GameClient client;
 
     private SpriteBatch batch;
     private float deltaTime;
@@ -49,7 +53,7 @@ public class GameWorld implements ApplicationListener {
     Texture cdReady;
 
 
-    public GameWorld(RaceGame game) {
+    public GameWorld(RaceGame game) throws IOException {
         this.game = game;
         // Create physics world
         world = new World(new Vector2(0, 0), true);
@@ -74,6 +78,9 @@ public class GameWorld implements ApplicationListener {
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
 
+        //Client
+        client = new GameClient();
+
         // Create batch
         batch = new SpriteBatch();
         deltaTime = 0;
@@ -92,7 +99,7 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void create() {
-
+        client.sendGameStartRequest(car.getName(), null,0f);
     }
 
     @Override

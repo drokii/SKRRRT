@@ -15,8 +15,9 @@ public class Network {
         kryo.register(GameStartResponse.class);
         kryo.register(PlayerInstance.class);
         kryo.register(GameUpdateRequest.class);
-
-
+        kryo.register(String.class);
+        kryo.register(Vector2.class);
+        kryo.register(float.class);
 
     }
 
@@ -29,54 +30,27 @@ public class Network {
     static public class RetrieveLobbiesRequest{
 
     }
-    static public class RetrieveLobbiesResponse{
+    public class RetrieveLobbiesResponse{
 
     }
-    static public class JoinLobbyRequest{
+    public class JoinLobbyRequest{
 
     }
-    static public class JoinLobbyResponse{
+    public class JoinLobbyResponse{
 
     }
-    static public class GameStartRequest{
+    public static class GameStartRequest {
 
-        private Vector2 speed;
-        private float angularSpeed;
-        private String nickname;
-
-        public GameStartRequest(Vector2 speed, float angularSpeed, String nickname) {
-            this.speed = speed;
-            this.angularSpeed = angularSpeed;
-            this.nickname = nickname;
-        }
-
-        public Vector2 getSpeed() {
-            return speed;
-        }
-
-        public float getAngularSpeed() {
-            return angularSpeed;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
+        public Vector2 speed;
+        public float angularSpeed;
+        public String nickname;
 
     }
     static public class GameStartResponse{
 
     }
     static public class GameUpdateRequest{
-        private String nickname;
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public GameUpdateRequest(String nickname) {
-            this.nickname = nickname;
-        }
+        public String nickname;
     }
 
 }
