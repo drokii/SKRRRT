@@ -9,10 +9,11 @@ import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
 
-public class CarPositionClient {
+public class GameClient {
+    Client client;
 
-    public CarPositionClient() throws IOException {
-        Client client = new Client();
+    public GameClient() throws IOException {
+        client = new Client();
         client.start();
         client.connect(5000, "127.0.0.1", 54555, 54777);
 
@@ -22,7 +23,7 @@ public class CarPositionClient {
     }
 
     public static void main(String[] args) throws IOException {
-        new CarPositionClient();
+        new GameClient();
 
     }
 
@@ -35,8 +36,13 @@ public class CarPositionClient {
             }
         });
     }
-    public Network.GameStartRequest sendGameStartRequest(String name, Vector2 velocity, float angularVelocity){
-        return new Network.GameStartRequest(velocity,angularVelocity,name);
+    public void sendGameStartRequest(String name, Vector2 velocity, float angularVelocity){
+        Network.GameStartRequest request = new Network.GameStartRequest();
+        request.nickname = name;
+        request.speed = velocity;
+        request.angularSpeed = angularVelocity;
+
+        client.sendTCP(request);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.mygdx.game.Networking;
+package com.mygdx.game.Networking.Client;
 
 import Menu.Player;
 import MenuScreen.LogInScreen;
@@ -7,15 +7,17 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Networking.LoginRequest;
+import com.mygdx.game.Networking.LoginResponse;
 
 import java.io.IOException;
 
-public class PlayerClient {
+public class LoginClient {
     LogInScreen screen;
     Player player;
     String username;
 
-    public PlayerClient(String username, String password, LogInScreen screen)
+    public LoginClient(String username, String password, LogInScreen screen)
     {
         this.screen = screen;
         this.username = username;

@@ -1,9 +1,11 @@
-package com.mygdx.game.Networking;
+package com.mygdx.game.Networking.Server;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Networking.LoginRequest;
+import com.mygdx.game.Networking.LoginResponse;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
