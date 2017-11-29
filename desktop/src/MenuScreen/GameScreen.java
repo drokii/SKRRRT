@@ -1,18 +1,23 @@
 package MenuScreen;
 
+import Menu.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.Gameplay.GameWorld;
 import com.mygdx.game.RaceGame;
 
+import java.io.IOException;
+
 public class GameScreen implements Screen{
     RaceGame game;
+    Player currentPlayer;
     GameWorld gameWorld;
 
-    public GameScreen(RaceGame game){
+    public GameScreen(RaceGame game, Player player) throws IOException {
         this.game = game;
-        gameWorld = new GameWorld(game);
+        this.currentPlayer = player;
+        gameWorld = new GameWorld(game, currentPlayer);
     }
 
     @Override
