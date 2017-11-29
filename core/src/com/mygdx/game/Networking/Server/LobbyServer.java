@@ -25,8 +25,7 @@ public class LobbyServer extends Application {
         lobbyList = new ArrayList<Lobby>();
         loginServer = new Server();
         loginServer.start();
-        // port nummers veranderen? @pedro
-        loginServer.bind(54555, 54777);
+        loginServer.bind(62452, 34142);
 
         kryo = loginServer.getKryo();
         kryo.register(Network.CreateLobbyRequest.class);
@@ -42,6 +41,7 @@ public class LobbyServer extends Application {
                     lobbyList.add(lobby);
                     Network.CreateLobbyResponse response = new Network.CreateLobbyResponse(lobbyList);
                     connection.sendTCP(response);
+                    connection.close();
                 }
             }
         });

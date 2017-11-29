@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.RaceGame;
 import Menu.Menu;
 import de.tomgrill.gdxdialogs.core.GDXDialogs;
@@ -22,6 +23,7 @@ import de.tomgrill.gdxdialogs.core.dialogs.GDXTextPrompt;
 import de.tomgrill.gdxdialogs.core.listener.TextPromptListener;
 import Menu.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -364,7 +366,11 @@ public class LobbyScreen implements Screen {
 
                                 @Override
                                 public void confirm(String text) {
-                                    menu.createLobby(text, text);
+                                    try {
+                                        menu.createLobby(text, text);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     int i = menu.getLobbies().size() - 1;
                                     Lobby lobby = menu.getLobbies().get(i);
                                     labelList.get(i).setText(lobby.toString());

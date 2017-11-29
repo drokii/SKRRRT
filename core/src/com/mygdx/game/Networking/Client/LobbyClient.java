@@ -17,9 +17,10 @@ public class LobbyClient {
         this.menu = menu;
         client = new Client();
         client.start();
-        client.connect(5000, "127.0.0.1", 54555, 54777);
-
+        client.connect(5000, "127.0.0.1", 62452, 34142);
         Kryo kryoClient = client.getKryo();
+        kryoClient.register(Network.CreateLobbyRequest.class);
+        kryoClient.register(Network.CreateLobbyResponse.class);
 
         addListeners(client);
     }
