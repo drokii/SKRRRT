@@ -349,6 +349,8 @@ public class LobbyScreen implements Screen {
                         @Override
                         public void confirm(String text) {
                             menu.createLobby(text, text);
+                            //lobby in server maken
+
                         }
                     });
 
