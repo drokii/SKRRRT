@@ -75,19 +75,27 @@ public class LobbyScreen implements Screen {
     private Label.LabelStyle labelStyle;
 
     public LobbyScreen(RaceGame game, Player player){
-        setUp(game, player);
+        this.game = game;
+        this.stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        this.menu = new Menu();
+        this.dialogs = GDXDialogsSystem.install();
+        this.currentPlayer = player;
+
         loadImages();
         invisibleButtons();
     }
 
-    private void setUp(RaceGame game, Player player){
+    public LobbyScreen(RaceGame game, Player player, Menu menu){
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
-        this.menu = new Menu();
+        this.menu = menu;
         this.dialogs = GDXDialogsSystem.install();
         this.currentPlayer = player;
+
+        loadImages();
+        invisibleButtons();
     }
 
     // load some images
@@ -146,7 +154,12 @@ public class LobbyScreen implements Screen {
         this.labelStyle = new Label.LabelStyle();
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
-        for(int i = 0; i < 6; i++){
+        List<Lobby> lobbies = menu.getLobbies();
+        for(int i = 0; i < lobbies.size(); i++){
+            labelList.add(new Label(lobbies.get(i).toString(), labelStyle));
+            stage.addActor(labelList.get(i));
+        }
+        for(int i = lobbies.size(); i < 6; i++){
             labelList.add(new Label("Empty", labelStyle));
             stage.addActor(labelList.get(i));
         }
@@ -372,9 +385,15 @@ public class LobbyScreen implements Screen {
                                         e.printStackTrace();
                                     }
                                     int i = menu.getLobbies().size() - 1;
-                                    Lobby lobby = menu.getLobbies().get(i);
+                                    final Lobby lobby = menu.getLobbies().get(i);
                                     labelList.get(i).setText(lobby.toString());
-                                    game.setScreen(new MatchScreen(game, currentPlayer, lobby));
+                                    Gdx.app.postRunnable(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
+                                        }
+                                    });
+
                                 }
                             });
 
@@ -388,11 +407,12 @@ public class LobbyScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
-                        if (count == 1) {
+                        if (count == 1 && columnClicked != 0) {
                             Lobby lobby = menu.getLobbies().get(columnClicked);
                             lobby.joinLobby(currentPlayer);
-                            game.setScreen(new MatchScreen(game, currentPlayer, lobby));
+                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
                         }
+
                     }
                 });
 
