@@ -103,6 +103,7 @@ public class LogInScreen implements Screen{
         this.password = new TextField("",textFieldStyle);
         this.password.setMessageText("Password");
         this.password.setPasswordMode(true);
+        this.password.setPasswordCharacter('*');
         this.password.setPosition(TEXTFIELD_LOGINBUTTON_X, TEXTFIELD_PASSWORD_Y);
         this.password.setWidth(322);
         this.password.setHeight(75);
