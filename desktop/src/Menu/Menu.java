@@ -1,5 +1,8 @@
 package Menu;
 
+import com.mygdx.game.Networking.Client.LobbyClient;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +18,16 @@ public class Menu {
         return lobbies;
     }
 
-    public void createLobby(String name, String map){
+    public void createLobby(String name, String map) throws IOException {
         Lobby lobby = new Lobby(name, map);
-        lobbies.add(lobby);
+
+        LobbyClient client = new LobbyClient();
+        client.CreateLobby(name);
     }
+
+    public void setLobbies(List<Lobby> lobbyList)
+    {
+        lobbies = lobbyList;
+    }
+
 }

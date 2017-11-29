@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyServer extends Application {
@@ -21,6 +22,7 @@ public class LobbyServer extends Application {
     private static List<Lobby> lobbyList;
 
     public static void main(String[] args) throws IOException, SQLException {
+        lobbyList = new ArrayList<Lobby>();
         loginServer = new Server();
         loginServer.start();
         // port nummers veranderen? @pedro
@@ -37,9 +39,9 @@ public class LobbyServer extends Application {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
-                 lobbyList.add(lobby);
-                 Network.CreateLobbyResponse response = new Network.CreateLobbyResponse(lobby);
-                 connection.sendTCP(response);
+                    lobbyList.add(lobby);
+                    Network.CreateLobbyResponse response = new Network.CreateLobbyResponse(lobbyList);
+                    connection.sendTCP(response);
                 }
             }
         });

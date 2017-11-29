@@ -42,7 +42,7 @@ public class Network {
     public class JoinLobbyResponse{
 
     }
-    public class CreateLobbyRequest{
+    public static class CreateLobbyRequest{
         private String lobbyName;
         private List<Player> players;
 
@@ -70,21 +70,21 @@ public class Network {
 
     }
     public static class CreateLobbyResponse{
-        private Lobby lobby;
+        private List<Lobby> lobbyList;
 
-        public CreateLobbyResponse(Lobby lobby)
+        public CreateLobbyResponse(List<Lobby> lobbyList)
         {
-            this.lobby = lobby;
+            this.lobbyList = lobbyList;
         }
         public CreateLobbyResponse()
         {}
 
-        public Lobby getLobby() {
-            return lobby;
+        public List<Lobby> getLobby() {
+            return lobbyList;
         }
 
-        public void setLobby(Lobby lobby) {
-            this.lobby = lobby;
+        public void setLobby(List<Lobby> lobbyList) {
+            this.lobbyList = lobbyList;
         }
     }
     public static class GameStartRequest {
