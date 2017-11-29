@@ -5,10 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Networking.Network;
-import com.mygdx.game.Networking.SampleRequest;
-import com.mygdx.game.Networking.SampleResponse;
 
-import java.beans.EventHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
