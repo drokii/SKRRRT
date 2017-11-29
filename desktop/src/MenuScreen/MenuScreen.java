@@ -23,6 +23,7 @@ public class MenuScreen implements Screen {
 
     private int count;
 
+
     private RaceGame game;
     private Stage stage;
     private Player currentPlayer;
