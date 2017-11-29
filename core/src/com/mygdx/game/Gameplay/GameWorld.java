@@ -84,7 +84,7 @@ public class GameWorld implements ApplicationListener {
         cd3 = new Texture(Gdx.files.internal("core/assets/Countdown/3.png"));
         cd4 = new Texture(Gdx.files.internal("core/assets/Countdown/4.png"));
         cd5 = new Texture(Gdx.files.internal("core/assets/Countdown/5.png"));
-        cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.png"));
+        cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.jpg"));
 
         this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
     }

@@ -234,6 +234,7 @@ public class LogInScreen implements Screen{
         });
     }
 
+    //check for server login response
     public void addListeners(final Client client) {
         client.addListener(new Listener() {
             public void received(final Connection connection, Object object) {
@@ -248,7 +249,6 @@ public class LogInScreen implements Screen{
                                 menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
                                 menuSound.play();
                                 game.setScreen(new MenuScreen(game));
-                                // met pedro kijken of dit nodig is.
                                 connection.close();
                                 client.close();
                             }
@@ -257,6 +257,9 @@ public class LogInScreen implements Screen{
                     else
                     {
                         System.out.println("login failed");
+                        connection.close();
+                        client.close();
+                        count = 0;
                     }
                 }
             }
