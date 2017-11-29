@@ -1,7 +1,6 @@
 package MenuScreen;
 
-import Menu.Lobby;
-import Menu.Player;
+import Menu.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -36,6 +35,7 @@ public class MatchScreen implements Screen{
     private Stage stage;
     private Player currentPlayer;
     private Lobby lobby;
+    private Menu menu;
 
     private SpriteBatch batch;
     private Texture title;
@@ -62,12 +62,13 @@ public class MatchScreen implements Screen{
     private TextButton settingsButtonInvisible;
     private TextButton leaveButtonInvisible;
 
-    public MatchScreen(RaceGame game, Player player, Lobby lobby){
+    public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu){
         // set up
         this.game = game;
         this.stage = new Stage();
         this.currentPlayer = player;
         this.lobby = lobby;
+        this.menu = menu;
         Gdx.input.setInputProcessor(stage);
 
         loadImages();
@@ -355,7 +356,7 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                    game.setScreen(new LobbyScreen(game, currentPlayer));
+                    game.setScreen(new LobbyScreen(game, currentPlayer, menu));
             }
         });
     }

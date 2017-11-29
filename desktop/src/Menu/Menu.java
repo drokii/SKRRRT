@@ -3,6 +3,7 @@ package Menu;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Menu {
     private List<Lobby> lobbies;
 
