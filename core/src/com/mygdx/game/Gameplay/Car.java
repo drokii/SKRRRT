@@ -14,7 +14,7 @@ import com.badlogic.gdx.Gdx;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Car extends ApplicationAdapter implements ApplicationListener {
+public class Car extends ApplicationAdapter implements ApplicationListener, ICar {
 
     /**
      * This class keeps track of the maxspeed, speed and velocity of the car.
@@ -37,6 +37,18 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
 
     private float speed = 1f;
+    private Vector2 velocity;
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
+    public float getAngularVelocity;
+
+    private float getGetAngularVelocity() {
+        return getAngularVelocity;
+    }
+
     private boolean driftRight = false;
     private boolean driftLeft = false;
 
@@ -50,10 +62,11 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
 
     private float maxspeed = 300f;
 
+    private String name = "CarBoy";
     public String getName() {
         return name;
     }
-    private String name = "CarBoy";
+
 
 
     public boolean getIsOnFinishLine() {
@@ -67,10 +80,12 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
     private boolean isOnFinishLine;
     private OrthographicCamera camera;
 
+    private float torque = 0f;
+
     public float getTorque() {
         return torque;
     }
-    private float torque = 0f;
+
 
 
     //Constructor for Car
@@ -217,6 +232,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener {
         } else {
             angle = 0;
         }
+        velocity = new Vector2(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
         kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
     }
 
