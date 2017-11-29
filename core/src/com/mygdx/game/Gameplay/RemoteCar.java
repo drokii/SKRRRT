@@ -10,11 +10,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.mygdx.game.Networking.LoginRequest;
+import com.mygdx.game.Networking.LoginResponse;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Car extends ApplicationAdapter implements ApplicationListener, ICar {
+public class RemoteCar extends ApplicationAdapter implements ICar{
 
     /**
      * This class keeps track of the maxspeed, speed and velocity of the car.
@@ -37,18 +42,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
 
     private float speed = 1f;
-    private Vector2 velocity;
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public float getAngularVelocity;
-
-    private float getGetAngularVelocity() {
-        return getAngularVelocity;
-    }
-
     private boolean driftRight = false;
     private boolean driftLeft = false;
 
@@ -62,11 +55,12 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     private float maxspeed = 300f;
 
-    private String name = "CarBoy";
     public String getName() {
         return name;
     }
 
+    //fix dit via player
+    private String name = "CarBoy";
 
 
     public boolean getIsOnFinishLine() {
@@ -80,16 +74,14 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     private boolean isOnFinishLine;
     private OrthographicCamera camera;
 
-    private float torque = 0f;
-
     public float getTorque() {
         return torque;
     }
-
+    private float torque = 0f;
 
 
     //Constructor for Car
-    public Car(OrthographicCamera camera, World world) {
+    public RemoteCar(OrthographicCamera camera, World world) {
 
 
         // Reference to game Camera
@@ -118,7 +110,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
-        input = new CarInputProcessorHelper(this);
     }
 
     @Override
@@ -165,101 +156,16 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         kart.dispose();
     }
 
-    /**
-     * The method driveBackward(Timer timer), when called it speeds up the car in a backward motion.
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
-     */
-    public void driveBackward(Timer timer)
+    public void setLinearVelocity(Vector2 speed)
     {
-
-        if(timer != null)
-        {
-            timer.cancel();
-        }
-        if (speed == 0 || (speed >= 0 && speed <= 3)) {
-            speed = -1;
-        } else if (speed < 0) {
-            speed = speed * 1.02f;
-            keepVelocity();
-        } else if (speed > 0) {
-            speed = speed * 0.98f;
-            keepVelocity();
-        }
+        this.speed = speed.x;
+        kartBody.setLinearVelocity(speed);
     }
 
-    /**
-     * The method driveForward(Timer timer), when called it speeds up the car in a forward motion.
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
-     */
-    public void driveForward(Timer timer)
+    public void setAngularVelocity(float angleSpeed)
     {
-
-        if(timer != null)
-        {
-            timer.cancel();
-        }
-        if (speed == 0 || (speed <= 0 && speed >= -3)) {
-            speed = 1;
-        } else if (speed * 1.05f >= maxspeed) {
-            speed = maxspeed;
-        } else if (speed < 0) {
-            speed = speed * 0.95f;
-            keepVelocity();
-        }
-        if (speed >= 0) {
-            speed = speed * 1.05f;
-            keepVelocity();
-        }
-    }
-
-    public void keepVelocity()
-    {
-        /**
-         * The method keepVelocity needs to calculate the and set the LinearVelocity for the @param kartBody
-         * @param angle , the angle of the kart.
-         */
-        float angle;
-        if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
-
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
-                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-
-        } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
-
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
-                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-
-        } else {
-            angle = 0;
-        }
-        velocity = new Vector2(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
-        kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
-    }
-
-    public void DriftRight()
-    {
-        if(!driftRight)
-        {
-            stopDrift();
-            driftRight = true;
-        }
-
-    }
-    public void DriftLeft()
-    {
-        if(!driftLeft)
-        {
-            stopDrift();
-            driftLeft = true;
-        }
-    }
-
-    public void stopDrift()
-    {
-        if(driftLeft)
-            driftLeft = false;
-        if(driftRight)
-            driftRight = false;
+        torque = angleSpeed;
+        kartBody.setAngularVelocity(angleSpeed);
     }
 
 }

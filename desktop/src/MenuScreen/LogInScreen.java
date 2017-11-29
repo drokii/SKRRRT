@@ -24,10 +24,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.mygdx.game.Networking.LoginRequest;
-import com.mygdx.game.Networking.LoginResponse;
-import com.mygdx.game.Networking.SampleRequest;
-import com.mygdx.game.Networking.SampleResponse;
+import com.mygdx.game.Networking.*;
 import com.mygdx.game.RaceGame;
 import javafx.application.Platform;
 import org.lwjgl.Sys;
@@ -211,59 +208,21 @@ public class LogInScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1) {
-
-                    Client client = new Client();
-                    client.start();
-                    try
-                    {
-                        client.connect(5000, "127.0.0.1", 54555, 54777);
-                    }
-                    catch(IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                    Kryo kryoClient = client.getKryo();
-                    kryoClient.register(LoginRequest.class);
-                    kryoClient.register(LoginResponse.class);
-
-                    LoginRequest request = new LoginRequest(username.getText(), password.getText());
-                    client.sendTCP(request);
-                    addListeners(client);
+                    PlayerClient client = new PlayerClient(username.getText(), password.getText(), LogInScreen.this);
                 }
             }
         });
     }
 
-    //check for server login response
-    public void addListeners(final Client client) {
-        client.addListener(new Listener() {
-            public void received(final Connection connection, Object object) {
-                if (object instanceof LoginResponse) {
-                    LoginResponse response = (LoginResponse) object;
-                    if(response.getLoginPassed())
-                    {
-                        System.out.println("logged in");
-                        Gdx.app.postRunnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
-                                menuSound.play();
-                                game.setScreen(new MenuScreen(game));
-                                connection.close();
-                                client.close();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        System.out.println("login failed");
-                        connection.close();
-                        client.close();
-                        count = 0;
-                    }
-                }
-            }
-        });
+    public void loginPassed()
+    {
+        menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
+        menuSound.play();
+        game.setScreen(new MenuScreen(game));
+    }
+
+    public void loginFailed()
+    {
+        count = 0;
     }
 }

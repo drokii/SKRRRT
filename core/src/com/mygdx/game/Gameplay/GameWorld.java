@@ -36,7 +36,7 @@ public class GameWorld implements ApplicationListener {
     private OrthographicCamera camera;
     private Map map;
     private Car car;
-    private ArrayList<Car> carList;
+    private ArrayList<ICar> carList;
 
     private SpriteBatch batch;
     private float deltaTime;
@@ -59,7 +59,7 @@ public class GameWorld implements ApplicationListener {
         camera.setToOrtho(false, 600, 400);
 
         // Create cars and assign them to list
-        carList = new ArrayList<Car>();
+        carList = new ArrayList<ICar>();
         car = new Car(camera, world);
         carList.add(car);
 
