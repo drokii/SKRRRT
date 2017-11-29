@@ -6,8 +6,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.Network;
-import com.mygdx.game.Networking.SampleRequest;
-import com.mygdx.game.Networking.SampleResponse;
 
 import java.io.IOException;
 
@@ -31,8 +29,8 @@ public class CarPositionClient {
     public static void addListeners(Client client) {
         client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
-                if (object instanceof SampleResponse) {
-
+                if (object instanceof Network.GameStartResponse) {
+                    //begin countdown
                 }
             }
         });

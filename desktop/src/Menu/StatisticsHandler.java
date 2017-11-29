@@ -15,7 +15,7 @@ public class StatisticsHandler implements ApplicationListener {
      * Everytime a car passes the finish line a log is created and stored in an arraylist of strings
      * that can be requested by a menu to display the car run times through the track.
      */
-    private ArrayList<Car> cars;
+    private ArrayList<ICar> cars;
     private float raceTimer;
 
     public ArrayList<String> getFinishLogList() {
@@ -69,10 +69,10 @@ public class StatisticsHandler implements ApplicationListener {
     }
 
     private void finishLineCheck() {
-        for (Car car : cars
+        for (ICar car : cars
                 ) {
             if (car.getIsOnFinishLine()) {
-                logFinishCarStatistics(car);
+                logFinishCarStatistics((Car) car);
 
             }
 
