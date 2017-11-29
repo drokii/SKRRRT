@@ -20,6 +20,7 @@ import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 import de.tomgrill.gdxdialogs.core.dialogs.GDXTextPrompt;
 import de.tomgrill.gdxdialogs.core.listener.TextPromptListener;
+import Menu.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class LobbyScreen implements Screen {
 
     private RaceGame game;
     private Stage stage;
+    private Player currentPlayer;
 
     private SpriteBatch batch;
     private Texture title;
@@ -70,19 +72,20 @@ public class LobbyScreen implements Screen {
     private List<Label> labelList;
     private Label.LabelStyle labelStyle;
 
-    public LobbyScreen(RaceGame game){
-        setUp(game);
+    public LobbyScreen(RaceGame game, Player player){
+        setUp(game, player);
         loadImages();
         invisibleButtons();
     }
 
-    private void setUp(RaceGame game){
+    private void setUp(RaceGame game, Player player){
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         this.menu = new Menu();
         this.dialogs = GDXDialogsSystem.install();
+        this.currentPlayer = player;
     }
 
     // load some images
@@ -363,7 +366,9 @@ public class LobbyScreen implements Screen {
                                 public void confirm(String text) {
                                     menu.createLobby(text, text);
                                     int i = menu.getLobbies().size() - 1;
-                                    labelList.get(i).setText(menu.getLobbies().get(i).toString());
+                                    Lobby lobby = menu.getLobbies().get(i);
+                                    labelList.get(i).setText(lobby.toString());
+                                    game.setScreen(new MatchScreen(game, currentPlayer, lobby));
                                 }
                             });
 
@@ -378,8 +383,9 @@ public class LobbyScreen implements Screen {
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
                         if (count == 1) {
-                            //menu.getLobbies().get(columnClicked).joinLobby();
-                            game.setScreen(new MatchScreen(game));
+                            Lobby lobby = menu.getLobbies().get(columnClicked);
+                            lobby.joinLobby(currentPlayer);
+                            game.setScreen(new MatchScreen(game, currentPlayer, lobby));
                         }
                     }
                 });
@@ -390,7 +396,7 @@ public class LobbyScreen implements Screen {
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
                         if (count == 1)
-                            game.setScreen(new MenuScreen(game, player));
+                            game.setScreen(new MenuScreen(game, currentPlayer));
                     }
                 });
             }

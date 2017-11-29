@@ -1,5 +1,6 @@
 package MenuScreen;
 
+import Menu.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +18,7 @@ public class FinishScreen implements Screen {
     private final int BACK_BUTTON_Y = 200;
 
     private RaceGame game;
+    private Player currentPlayer;
 
     private SpriteBatch batch;
     private Texture title;
@@ -26,7 +28,7 @@ public class FinishScreen implements Screen {
     private BitmapFont font;
     private ArrayList<String> finishTimes;
 
-    public FinishScreen(RaceGame game, ArrayList<String> results){
+    public FinishScreen(RaceGame game, Player player, ArrayList<String> results){
         this.game = game;
         this.batch = new SpriteBatch();
         this.backButton =  new Texture("core\\assets\\Menu\\BackButton.png");
@@ -121,7 +123,7 @@ public class FinishScreen implements Screen {
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > BACK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (BACK_BUTTON_Y + backButton.getHeight())) {
             // exit game
             if(Gdx.input.isTouched()){
-                game.setScreen(new MenuScreen(game));
+                game.setScreen(new MenuScreen(game, currentPlayer));
             }
         }
     }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby {
-    private int id;
     private String name;
     private String map;
     private List<Player> players;
@@ -13,10 +12,6 @@ public class Lobby {
         this.name = name;
         this.map = map;
         this.players = new ArrayList<Player>();
-    }
-
-    public void setId(int id){
-        this.id = id;
     }
 
     public List<Player> getPlayers() {
