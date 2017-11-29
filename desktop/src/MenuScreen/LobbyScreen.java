@@ -3,17 +3,31 @@ package MenuScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
+import Menu.Menu;
+import de.tomgrill.gdxdialogs.core.GDXDialogs;
+import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
+import de.tomgrill.gdxdialogs.core.dialogs.GDXTextPrompt;
+import de.tomgrill.gdxdialogs.core.listener.TextPromptListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyScreen implements Screen {
+    private Menu menu;
+    private GDXDialogs dialogs;
+
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
@@ -52,14 +66,22 @@ public class LobbyScreen implements Screen {
     private TextButton joinButtonInvisible;
     private TextButton backButtonInvisible;
 
+    private List<Label> labelList;
+    private Label.LabelStyle labelStyle;
+
     public LobbyScreen(RaceGame game){
-        // set up
+        setUp(game);
+        loadImages();
+        invisibleButtons();
+    }
+
+    private void setUp(RaceGame game){
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        loadImages();
-        invisibleButtons();
+        this.menu = new Menu();
+        this.dialogs = GDXDialogsSystem.install();
     }
 
     // load some images
@@ -105,6 +127,23 @@ public class LobbyScreen implements Screen {
         this.backButtonInvisible.setPosition(BUTTONS_X, BACK_BUTTON_Y);
         this.backButtonInvisible.setWidth(backButton.getWidth());
         this.backButtonInvisible.setHeight(backButton.getHeight());
+
+        // load font
+        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FTFP.size = 55;
+        BitmapFont bitmapFont = FTFG.generateFont(FTFP);
+        FTFG.dispose();
+
+        // draw and add empty lobbies
+        this.labelList = new ArrayList<Label>();
+        this.labelStyle = new Label.LabelStyle();
+        this.labelStyle.font = bitmapFont;
+        this.labelStyle.fontColor = Color.valueOf("ffffff");
+        for(int i = 0; i < 6; i++){
+            labelList.add(new Label("Empty", labelStyle));
+            stage.addActor(labelList.get(i));
+        }
 
         // add actors to stage
         stage.addActor(createButtonInvisible);
@@ -181,6 +220,7 @@ public class LobbyScreen implements Screen {
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
 
         // draw first column (light)
+        labelList.get(0).setPosition(COLUMNS_X, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
@@ -191,6 +231,7 @@ public class LobbyScreen implements Screen {
         // draw middle columns (light & dark)
         for(int i = 0; i < 2; i++) {
             // draw middle column (dark)
+            labelList.get(1 + i).setPosition(COLUMNS_X, tempDarkY + (middleColumnDark.getHeight()/3) - 10);
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -199,6 +240,7 @@ public class LobbyScreen implements Screen {
             }
 
             // draw middle column (light)
+            labelList.get(2 + i).setPosition(COLUMNS_X, tempLightY + (middleColumnLight.getHeight()/3) - 10);
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
                 batch.draw(middleColumnLightActive, COLUMNS_X, tempLightY);
@@ -210,6 +252,7 @@ public class LobbyScreen implements Screen {
         }
 
         // draw last column (dark)
+        labelList.get(5).setPosition(COLUMNS_X, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
@@ -289,8 +332,30 @@ public class LobbyScreen implements Screen {
         createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
+                count++;
+                if(count == 1){
+                    GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
+                    textPrompt.setTitle("Name");
+                    textPrompt.setMessage("Please fill in your lobby name");
+                    textPrompt.setCancelButtonLabel("Cancel");
+                    textPrompt.setConfirmButtonLabel("Create");
+
+                    textPrompt.setTextPromptListener(new TextPromptListener() {
+                        @Override
+                        public void cancel() {
+
+                        }
+
+                        @Override
+                        public void confirm(String text) {
+                            menu.createLobby(text, text);
+                            //lobby in server maken
+
+                        }
+                    });
+
+                    textPrompt.build().show();
+                }
             }
         });
 
