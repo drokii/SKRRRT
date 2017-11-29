@@ -18,11 +18,13 @@ public class Menu {
         return lobbies;
     }
 
-    public void createLobby(String name, String map) throws IOException {
-        Lobby lobby = new Lobby(name);
-
+    public void createLobby(String name) throws IOException {
         LobbyClient client = new LobbyClient(this);
         client.CreateLobby(name);
+    }
+
+    public void removeLobby(Lobby lobby){
+        lobbies.remove(lobby);
     }
 
     public void setLobbies(List<Lobby> lobbyList)

@@ -380,12 +380,13 @@ public class LobbyScreen implements Screen {
                                 @Override
                                 public void confirm(String text) {
                                     try {
-                                        menu.createLobby(text, text);
+                                        menu.createLobby(text);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                     int i = menu.getLobbies().size() - 1;
                                     final Lobby lobby = menu.getLobbies().get(i);
+                                    lobby.setMainPlayer(currentPlayer);
                                     labelList.get(i).setText(lobby.toString());
                                     Gdx.app.postRunnable(new Runnable() {
                                         @Override

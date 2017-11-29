@@ -1,7 +1,7 @@
 package MenuScreen;
 
 import com.mygdx.game.Networking.Lobby;
-import Menu.Player;
+import Menu.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -356,8 +356,12 @@ public class MatchScreen implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
-                if(count == 1)
+                if(count == 1){
+                    if(currentPlayer == lobby.getMainPlayer()){
+                        menu.removeLobby(lobby);
+                    }
                     game.setScreen(new LobbyScreen(game, currentPlayer, menu));
+                }
             }
         });
     }
