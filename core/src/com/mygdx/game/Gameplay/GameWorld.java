@@ -1,20 +1,19 @@
 package com.mygdx.game.Gameplay;
 
-import MenuScreen.*;
 import Menu.StatisticsHandler;
+import MenuScreen.FinishScreen;
+import MenuScreen.LogInScreen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Map.Map;
+import com.mygdx.game.Networking.Client.CarPositionClient;
 import com.mygdx.game.RaceGame;
 
-
-import javax.security.auth.login.LoginContext;
 import java.util.ArrayList;
 
 public class GameWorld implements ApplicationListener {
@@ -33,7 +32,9 @@ public class GameWorld implements ApplicationListener {
     private OrthographicCamera camera;
     private Map map;
     private Car car;
-    private ArrayList<Car> carList;
+    private ArrayList<ICar> carList;
+    private CarPositionClient carClient;
+
 
     public GameWorld(RaceGame game) {
         this.game = game;
@@ -45,7 +46,7 @@ public class GameWorld implements ApplicationListener {
         camera.setToOrtho(false, 600, 400);
 
         // Create cars and assign them to list
-        carList = new ArrayList<Car>();
+        carList = new ArrayList<ICar>();
         car = new Car(camera, world);
         carList.add(car);
 
@@ -66,7 +67,7 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void create() {
-
+        carClient.sendGameStartRequest(car.getName(), car.getVelocity(), car.getTorque());
     }
 
     @Override

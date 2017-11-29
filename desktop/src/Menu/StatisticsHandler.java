@@ -3,6 +3,7 @@ package Menu;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Gameplay.Car;
+import com.mygdx.game.Gameplay.ICar;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -29,7 +30,7 @@ public class StatisticsHandler implements ApplicationListener {
      * an arraylist of strings to log whenever a car passes the finish line
      * @param cars
      */
-    public StatisticsHandler(ArrayList<Car> cars) {
+    public StatisticsHandler(ArrayList<ICar> cars) {
         this.cars = cars;
         finishLogList = new ArrayList<String>();
         raceTimer = 0;
