@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RemoteCar extends ApplicationAdapter /*implements ICar*/{
+public class RemoteCar extends ApplicationAdapter implements ICar{
 
     /**
      * This class keeps track of the maxspeed, speed and velocity of the car.
