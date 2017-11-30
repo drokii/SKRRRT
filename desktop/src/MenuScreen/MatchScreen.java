@@ -1,5 +1,7 @@
 package MenuScreen;
 
+import com.mygdx.game.Networking.Lobby;
+import Menu.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
+
+import java.io.IOException;
 
 public class MatchScreen implements Screen{
     private final int COLUMNS_X = 30;
@@ -30,6 +34,9 @@ public class MatchScreen implements Screen{
 
     private RaceGame game;
     private Stage stage;
+    private Player currentPlayer;
+    private Lobby lobby;
+    private Menu menu;
 
     private SpriteBatch batch;
     private Texture title;
@@ -56,10 +63,13 @@ public class MatchScreen implements Screen{
     private TextButton settingsButtonInvisible;
     private TextButton leaveButtonInvisible;
 
-    public MatchScreen(RaceGame game){
+    public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu){
         // set up
         this.game = game;
         this.stage = new Stage();
+        this.currentPlayer = player;
+        this.lobby = lobby;
+        this.menu = menu;
         Gdx.input.setInputProcessor(stage);
 
         loadImages();
@@ -314,7 +324,11 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                    game.setScreen(new GameScreen(game));
+                    try {
+                        game.setScreen(new GameScreen(game, currentPlayer));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
         });
 
@@ -342,8 +356,12 @@ public class MatchScreen implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
-                if(count == 1)
-                    game.setScreen(new LobbyScreen(game));
+                if(count == 1){
+                    if(currentPlayer == lobby.getMainPlayer()){
+                        menu.removeLobby(lobby);
+                    }
+                    game.setScreen(new LobbyScreen(game, currentPlayer, menu));
+                }
             }
         });
     }

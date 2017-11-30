@@ -1,5 +1,6 @@
 package com.mygdx.game.Gameplay;
 
+import Menu.Player;
 import MenuScreen.*;
 import Menu.StatisticsHandler;
 import com.badlogic.gdx.ApplicationListener;
@@ -33,6 +34,7 @@ public class GameWorld implements ApplicationListener {
 
 
     private RaceGame game;
+    private Player currentPlayer;
     private Sound sound;
     private StatisticsHandler stats;
     private World world;
@@ -54,8 +56,9 @@ public class GameWorld implements ApplicationListener {
     Texture cdReady;
 
 
-    public GameWorld(RaceGame game) throws IOException {
+    public GameWorld(RaceGame game, Player player) throws IOException {
         this.game = game;
+        this.currentPlayer = player;
         // Create physics world
         world = new World(new Vector2(0, 0), true);
 
@@ -128,7 +131,7 @@ public class GameWorld implements ApplicationListener {
 
         //Check if a car reached the finish line
         if (car.getIsOnFinishLine()) {
-            game.setScreen(new FinishScreen(game, stats.getFinishLogList()));
+            game.setScreen(new FinishScreen(game, currentPlayer, stats.getFinishLogList()));
         }
     }
 

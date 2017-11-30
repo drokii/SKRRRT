@@ -54,7 +54,7 @@ public class LoginClient {
                             @Override
                             public void run() {
                                 player = new Player(username);
-                                screen.loginPassed();
+                                screen.loginPassed(player);
                                 connection.close();
                                 client.close();
                             }

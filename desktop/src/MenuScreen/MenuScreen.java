@@ -1,5 +1,6 @@
 package MenuScreen;
 
+import Menu.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
-import org.lwjgl.opengl.GLContext;
 
 public class MenuScreen implements Screen {
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
@@ -22,8 +22,10 @@ public class MenuScreen implements Screen {
 
     private int count;
 
+
     private RaceGame game;
     private Stage stage;
+    private Player currentPlayer;
 
     private SpriteBatch batch;
     private Texture title;
@@ -40,8 +42,9 @@ public class MenuScreen implements Screen {
     private TextButton settingsButtonInvisible;
     private TextButton exitButtonInvisible;
 
-    public MenuScreen(RaceGame game){
+    public MenuScreen(RaceGame game, Player player){
         // set up
+        this.currentPlayer = player;
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -186,7 +189,7 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                    game.setScreen(new LobbyScreen(game));
+                    game.setScreen(new LobbyScreen(game, currentPlayer));
             }
         });
 

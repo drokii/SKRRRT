@@ -1,5 +1,6 @@
 package MenuScreen;
 
+import Menu.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -201,11 +202,11 @@ public class LogInScreen implements Screen{
         });
     }
 
-    public void loginPassed()
+    public void loginPassed(Player player)
     {
         menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
         menuSound.play();
-        game.setScreen(new MenuScreen(game));
+        game.setScreen(new MenuScreen(game, player));
     }
 
     public void loginFailed()

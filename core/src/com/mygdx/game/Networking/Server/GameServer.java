@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class GameServer {
     private static Server server;
     private static Kryo kryo;
     private List<PlayerInstance> players;
+    private List<Lobby> lobbies;
     private int lobbySize = 2; //to be substituted by lobby
 
 
