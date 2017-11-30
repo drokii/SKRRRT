@@ -41,12 +41,9 @@ public class GameServer {
                     players.add(new PlayerInstance(player.nickname, player.speed, player.angularSpeed));
 
                     if (players.size() >= lobbySize) {
-                        for (Connection c : server.getConnections()
-                                ) {
 
-                            c.sendTCP(Network.GameStartResponse.class);
+                            server.sendToAllTCP(Network.GameStartResponse.class);
 
-                        }
                     }
 
                 }
