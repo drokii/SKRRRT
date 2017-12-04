@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.Map.Map;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -76,6 +77,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     private boolean isOnFinishLine;
     private OrthographicCamera camera;
+    private Map map;
 
     private float torque = 0f;
 
@@ -86,8 +88,9 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
 
     //Constructor for Car
-    public Car(OrthographicCamera camera, World world) {
-
+    public Car(OrthographicCamera camera, World world, Map map) {
+        //Reference to map
+        this.map = map;
 
         // Reference to game Camera
         this.camera = camera;
@@ -159,6 +162,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         batch.end();
 
         renderer.render(world, camera.combined);
+
+        map.isOnFinnishLine(this);
     }
 
     public Body getKartBody(){

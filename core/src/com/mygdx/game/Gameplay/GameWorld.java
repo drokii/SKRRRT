@@ -66,13 +66,13 @@ public class GameWorld implements ApplicationListener {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 600, 400);
 
+        // Set up map
+        map = new Map(camera, world);
+
         // Create cars and assign them to list
         carList = new ArrayList<ICar>();
-        car = new Car(camera, world);
+        car = new Car(camera, world, map);
         carList.add(car);
-
-        // Set up map
-        map = new Map(car, camera, world);
 
         // Set up statistics handler
         stats = new StatisticsHandler(carList);
@@ -157,7 +157,7 @@ public class GameWorld implements ApplicationListener {
         deltaTime += Gdx.graphics.getDeltaTime();
         batch.begin();
         if (deltaTime <5){
-
+            batch.draw(cdReady, 500, 400);
         }
         else if(deltaTime < 6){
             batch.draw(cd5,500,400);
