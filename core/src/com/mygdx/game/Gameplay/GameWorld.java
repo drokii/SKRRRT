@@ -43,6 +43,7 @@ public class GameWorld implements ApplicationListener {
     private Car car;
     private ArrayList<ICar> carList;
     private GameClient client;
+    private boolean gameStarted;
 
     private SpriteBatch batch;
     private float deltaTime;
@@ -103,6 +104,7 @@ public class GameWorld implements ApplicationListener {
     @Override
     public void create() {
         client.sendGameStartRequest(car.getName(), null,0f);
+
     }
 
     @Override
@@ -124,7 +126,7 @@ public class GameWorld implements ApplicationListener {
         stats.render();
         box2DDebugRenderer.render(world, camera.combined);
 
-        // Draw the Countdown timer.
+        // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
         drawCountdown();
 
         //Check if a car reached the finish line
@@ -155,7 +157,7 @@ public class GameWorld implements ApplicationListener {
         deltaTime += Gdx.graphics.getDeltaTime();
         batch.begin();
         if (deltaTime <5){
-            batch.draw(cdReady,400,300);
+
         }
         else if(deltaTime < 6){
             batch.draw(cd5,500,400);
