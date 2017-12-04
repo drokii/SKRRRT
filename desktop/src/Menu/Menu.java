@@ -8,8 +8,9 @@ import java.util.List;
 
 public class Menu {
     private List<Lobby> lobbies;
-
-    public Menu(){
+    private LobbyClient client;
+    public Menu() throws IOException {
+        client = new LobbyClient(this);
         this.lobbies = new ArrayList<Lobby>();
     }
 
@@ -17,8 +18,8 @@ public class Menu {
         return lobbies;
     }
 
-    public void createLobby(String name) throws IOException {
-        LobbyClient client = new LobbyClient(this);
+    public void createLobby(String name)  {
+
         client.CreateLobby(name);
     }
 
@@ -29,6 +30,11 @@ public class Menu {
     public void setLobbies(List<Lobby> lobbyList)
     {
         lobbies = lobbyList;
+    }
+
+    public void joinLobby(String lobbyName, Player player)
+    {
+        client.joinLobby(lobbyName, player);
     }
 
 }

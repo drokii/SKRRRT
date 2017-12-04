@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
+import java.io.IOException;
+
 public class MenuScreen implements Screen {
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int PLAY_BUTTON_Y = 500;
@@ -189,7 +191,11 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1)
-                    game.setScreen(new LobbyScreen(game, currentPlayer));
+                    try {
+                        game.setScreen(new LobbyScreen(game, currentPlayer));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
         });
 

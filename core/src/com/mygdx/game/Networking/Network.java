@@ -4,7 +4,9 @@ import Menu.Player;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.mygdx.game.Gameplay.Enums.ESkin;
 import com.mygdx.game.Networking.Server.PlayerInstance;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,10 @@ public class Network {
         kryo.register(GameUpdateRequest.class);
         kryo.register(CreateLobbyRequest.class);
         kryo.register(CreateLobbyResponse.class);
+        kryo.register(JoinLobbyRequest.class);
+        kryo.register(JoinLobbyResponse.class);
+        kryo.register(Player.class);
+        kryo.register(ESkin.class);
         kryo.register(ArrayList.class);
         kryo.register(Lobby.class);
         kryo.register(String.class);
@@ -41,12 +47,43 @@ public class Network {
     public class RetrieveLobbiesResponse{
 
     }
-    public class JoinLobbyRequest{
+
+    public static class JoinLobbyRequest{
+        private String lobbyName;
+        private Player player;
+
+        public JoinLobbyRequest(String lobbyName, Player player)
+        {
+            this.lobbyName = lobbyName;
+            this.player = player;
+        }
+
+        public JoinLobbyRequest()
+        {}
+
+        public String  getLobby() {
+            return lobbyName;
+        }
+
+        public void setLobby(String lobbyName) {
+            this.lobbyName = lobbyName;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public void setPlayer(Player player) {
+            this.player = player;
+        }
+
 
     }
-    public class JoinLobbyResponse{
+
+    public static class JoinLobbyResponse{
 
     }
+
     public static class CreateLobbyRequest{
         private String lobbyName;
         private List<Player> players;
@@ -74,6 +111,7 @@ public class Network {
         }
 
     }
+
     public static class CreateLobbyResponse{
         private List<Lobby> lobbyList;
 
@@ -92,6 +130,7 @@ public class Network {
             this.lobbyList = lobbyList;
         }
     }
+
     public static class GameStartRequest {
 
         public Vector2 speed;
@@ -99,9 +138,11 @@ public class Network {
         public String nickname;
 
     }
+
     static public class GameStartResponse{
 
     }
+
     static public class GameUpdateRequest{
         public String nickname;
     }

@@ -1,15 +1,14 @@
 package com.mygdx.game.Networking.Client;
 
 import Menu.Menu;
-import com.esotericsoftware.kryo.Kryo;
+import Menu.Player;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
-import sun.nio.ch.Net;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LobbyClient {
     private Client client;
@@ -28,9 +27,15 @@ public class LobbyClient {
     public void CreateLobby(String name)
     {
         Network.CreateLobbyRequest lobby = new Network.CreateLobbyRequest(name);
-
         client.sendTCP(lobby);
     }
+
+    public void joinLobby(String lobbyName, Player player)
+    {
+        Network.JoinLobbyRequest joinRequest = new Network.JoinLobbyRequest(lobbyName, player);
+        client.sendTCP(joinRequest);
+    }
+
 
     public void addListeners(Client client) {
         client.addListener(new Listener()  {

@@ -34,13 +34,23 @@ public class Lobby implements Serializable{
 
     public void setMainPlayer(Player mainPlayer){this.mainPlayer = mainPlayer;}
 
-    public boolean joinLobby(Player player) {
-        return this.players.add(player);
+    public void joinLobby(Player player) {
+        players.add(player);
     }
 
-    public boolean leaveLobby(Player player)
+    public void leaveLobby(Player player)
     {
-        return this.players.remove(player);
+        players.remove(player);
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     @Override
