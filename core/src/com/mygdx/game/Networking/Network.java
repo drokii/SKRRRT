@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.game.Networking.Server.PlayerInstance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Network {
@@ -18,6 +19,10 @@ public class Network {
         kryo.register(GameStartResponse.class);
         kryo.register(PlayerInstance.class);
         kryo.register(GameUpdateRequest.class);
+        kryo.register(CreateLobbyRequest.class);
+        kryo.register(CreateLobbyResponse.class);
+        kryo.register(ArrayList.class);
+        kryo.register(Lobby.class);
         kryo.register(String.class);
         kryo.register(Vector2.class);
         kryo.register(float.class);

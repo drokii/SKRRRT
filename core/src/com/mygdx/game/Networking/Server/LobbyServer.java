@@ -9,6 +9,7 @@ import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.Network;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,21 +18,18 @@ import java.util.List;
 
 public class LobbyServer extends Application {
 
-    private static Server loginServer;
+    private static Server lobbyServer;
     private static Kryo kryo;
     private static List<Lobby> lobbyList;
 
     public static void main(String[] args) throws IOException, SQLException {
         lobbyList = new ArrayList<Lobby>();
-        loginServer = new Server();
-        loginServer.start();
-        loginServer.bind(62452, 34142);
+        lobbyServer = new Server();
+        lobbyServer.start();
+        lobbyServer.bind(62452, 62452);
 
-        kryo = loginServer.getKryo();
-        kryo.register(Network.CreateLobbyRequest.class);
-        kryo.register(Network.CreateLobbyResponse.class);
-        kryo.register(ArrayList.class);
-        addListenersToServer(loginServer);
+        Network.register(lobbyServer);
+        addListenersToServer(lobbyServer);
     }
 
     private static void addListenersToServer(Server server) {
@@ -40,8 +38,7 @@ public class LobbyServer extends Application {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
                     lobbyList.add(lobby);
-                    Network.CreateLobbyResponse response = new Network.CreateLobbyResponse(lobbyList);
-                    connection.sendTCP(response);
+                    connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
                     connection.close();
                 }
             }

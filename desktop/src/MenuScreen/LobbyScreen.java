@@ -384,14 +384,14 @@ public class LobbyScreen implements Screen {
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    int i = menu.getLobbies().size() - 1;
-                                    final Lobby lobby = menu.getLobbies().get(i);
-                                    lobby.setMainPlayer(currentPlayer);
-                                    labelList.get(i).setText(lobby.toString());
                                     Gdx.app.postRunnable(new Runnable() {
                                         @Override
                                         public void run() {
-                                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
+                                            /*int i = menu.getLobbies().size();
+                                            final Lobby lobby = menu.getLobbies().get(i);
+                                            lobby.setMainPlayer(currentPlayer);
+                                            labelList.get(i).setText(lobby.toString());
+                                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));*/
                                         }
                                     });
 
