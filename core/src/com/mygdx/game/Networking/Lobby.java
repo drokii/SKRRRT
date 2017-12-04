@@ -2,10 +2,11 @@ package com.mygdx.game.Networking;
 
 import Menu.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lobby {
+public class Lobby implements Serializable{
     private int id;
     private String name;
     private String map;
@@ -15,6 +16,10 @@ public class Lobby {
     public Lobby(String name){
         this.name = name;
         this.players = new ArrayList<Player>();
+    }
+
+    public Lobby()
+    {
     }
 
     public void setId(int id){
