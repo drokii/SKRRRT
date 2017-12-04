@@ -407,6 +407,7 @@ public class LobbyScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
+                        game.setScreen(new MatchScreen(game, currentPlayer, null, menu));
                         if (count == 1 && columnClicked != 0) {
                             Lobby lobby = menu.getLobbies().get(columnClicked -1);
                             menu.joinLobby(lobby.getName(), currentPlayer);
