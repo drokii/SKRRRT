@@ -73,10 +73,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     car.driveBackward(timerDown);
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-                {
-                    car.DriftRight();
-                }
 
                 car.keepVelocity();
 
@@ -97,10 +93,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     car.driveBackward(timerDown);
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-                {
-                    car.DriftLeft();
                 }
 
                 car.keepVelocity();
@@ -186,9 +178,6 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                         car.keepVelocity();
                     }
                 }, 0, 100);
-            }
-            if (keycode == Input.Keys.SHIFT_LEFT) {
-                car.stopDrift();
             }
         }
         return true;

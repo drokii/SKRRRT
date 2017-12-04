@@ -10,8 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
@@ -22,6 +20,7 @@ public class GameTest {
 
     @Before
     public void init() {
+        Gdx.gl =  Mockito.mock(GL20.class);
         application = new HeadlessApplication(new ApplicationListener() {
             @Override public void create() {}
             @Override public void resize(int width, int height) {}
@@ -30,9 +29,6 @@ public class GameTest {
             @Override public void resume() {}
             @Override public void dispose() {}
         });
-
-        Gdx.gl20 = Mockito.mock(GL20.class);
-        Gdx.gl = Gdx.gl20;
     }
 
     @After
