@@ -31,4 +31,9 @@ public class Player implements Serializable{
     public void setCar(Car car) {
         this.car = car;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
