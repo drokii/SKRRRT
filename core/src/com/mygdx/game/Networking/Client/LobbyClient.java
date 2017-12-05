@@ -37,6 +37,12 @@ public class LobbyClient {
         client.sendTCP(joinRequest);
     }
 
+    public void getLobbyRequest()
+    {
+        Network.getLobbyRequest lobbyRequest = new Network.getLobbyRequest();
+        client.sendTCP(lobbyRequest);
+    }
+
 
     public void addListeners(Client client) {
         client.addListener(new Listener()  {

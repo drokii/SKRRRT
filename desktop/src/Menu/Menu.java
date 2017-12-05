@@ -63,6 +63,6 @@ public class Menu {
 
     public void getLobbiesRequest()
     {
-
+        client.getLobbyRequest();
     }
 }

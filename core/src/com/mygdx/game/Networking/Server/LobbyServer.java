@@ -47,6 +47,10 @@ public class LobbyServer extends Application {
                     lobbyList.get(index).joinLobby(((Network.JoinLobbyRequest) object).getPlayer());
                     connection.sendTCP(new Network.JoinLobbyResponse(lobbyList.get(index)));
                 }
+                if(object instanceof Network.getLobbyRequest)
+                {
+                    connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
+                }
             }
         });
     }
