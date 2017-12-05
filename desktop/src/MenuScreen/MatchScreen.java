@@ -67,6 +67,9 @@ public class MatchScreen implements Screen{
     private TextButton settingsButtonInvisible;
     private TextButton leaveButtonInvisible;
 
+    private List<Label> playerList;
+    private Label.LabelStyle labelStyle;
+
     public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu){
         // set up
         this.game = game;
