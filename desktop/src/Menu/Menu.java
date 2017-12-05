@@ -46,7 +46,7 @@ public class Menu {
         client.joinLobby(lobbyName, player);
     }
 
-    public void setPlayers(final Lobby lobby)
+    public void setLobbyPlayers(final Lobby lobby)
     {
         new Thread(new Runnable() {
             @Override
@@ -59,5 +59,10 @@ public class Menu {
                 });
             }
         }).start();
+    }
+
+    public void getLobbiesRequest()
+    {
+
     }
 }

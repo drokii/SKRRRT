@@ -25,6 +25,7 @@ public class Network {
         kryo.register(CreateLobbyResponse.class);
         kryo.register(JoinLobbyRequest.class);
         kryo.register(JoinLobbyResponse.class);
+        kryo.register(getLobbyRequest.class);
         kryo.register(Player.class);
         kryo.register(ESkin.class);
         kryo.register(ArrayList.class);
@@ -78,6 +79,12 @@ public class Network {
         }
 
 
+    }
+
+    public static class getLobbyRequest{
+
+        public getLobbyRequest()
+        {}
     }
 
     public static class JoinLobbyResponse{

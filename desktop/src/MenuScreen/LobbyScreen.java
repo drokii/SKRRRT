@@ -84,6 +84,7 @@ public class LobbyScreen implements Screen {
 
         loadImages();
         invisibleButtons();
+        getLobbies();
     }
 
     public LobbyScreen(RaceGame game, Player player, Menu menu){
@@ -96,6 +97,7 @@ public class LobbyScreen implements Screen {
 
         loadImages();
         invisibleButtons();
+        getLobbies();
     }
 
     // load some images
@@ -348,7 +350,6 @@ public class LobbyScreen implements Screen {
                             columnClicked = 5;
                         }
                     }
-                }
 
                     tempDarkY -= 241;
                     tempLightY -= 241;
@@ -413,7 +414,7 @@ public class LobbyScreen implements Screen {
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
                         if (count == 1 && columnClicked != 0) {
-                            Lobby lobby = menu.getLobbies().get(columnClicked -1);
+                            Lobby lobby = menu.getLobbies().get((columnClicked-1));
                             menu.joinLobby(lobby.getName(), currentPlayer);
                         }
                     }
@@ -429,6 +430,33 @@ public class LobbyScreen implements Screen {
                     }
                 });
             }
+        }
+
+
+    public void getLobbies()
+    {
+        menu.getLobbiesRequest();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(menu.getLobbies().size() == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            int i = menu.getLobbies().size() -1;
+                            labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                            count = 0;
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
 
 }
 
