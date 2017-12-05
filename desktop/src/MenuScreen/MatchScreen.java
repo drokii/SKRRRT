@@ -153,7 +153,7 @@ public class MatchScreen implements Screen{
             playerList.add(new Label(players.get(i).toString(), labelStyle));
             stage.addActor(playerList.get(i));
         }
-        for(int i = players.size(); i < 6; i++){
+        for(int i = players.size(); i < 4; i++){
             playerList.add(new Label("Empty", labelStyle));
             stage.addActor(playerList.get(i));
         }
