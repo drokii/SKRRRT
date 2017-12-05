@@ -11,7 +11,7 @@ public class Lobby implements Serializable{
     private String name;
     private String map;
     private List<Player> players;
-    private Player mainPlayer;
+    private Player host;
 
     public Lobby(String name){
         this.name = name;
@@ -30,9 +30,9 @@ public class Lobby implements Serializable{
         return players;
     }
 
-    public Player getMainPlayer(){ return mainPlayer;}
+    public Player getHost(){ return host;}
 
-    public void setMainPlayer(Player mainPlayer){this.mainPlayer = mainPlayer;}
+    public void setHost(Player mainPlayer){this.host = mainPlayer;}
 
     public void joinLobby(Player player) {
         players.add(player);

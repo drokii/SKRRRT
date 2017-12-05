@@ -255,6 +255,7 @@ public class LobbyScreen implements Screen {
                 labelList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
                 tempLabelY -= 120;
             }
+
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -321,19 +322,20 @@ public class LobbyScreen implements Screen {
             }
         }
 
-        // middle columns (light & dark)
-        for (int i = 0; i < 2; i++) {
-            // middle column (dark)
-            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
-                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
-                if (Gdx.input.isTouched()) {
-                    if (i == 0) {
-                        columnClicked = 2;
+                // middle columns (light & dark)
+                for (int i = 0; i < 2; i++) {
+                    // middle column (dark)
+                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
+                        if (Gdx.input.isTouched()) {
+                            if (i == 0) {
+                                columnClicked = 2;
+                            }
+                            if (i == 1) {
+                                columnClicked = 4;
+                            }
+                        }
                     }
-                    if (i == 1) {
-                        columnClicked = 4;
-                    }
-                }
 
                 // middle column (light)
                 if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
@@ -346,10 +348,12 @@ public class LobbyScreen implements Screen {
                             columnClicked = 5;
                         }
                     }
+                }
 
                     tempDarkY -= 241;
                     tempLightY -= 241;
                 }
+
 
                 // last column (dark)
                 if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
@@ -358,6 +362,7 @@ public class LobbyScreen implements Screen {
                         columnClicked = 6;
                     }
                 }
+
 
                 // create button
                 createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
@@ -424,6 +429,6 @@ public class LobbyScreen implements Screen {
                     }
                 });
             }
-        }
-    }
+
 }
+

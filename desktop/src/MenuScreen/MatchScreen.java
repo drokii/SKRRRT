@@ -1,5 +1,7 @@
 package MenuScreen;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.Networking.Lobby;
 import Menu.*;
 import com.badlogic.gdx.Gdx;
@@ -16,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MatchScreen implements Screen{
     private final int COLUMNS_X = 30;
@@ -127,6 +131,21 @@ public class MatchScreen implements Screen{
         this.leaveButtonInvisible.setPosition(BUTTONS_X, LEAVE_BUTTON_Y);
         this.leaveButtonInvisible.setWidth(leaveButton.getWidth());
         this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
+
+//        // draw and add empty lobbies
+//        this.labelList = new ArrayList<Label>();
+//        this.labelStyle = new Label.LabelStyle();
+//        this.labelStyle.font = bitmapFont;
+//        this.labelStyle.fontColor = Color.valueOf("ffffff");
+//        List<Lobby> lobbies = menu.getLobbies();
+//        for(int i = 0; i < lobbies.size(); i++){
+//            labelList.add(new Label(lobbies.get(i).toString(), labelStyle));
+//            stage.addActor(labelList.get(i));
+//        }
+//        for(int i = lobbies.size(); i < 6; i++){
+//            labelList.add(new Label("Empty", labelStyle));
+//            stage.addActor(labelList.get(i));
+//        }
 
         // add actors to stage
         stage.addActor(startButtonInvisible);
@@ -357,7 +376,7 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1){
-                    if(currentPlayer == lobby.getMainPlayer()){
+                    if(currentPlayer == lobby.getHost()){
                         menu.removeLobby(lobby);
                     }
                     game.setScreen(new LobbyScreen(game, currentPlayer, menu));
