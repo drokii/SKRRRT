@@ -1,6 +1,7 @@
 package MenuScreen;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.Networking.Lobby;
 import Menu.*;
@@ -135,20 +136,27 @@ public class MatchScreen implements Screen{
         this.leaveButtonInvisible.setWidth(leaveButton.getWidth());
         this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
 
-//        // draw and add empty lobbies
-//        this.labelList = new ArrayList<Label>();
-//        this.labelStyle = new Label.LabelStyle();
-//        this.labelStyle.font = bitmapFont;
-//        this.labelStyle.fontColor = Color.valueOf("ffffff");
-//        List<Lobby> lobbies = menu.getLobbies();
-//        for(int i = 0; i < lobbies.size(); i++){
-//            labelList.add(new Label(lobbies.get(i).toString(), labelStyle));
-//            stage.addActor(labelList.get(i));
-//        }
-//        for(int i = lobbies.size(); i < 6; i++){
-//            labelList.add(new Label("Empty", labelStyle));
-//            stage.addActor(labelList.get(i));
-//        }
+        // load font
+        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FTFP.size = 55;
+        BitmapFont bitmapFont = FTFG.generateFont(FTFP);
+        FTFG.dispose();
+
+        // draw and add empty lobbies
+        this.playerList = new ArrayList<Label>();
+        this.labelStyle = new Label.LabelStyle();
+        this.labelStyle.font = bitmapFont;
+        this.labelStyle.fontColor = Color.valueOf("ffffff");
+        List<Player> players = lobby.getPlayers();
+        for(int i = 0; i < players.size(); i++){
+            playerList.add(new Label(players.get(i).toString(), labelStyle));
+            stage.addActor(playerList.get(i));
+        }
+        for(int i = players.size(); i < 6; i++){
+            playerList.add(new Label("Empty", labelStyle));
+            stage.addActor(playerList.get(i));
+        }
 
         // add actors to stage
         stage.addActor(startButtonInvisible);
@@ -228,6 +236,7 @@ public class MatchScreen implements Screen{
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
 
         // draw first column (light)
+        playerList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
@@ -238,6 +247,12 @@ public class MatchScreen implements Screen{
         // draw middle columns (light & dark)
         for(int i = 0; i < 2; i++) {
             // draw middle column (dark)
+            int tempLabelY = FIRST_COLUMN_LIGHT_Y - firstColumnLight.getHeight();
+            for(int j = 1; j < 5; j++){
+                playerList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
+                tempLabelY -= 120;
+            }
+
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -257,6 +272,7 @@ public class MatchScreen implements Screen{
         }
 
         // draw last column (dark)
+        playerList.get(5).setPosition(COLUMNS_X + 20, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
