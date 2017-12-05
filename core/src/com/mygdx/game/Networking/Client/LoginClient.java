@@ -25,14 +25,13 @@ public class LoginClient {
         client.start();
         try
         {
-            //client.connect(5000, "127.0.0.1", 54555, 54777);
-            client.connect(5000, "145.93.168.125", 54555, 54777);
+            client.connect(5000, "127.0.0.1", 54555, 54777);
+            //client.connect(5000, "145.93.168.125", 54555, 54777);
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
-
         Kryo kryoClient = client.getKryo();
         kryoClient.register(LoginRequest.class);
         kryoClient.register(LoginResponse.class);
