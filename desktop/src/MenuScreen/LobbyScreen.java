@@ -339,20 +339,21 @@ public class LobbyScreen implements Screen {
                         }
                     }
 
-                // middle column (light)
-                if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
-                        && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
-                    if (Gdx.input.isTouched()) {
-                        if (i == 0) {
-                            columnClicked = 3;
+                    // middle column (light)
+                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
+                        if (Gdx.input.isTouched()) {
+                            if (i == 0) {
+                                columnClicked = 3;
+                            }
+                            if (i == 1) {
+                                columnClicked = 5;
+                            }
                         }
-                        if (i == 1) {
-                            columnClicked = 5;
-                        }
-                    }
 
-                    tempDarkY -= 241;
-                    tempLightY -= 241;
+                        tempDarkY -= 241;
+                        tempLightY -= 241;
+                    }
                 }
 
 
@@ -430,7 +431,6 @@ public class LobbyScreen implements Screen {
                     }
                 });
             }
-        }
 
 
     public void getLobbies()
