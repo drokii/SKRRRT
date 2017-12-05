@@ -40,8 +40,14 @@ public class LobbyClient {
     public void addListeners(Client client) {
         client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
-                if (object instanceof Network.CreateLobbyResponse) {
+                if (object instanceof Network.CreateLobbyResponse)
+                {
                     menu.setLobbies(((Network.CreateLobbyResponse) object).getLobby());
+                }
+                if(object instanceof Network.JoinLobbyResponse)
+                {
+                    Lobby lobby = ((Network.JoinLobbyResponse) object).getLobby();
+                    menu.setPlayers(lobby);
                 }
             }
         });

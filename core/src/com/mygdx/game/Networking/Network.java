@@ -81,7 +81,23 @@ public class Network {
     }
 
     public static class JoinLobbyResponse{
+        private Lobby lobby;
 
+        public JoinLobbyResponse(Lobby lobby)
+        {
+            this.lobby = lobby;
+        }
+
+        public JoinLobbyResponse()
+        {}
+
+        public Lobby getLobby() {
+            return lobby;
+        }
+
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
+        }
     }
 
     public static class CreateLobbyRequest{

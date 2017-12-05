@@ -78,7 +78,7 @@ public class LobbyScreen implements Screen {
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        this.menu = new Menu();
+        this.menu = new Menu(game);
         this.dialogs = GDXDialogsSystem.install();
         this.currentPlayer = player;
 
@@ -380,23 +380,23 @@ public class LobbyScreen implements Screen {
                                 @Override
                                 public void confirm(String text) {
                                     menu.createLobby(text);
-                                    Gdx.app.postRunnable(new Runnable() {
+                                    new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            try {
-                                                Thread.sleep(500);
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                            int i = menu.getLobbies().size() -1;
-                                            labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                                            count = 0;
+                                            Gdx.app.postRunnable(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    int i = menu.getLobbies().size() -1;
+                                                    labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                                                    count = 0;
+                                                }
+                                            });
                                         }
-                                    });
+                                    }).start();
+
 
                                 }
                             });
-
                             textPrompt.build().show();
                         }
                     }
@@ -407,14 +407,10 @@ public class LobbyScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
-                        game.setScreen(new MatchScreen(game, currentPlayer, null, menu));
                         if (count == 1 && columnClicked != 0) {
                             Lobby lobby = menu.getLobbies().get(columnClicked -1);
                             menu.joinLobby(lobby.getName(), currentPlayer);
-                            //lobby.joinLobby(currentPlayer);
-                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
                         }
-
                     }
                 });
 
