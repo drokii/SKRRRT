@@ -19,7 +19,7 @@ public class MapTest extends GameTest {
     private Map map;
 
     @Before
-    public void MapTest(){
+    public void mapTest(){
         World world = new World(new Vector2(0,0), true);
         map = new Map(world);
         assertNotNull(map);

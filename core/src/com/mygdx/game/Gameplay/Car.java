@@ -85,8 +85,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         return torque;
     }
 
-
-
     //Constructor for Car
     public Car(OrthographicCamera camera, World world, Map map) {
         //Reference to map
@@ -152,7 +150,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         batch.begin();
 
         world.step(1f / 60f, 10, 10);
-        kartBody.applyTorque(torque, true);
+        //kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
