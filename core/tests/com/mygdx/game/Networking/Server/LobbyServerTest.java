@@ -79,7 +79,7 @@ public class LobbyServerTest {
         LobbyClient lobbyClientRequestTest = null;
         try {
             menuRequestTest = new Menu(new RaceGame());
-            lobbyClientRequestTest = new LobbyClient();
+            lobbyClientRequestTest = new LobbyClient(menuRequestTest);
         } catch (IOException e) {
             e.printStackTrace();
         }
