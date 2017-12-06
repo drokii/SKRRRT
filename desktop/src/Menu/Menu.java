@@ -1,5 +1,6 @@
 package Menu;
 
+import MenuScreen.LobbyScreen;
 import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Networking.Client.LobbyClient;
@@ -15,11 +16,13 @@ public class Menu {
     private LobbyClient client;
     private RaceGame game;
     private Player currentPlayer;
+    private LobbyScreen screen;
 
-    public Menu(RaceGame game) throws IOException {
+    public Menu(RaceGame game, LobbyScreen screen) throws IOException {
         client = new LobbyClient(this);
         this.lobbies = new ArrayList<Lobby>();
         this.game = game;
+        this.screen = screen;
     }
 
     public List<Lobby> getLobbies(){
@@ -39,10 +42,10 @@ public class Menu {
         lobbies = lobbyList;
     }
 
-    public void joinLobby(String lobbyName, Player player)
+    public void joinLobby(int index, Player player)
     {
         currentPlayer = player;
-        client.joinLobby(lobbyName, player);
+        client.joinLobby(index, player);
     }
 
     public void setLobbyPlayers(final Lobby lobby)
@@ -63,5 +66,10 @@ public class Menu {
     public void getLobbiesRequest()
     {
         client.getLobbyRequest();
+    }
+
+    public void refreshLobbies()
+    {
+        screen.refreshLobbies();
     }
 }

@@ -1,21 +1,27 @@
 package com.mygdx.game.Networking;
 
 import Menu.Player;
+import com.esotericsoftware.kryonet.Connection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Lobby implements Serializable{
     private int id;
     private String name;
     private String map;
     private List<Player> players;
+    private int[] ids;
+
     private Player host;
 
     public Lobby(String name){
         this.name = name;
         this.players = new ArrayList<Player>();
+        ids = new int[4];
     }
 
     public Lobby()
@@ -51,6 +57,14 @@ public class Lobby implements Serializable{
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public int[] getIds() {
+        return ids;
+    }
+
+    public void setIds(int[] ids) {
+        this.ids = ids;
     }
 
     @Override

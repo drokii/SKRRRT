@@ -1,5 +1,6 @@
 package com.mygdx.game.Networking.Server;
 
+import Menu.Player;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -32,20 +33,37 @@ public class LobbyServer extends Application {
         addListenersToServer(lobbyServer);
     }
 
-    private static void addListenersToServer(Server server) {
+    private static void addListenersToServer(final Server server) {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
                     lobbyList.add(lobby);
-                    connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
+                    //test
+                    server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
                 }
                 if(object instanceof Network.JoinLobbyRequest)
                 {
-                    Lobby lobby = new Lobby(((Network.JoinLobbyRequest) object).getLobby());
-                    int index = lobbyList.indexOf(lobby) + 1;
+                    int index = ((Network.JoinLobbyRequest) object).getIndex();
                     lobbyList.get(index).joinLobby(((Network.JoinLobbyRequest) object).getPlayer());
-                    connection.sendTCP(new Network.JoinLobbyResponse(lobbyList.get(index)));
+                    for(int i = 0; i< lobbyList.get(index).getIds().length; i++)
+                    {
+                        if(lobbyList.get(index).getIds()[i] == 0)
+                        {
+                            lobbyList.get(index).getIds()[i] = (connection.getID());
+                            break;
+                        }
+                    }
+                    for (Integer id: lobbyList.get(index).getIds()) {
+                        if(id == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            server.sendToTCP(id, new Network.JoinLobbyResponse(lobbyList.get(index)));
+                        }
+                    }
                 }
                 if(object instanceof Network.getLobbyRequest)
                 {

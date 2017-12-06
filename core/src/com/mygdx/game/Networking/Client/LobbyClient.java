@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
+import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
 
@@ -18,8 +19,8 @@ public class LobbyClient {
         this.menu = menu;
         client = new Client();
         client.start();
-        client.connect(5000, "127.0.0.1", 62452, 62452);
-        //client.connect(5000, "145.93.168.125", 62452, 62452);
+        //client.connect(5000, "127.0.0.1", 62452, 62452);
+        client.connect(5000, "145.93.169.164", 62452, 62452);
         Network.register(client);
 
         addListeners(client);
@@ -31,9 +32,9 @@ public class LobbyClient {
         client.sendTCP(lobby);
     }
 
-    public void joinLobby(String lobbyName, Player player)
+    public void joinLobby(int index, Player player)
     {
-        Network.JoinLobbyRequest joinRequest = new Network.JoinLobbyRequest(lobbyName, player);
+        Network.JoinLobbyRequest joinRequest = new Network.JoinLobbyRequest(index, player);
         client.sendTCP(joinRequest);
     }
 
@@ -50,6 +51,7 @@ public class LobbyClient {
                 if (object instanceof Network.CreateLobbyResponse)
                 {
                     menu.setLobbies(((Network.CreateLobbyResponse) object).getLobby());
+                    menu.refreshLobbies();
                 }
                 if(object instanceof Network.JoinLobbyResponse)
                 {

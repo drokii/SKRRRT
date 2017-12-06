@@ -44,6 +44,7 @@ public class LobbyScreen implements Screen {
     private final int BACK_BUTTON_Y = 43;
 
     private int count;
+    private int refreshCount;
 
     private RaceGame game;
     private Stage stage;
@@ -78,13 +79,13 @@ public class LobbyScreen implements Screen {
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        this.menu = new Menu(game);
+        this.menu = new Menu(game, this);
         this.dialogs = GDXDialogsSystem.install();
         this.currentPlayer = player;
 
         loadImages();
         invisibleButtons();
-        getLobbies();
+        refreshLobbies();
     }
 
     public LobbyScreen(RaceGame game, Player player, Menu menu){
@@ -97,7 +98,7 @@ public class LobbyScreen implements Screen {
 
         loadImages();
         invisibleButtons();
-        getLobbies();
+        refreshLobbies();
     }
 
     // load some images
@@ -393,8 +394,8 @@ public class LobbyScreen implements Screen {
                                             Gdx.app.postRunnable(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    menu.joinLobby(text, currentPlayer);
-                                                    menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                    menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
+                                                   // menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
                                                 }
                                             });
                                         }
@@ -413,7 +414,7 @@ public class LobbyScreen implements Screen {
                         count++;
                         if (count == 1 && columnClicked != 0) {
                             Lobby lobby = menu.getLobbies().get((columnClicked-1));
-                            menu.joinLobby(lobby.getName(), currentPlayer);
+                            menu.joinLobby((columnClicked-1), currentPlayer);
                         }
                     }
                 });
@@ -430,30 +431,33 @@ public class LobbyScreen implements Screen {
             }
 
 
-    public void getLobbies()
+    public void refreshLobbies()
     {
-        menu.getLobbiesRequest();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(menu.getLobbies().size() == 0)
-                        {
+        refreshCount++;
+        if(refreshCount == 1)
+        {
+            menu.getLobbiesRequest();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(menu.getLobbies().size() == 0)
+                            {
 
+                            }
+                            else
+                            {
+                                int i = menu.getLobbies().size() -1;
+                                labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                                refreshCount = 0;
+                            }
                         }
-                        else
-                        {
-                            int i = menu.getLobbies().size() -1;
-                            labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                            count = 0;
-                        }
-                    }
-                });
-            }
-        }).start();
+                    });
+                }
+            }).start();
+        }
     }
-
 }
 
