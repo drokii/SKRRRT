@@ -32,7 +32,7 @@ public class Lobby implements Serializable{
 
     public Player getHost(){ return host;}
 
-    public void setHost(Player mainPlayer){this.host = mainPlayer;}
+    public void setHost(Player host){this.host = host;}
 
     public void joinLobby(Player player) {
         players.add(player);

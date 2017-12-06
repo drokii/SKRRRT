@@ -27,7 +27,6 @@ public class Menu {
     }
 
     public void createLobby(String name)  {
-
         client.CreateLobby(name);
     }
 

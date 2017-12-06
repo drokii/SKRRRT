@@ -385,7 +385,7 @@ public class LobbyScreen implements Screen {
                                 }
 
                                 @Override
-                                public void confirm(String text) {
+                                public void confirm(final String text) {
                                     menu.createLobby(text);
                                     new Thread(new Runnable() {
                                         @Override
@@ -393,15 +393,12 @@ public class LobbyScreen implements Screen {
                                             Gdx.app.postRunnable(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    int i = menu.getLobbies().size() -1;
-                                                    labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                                                    count = 0;
+                                                    menu.joinLobby(text, currentPlayer);
+                                                    menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
                                                 }
                                             });
                                         }
                                     }).start();
-
-
                                 }
                             });
                             textPrompt.build().show();

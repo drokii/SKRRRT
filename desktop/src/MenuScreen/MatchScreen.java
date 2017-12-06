@@ -248,7 +248,7 @@ public class MatchScreen implements Screen{
         for(int i = 0; i < 2; i++) {
             // draw middle column (dark)
             int tempLabelY = FIRST_COLUMN_LIGHT_Y - firstColumnLight.getHeight();
-            for(int j = 1; j < 3; j++){
+            for(int j = 1; j < 4; j++){
                 playerList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
                 tempLabelY -= 120;
             }
@@ -272,7 +272,6 @@ public class MatchScreen implements Screen{
         }
 
         // draw last column (dark)
-        playerList.get(3).setPosition(COLUMNS_X + 20, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
@@ -398,6 +397,7 @@ public class MatchScreen implements Screen{
                     if(currentPlayer == lobby.getHost()){
                         menu.removeLobby(lobby);
                     }
+                    lobby.leaveLobby(currentPlayer);
                     game.setScreen(new LobbyScreen(game, currentPlayer, menu));
                 }
             }
