@@ -43,6 +43,11 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
     private Timer timerRight = new Timer(true);
     private Timer timerDown = new Timer(true);
 
+    public Timer getTimerUp(){return  timerUp;}
+    public Timer getTimerLeft(){return  timerLeft;}
+    public Timer getTimerRight(){return  timerRight;}
+    public Timer getTimerDown(){return  timerDown;}
+
     public void cancelUpTimer(){
         timerUp.cancel();
     }
@@ -135,7 +140,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                     @Override
                     public void run() {
                         if (torque > 0) {
-                            if ((torque - 0.25f) < 0 || torque < 0.25) {
+                            if (torque < 0.25) {
                                 torque = 0;
                                 kartBody.setAngularVelocity(torque);
                             } else {

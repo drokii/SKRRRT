@@ -22,6 +22,9 @@ public class LobbyServer extends Application {
     private static Server lobbyServer;
     private static Kryo kryo;
     private static List<Lobby> lobbyList;
+    public static List<Lobby> getLobbyList(){return lobbyList;}
+
+
 
     public static void main(String[] args) throws IOException, SQLException {
         lobbyList = new ArrayList<Lobby>();

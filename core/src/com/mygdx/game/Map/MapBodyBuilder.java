@@ -41,9 +41,6 @@ public class MapBodyBuilder {
             else if (object instanceof PolylineMapObject) {
                 shape = getPolyline((PolylineMapObject)object);
             }
-            else if (object instanceof CircleMapObject) {
-                shape = getCircle((CircleMapObject)object);
-            }
             else {
                 continue;
             }
@@ -60,7 +57,6 @@ public class MapBodyBuilder {
         return bodies;
     }
 
-    //Works
     private PolygonShape getRectangle(RectangleMapObject rectangleObject) {
         Rectangle rectangle = rectangleObject.getRectangle();
         PolygonShape polygon = new PolygonShape();
@@ -71,15 +67,6 @@ public class MapBodyBuilder {
                 size,
                 0.0f);
         return polygon;
-    }
-
-    private CircleShape getCircle(CircleMapObject circleObject) {
-        Circle circle = circleObject.getCircle();
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(circle.radius);
-        circleShape.setPosition(new Vector2(circle.x, circle.y));
-        System.out.println(circle.x + " " + circle.y);
-        return circleShape;
     }
 
     private PolygonShape getPolygon(PolygonMapObject polygonObject) {
