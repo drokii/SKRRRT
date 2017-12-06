@@ -445,7 +445,7 @@ public class LobbyScreen implements Screen {
                         public void run() {
                             if(menu.getLobbies().size() == 0)
                             {
-
+                                refreshCount = 0;
                             }
                             else
                             {
