@@ -1,5 +1,8 @@
 package MenuScreen;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.Networking.Lobby;
 import Menu.*;
 import com.badlogic.gdx.Gdx;
@@ -16,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MatchScreen implements Screen{
     private final int COLUMNS_X = 30;
@@ -62,6 +67,9 @@ public class MatchScreen implements Screen{
     private TextButton kickButtonInvisible;
     private TextButton settingsButtonInvisible;
     private TextButton leaveButtonInvisible;
+
+    private List<Label> playerList;
+    private Label.LabelStyle labelStyle;
 
     public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu){
         // set up
@@ -127,6 +135,28 @@ public class MatchScreen implements Screen{
         this.leaveButtonInvisible.setPosition(BUTTONS_X, LEAVE_BUTTON_Y);
         this.leaveButtonInvisible.setWidth(leaveButton.getWidth());
         this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
+
+        // load font
+        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        FTFP.size = 55;
+        BitmapFont bitmapFont = FTFG.generateFont(FTFP);
+        FTFG.dispose();
+
+        // draw and add empty lobbies
+        this.playerList = new ArrayList<Label>();
+        this.labelStyle = new Label.LabelStyle();
+        this.labelStyle.font = bitmapFont;
+        this.labelStyle.fontColor = Color.valueOf("ffffff");
+        List<Player> players = lobby.getPlayers();
+        for(int i = 0; i < players.size(); i++){
+            playerList.add(new Label(players.get(i).toString(), labelStyle));
+            stage.addActor(playerList.get(i));
+        }
+        for(int i = players.size(); i < 4; i++){
+            playerList.add(new Label("Empty", labelStyle));
+            stage.addActor(playerList.get(i));
+        }
 
         // add actors to stage
         stage.addActor(startButtonInvisible);
@@ -206,6 +236,7 @@ public class MatchScreen implements Screen{
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
 
         // draw first column (light)
+        playerList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
@@ -216,6 +247,12 @@ public class MatchScreen implements Screen{
         // draw middle columns (light & dark)
         for(int i = 0; i < 2; i++) {
             // draw middle column (dark)
+            int tempLabelY = FIRST_COLUMN_LIGHT_Y - firstColumnLight.getHeight();
+            for(int j = 1; j < 4; j++){
+                playerList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
+                tempLabelY -= 120;
+            }
+
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -357,9 +394,10 @@ public class MatchScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1){
-                    if(currentPlayer == lobby.getMainPlayer()){
+                    if(currentPlayer == lobby.getHost()){
                         menu.removeLobby(lobby);
                     }
+                    lobby.leaveLobby(currentPlayer);
                     game.setScreen(new LobbyScreen(game, currentPlayer, menu));
                 }
             }

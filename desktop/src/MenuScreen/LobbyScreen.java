@@ -44,6 +44,7 @@ public class LobbyScreen implements Screen {
     private final int BACK_BUTTON_Y = 43;
 
     private int count;
+    private int refreshCount;
 
     private RaceGame game;
     private Stage stage;
@@ -74,16 +75,17 @@ public class LobbyScreen implements Screen {
     private List<Label> labelList;
     private Label.LabelStyle labelStyle;
 
-    public LobbyScreen(RaceGame game, Player player){
+    public LobbyScreen(RaceGame game, Player player) throws IOException {
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        this.menu = new Menu();
+        this.menu = new Menu(game, this);
         this.dialogs = GDXDialogsSystem.install();
         this.currentPlayer = player;
 
         loadImages();
         invisibleButtons();
+        refreshLobbies();
     }
 
     public LobbyScreen(RaceGame game, Player player, Menu menu){
@@ -96,6 +98,7 @@ public class LobbyScreen implements Screen {
 
         loadImages();
         invisibleButtons();
+        refreshLobbies();
     }
 
     // load some images
@@ -255,6 +258,7 @@ public class LobbyScreen implements Screen {
                 labelList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
                 tempLabelY -= 120;
             }
+
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -321,35 +325,38 @@ public class LobbyScreen implements Screen {
             }
         }
 
-        // middle columns (light & dark)
-        for (int i = 0; i < 2; i++) {
-            // middle column (dark)
-            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
-                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
-                if (Gdx.input.isTouched()) {
-                    if (i == 0) {
-                        columnClicked = 2;
-                    }
-                    if (i == 1) {
-                        columnClicked = 4;
-                    }
-                }
-
-                // middle column (light)
-                if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
-                        && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
-                    if (Gdx.input.isTouched()) {
-                        if (i == 0) {
-                            columnClicked = 3;
-                        }
-                        if (i == 1) {
-                            columnClicked = 5;
+                // middle columns (light & dark)
+                for (int i = 0; i < 2; i++) {
+                    // middle column (dark)
+                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
+                        if (Gdx.input.isTouched()) {
+                            if (i == 0) {
+                                columnClicked = 2;
+                            }
+                            if (i == 1) {
+                                columnClicked = 4;
+                            }
                         }
                     }
 
-                    tempDarkY -= 241;
-                    tempLightY -= 241;
+                    // middle column (light)
+                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
+                        if (Gdx.input.isTouched()) {
+                            if (i == 0) {
+                                columnClicked = 3;
+                            }
+                            if (i == 1) {
+                                columnClicked = 5;
+                            }
+                        }
+
+                        tempDarkY -= 241;
+                        tempLightY -= 241;
+                    }
                 }
+
 
                 // last column (dark)
                 if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
@@ -358,6 +365,7 @@ public class LobbyScreen implements Screen {
                         columnClicked = 6;
                     }
                 }
+
 
                 // create button
                 createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
@@ -374,30 +382,26 @@ public class LobbyScreen implements Screen {
                             textPrompt.setTextPromptListener(new TextPromptListener() {
                                 @Override
                                 public void cancel() {
-
+                                    count = 0;
                                 }
 
                                 @Override
-                                public void confirm(String text) {
-                                    try {
-                                        menu.createLobby(text);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    int i = menu.getLobbies().size() - 1;
-                                    final Lobby lobby = menu.getLobbies().get(i);
-                                    lobby.setMainPlayer(currentPlayer);
-                                    labelList.get(i).setText(lobby.toString());
-                                    Gdx.app.postRunnable(new Runnable() {
+                                public void confirm(final String text) {
+                                    menu.createLobby(text);
+                                    new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
+                                            Gdx.app.postRunnable(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
+                                                   // menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                }
+                                            });
                                         }
-                                    });
-
+                                    }).start();
                                 }
                             });
-
                             textPrompt.build().show();
                         }
                     }
@@ -409,11 +413,9 @@ public class LobbyScreen implements Screen {
                     public void clicked(InputEvent event, float x, float y) {
                         count++;
                         if (count == 1 && columnClicked != 0) {
-                            Lobby lobby = menu.getLobbies().get(columnClicked);
-                            lobby.joinLobby(currentPlayer);
-                            game.setScreen(new MatchScreen(game, currentPlayer, lobby, menu));
+                            Lobby lobby = menu.getLobbies().get((columnClicked-1));
+                            menu.joinLobby((columnClicked-1), currentPlayer);
                         }
-
                     }
                 });
 
@@ -427,6 +429,35 @@ public class LobbyScreen implements Screen {
                     }
                 });
             }
+
+
+    public void refreshLobbies()
+    {
+        refreshCount++;
+        if(refreshCount == 1)
+        {
+            menu.getLobbiesRequest();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(menu.getLobbies().size() == 0)
+                            {
+                                refreshCount = 0;
+                            }
+                            else
+                            {
+                                int i = menu.getLobbies().size() -1;
+                                labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                                refreshCount = 0;
+                            }
+                        }
+                    });
+                }
+            }).start();
         }
     }
 }
+

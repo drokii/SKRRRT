@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.Map.Map;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +37,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     }
 
 
-    private float speed = 1f;
+    private float speed;
     private Vector2 velocity;
 
     public Vector2 getVelocity() {
@@ -44,9 +45,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     }
 
     public float angularVelocity;
-
-    private boolean driftRight = false;
-    private boolean driftLeft = false;
 
     public float getSpeed() {
         return speed;
@@ -56,7 +54,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         this.speed = speed;
     }
 
-    private float maxspeed = 300f;
+    private float maxspeed = 200f;
 
     private String name = "CarBoy";
     public String getName() {
@@ -75,6 +73,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     private boolean isOnFinishLine;
     private OrthographicCamera camera;
+    private Map map;
 
     private float torque = 0f;
 
@@ -82,11 +81,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         return torque;
     }
 
-
-
     //Constructor for Car
-    public Car(OrthographicCamera camera, World world) {
-
+    public Car(OrthographicCamera camera, World world, Map map) {
+        //Reference to map
+        this.map = map;
 
         // Reference to game Camera
         this.camera = camera;
@@ -117,6 +115,30 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         input = new CarInputProcessorHelper(this);
     }
 
+    public Car(World world) {
+        // Reference to game Camera
+        this.camera = new OrthographicCamera();
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(posX, posY);
+        this.world = world;
+        kartBody = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(16, 16);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 0.1f;
+        kartBody.createFixture(fixtureDef);
+
+        shape.dispose();
+
+        kartBody.setTransform(new Vector2(1050, 800),-1.56f);
+
+        // Reference to Input Processor
+        input = new CarInputProcessorHelper(this);
+    }
+
     @Override
     public void render() {
         input.render();
@@ -124,27 +146,18 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         batch.begin();
 
         world.step(1f / 60f, 10, 10);
-        kartBody.applyTorque(torque, true);
+        //kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        if(driftRight)
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
-        }
-        else if(driftLeft)
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() + 30);
-        }
-        else
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        }
+        batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
 
         renderer.render(world, camera.combined);
+
+        map.isOnFinnishLine(this);
     }
 
     public Body getKartBody(){
@@ -167,7 +180,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
      */
     public void driveBackward(Timer timer)
     {
-
         if(timer != null)
         {
             timer.cancel();
@@ -180,6 +192,9 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         } else if (speed > 0) {
             speed = speed * 0.98f;
             keepVelocity();
+        }
+        if(speed < -maxspeed){
+            speed = -maxspeed;
         }
     }
 
@@ -196,8 +211,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         }
         if (speed == 0 || (speed <= 0 && speed >= -3)) {
             speed = 1;
-        } else if (speed * 1.05f >= maxspeed) {
-            speed = maxspeed;
         } else if (speed < 0) {
             speed = speed * 0.95f;
             keepVelocity();
@@ -205,6 +218,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         if (speed >= 0) {
             speed = speed * 1.05f;
             keepVelocity();
+        }
+
+        if(speed > maxspeed){
+            speed = maxspeed;
         }
     }
 
@@ -214,49 +231,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
          * The method keepVelocity needs to calculate the and set the LinearVelocity for the @param kartBody
          * @param angle , the angle of the kart.
          */
-        float angle;
-        if (speed * MathUtils.sinDeg(kartSprite.getRotation()) > 0) {
+        float angle = 0;
+        if (speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle()) > 0) {
+            angle = ((speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle())) -
+                    (speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle()) * 2));
 
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
-                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
+        } else if ((speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle()) < 0)) {
 
-        } else if ((speed * MathUtils.sinDeg(kartSprite.getRotation()) < 0)) {
-
-            angle = ((speed * MathUtils.sinDeg(kartSprite.getRotation())) -
-                    (speed * MathUtils.sinDeg(kartSprite.getRotation()) * 2));
-
-        } else {
-            angle = 0;
-        }
-        velocity = new Vector2(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
-        kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(kartSprite.getRotation()));
-    }
-
-    public void DriftRight()
-    {
-        if(!driftRight)
-        {
-            stopDrift();
-            driftRight = true;
+            angle = ((speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle())) -
+                    (speed * MathUtils.sinDeg(MathUtils.radiansToDegrees * kartBody.getAngle()) * 2));
         }
 
+        velocity = new Vector2(angle, speed * MathUtils.cosDeg(MathUtils.radiansToDegrees * kartBody.getAngle()));
+        kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(MathUtils.radiansToDegrees * kartBody.getAngle()));
     }
-    public void DriftLeft()
-    {
-        if(!driftLeft)
-        {
-            stopDrift();
-            driftLeft = true;
-        }
-    }
-
-    public void stopDrift()
-    {
-        if(driftLeft)
-            driftLeft = false;
-        if(driftRight)
-            driftRight = false;
-    }
-
 }
 

@@ -9,6 +9,7 @@ import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.Network;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,32 +18,55 @@ import java.util.List;
 
 public class LobbyServer extends Application {
 
-    private static Server loginServer;
+    private static Server lobbyServer;
     private static Kryo kryo;
     private static List<Lobby> lobbyList;
 
     public static void main(String[] args) throws IOException, SQLException {
         lobbyList = new ArrayList<Lobby>();
-        loginServer = new Server();
-        loginServer.start();
-        loginServer.bind(62452, 34142);
+        lobbyServer = new Server();
+        lobbyServer.start();
+        lobbyServer.bind(62452, 62452);
 
-        kryo = loginServer.getKryo();
-        kryo.register(Network.CreateLobbyRequest.class);
-        kryo.register(Network.CreateLobbyResponse.class);
-        kryo.register(ArrayList.class);
-        addListenersToServer(loginServer);
+        Network.register(lobbyServer);
+        addListenersToServer(lobbyServer);
     }
 
-    private static void addListenersToServer(Server server) {
+    private static void addListenersToServer(final Server server) {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
                     lobbyList.add(lobby);
-                    Network.CreateLobbyResponse response = new Network.CreateLobbyResponse(lobbyList);
-                    connection.sendTCP(response);
-                    connection.close();
+                    //test
+                    server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
+                }
+                if(object instanceof Network.JoinLobbyRequest)
+                {
+                    int index = ((Network.JoinLobbyRequest) object).getIndex();
+                    lobbyList.get(index).joinLobby(((Network.JoinLobbyRequest) object).getPlayer());
+                    for(int i = 0; i< lobbyList.get(index).getIds().length; i++)
+                    {
+                        if(lobbyList.get(index).getIds()[i] == 0)
+                        {
+                            lobbyList.get(index).getIds()[i] = (connection.getID());
+                            break;
+                        }
+                    }
+                    for (Integer id: lobbyList.get(index).getIds()) {
+                        if(id == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            server.sendToTCP(id, new Network.JoinLobbyResponse(lobbyList.get(index)));
+                        }
+                    }
+                }
+                if(object instanceof Network.getLobbyRequest)
+                {
+                    connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
                 }
             }
         });
