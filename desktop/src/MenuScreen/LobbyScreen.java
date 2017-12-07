@@ -395,7 +395,7 @@ public class LobbyScreen implements Screen {
                                                 @Override
                                                 public void run() {
                                                     menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
-                                                   // menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                    //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
                                                 }
                                             });
                                         }
@@ -449,9 +449,11 @@ public class LobbyScreen implements Screen {
                             }
                             else
                             {
-                                int i = menu.getLobbies().size() -1;
-                                labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                                refreshCount = 0;
+                                for(int i = 0; i < menu.getLobbies().size(); i++)
+                                {
+                                    labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                                    refreshCount = 0;
+                                }
                             }
                         }
                     });
