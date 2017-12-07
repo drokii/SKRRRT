@@ -1,6 +1,7 @@
 package com.mygdx.game.Map;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Gameplay.CarInputProcessorHelper;
 
-public class Map extends ApplicationAdapter{
+public class Map implements ApplicationListener {
     /**
-     * The Map class is about the map. So where is the finish line, where are the collisionborders, where is the car located on the map.
+     * The Map class represents the map. So where is the finish line, where are the collisionborders, where is the car located on the map.
      * @param tiledMap the entire map
      * @param tiledMapRenderer the map renederer
      * @param collisionLayer the layer that provides the collision tiles
@@ -59,10 +60,25 @@ public class Map extends ApplicationAdapter{
     }
 
     @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
     public void render() {
         tiledMapRenderer.render();
         tiledMapRenderer.setView(camera);
         isOnFinnishLine();
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
 
-public class GameScreen implements Screen{
+public class  GameScreen implements Screen{
     RaceGame game;
     Player currentPlayer;
     GameWorld gameWorld;

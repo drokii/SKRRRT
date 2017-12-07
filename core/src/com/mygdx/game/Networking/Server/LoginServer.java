@@ -6,17 +6,13 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Networking.LoginRequest;
 import com.mygdx.game.Networking.LoginResponse;
-import javafx.application.Application;
-import javafx.stage.Stage;
-import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
-
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LoginServer extends Application {
+public class LoginServer{
 
     private static Server loginServer;
     private static Kryo kryo;
@@ -25,8 +21,7 @@ public class LoginServer extends Application {
     private static Statement stmnt;
     private static ResultSet resultSet;
 
-    public static void main(String[] args) throws IOException, SQLException {
-
+    public LoginServer() throws IOException {
         loginServer = new Server();
         loginServer.start();
         // port nummers veranderen? @pedro
@@ -36,6 +31,10 @@ public class LoginServer extends Application {
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
         addListenersToServer(loginServer);
+    }
+
+    public static void main(String[] args) throws IOException, SQLException {
+        new LoginServer();
     }
 
     private static void addListenersToServer(Server server){
@@ -69,7 +68,4 @@ public class LoginServer extends Application {
             }
         });
     }
-
-    @Override
-    public void start(Stage primaryStage) {}
 }

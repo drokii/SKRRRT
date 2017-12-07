@@ -43,11 +43,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         return velocity;
     }
 
-    public float getAngularVelocity;
-
-    private float getGetAngularVelocity() {
-        return getAngularVelocity;
-    }
+    public float angularVelocity;
 
     private boolean driftRight = false;
     private boolean driftLeft = false;

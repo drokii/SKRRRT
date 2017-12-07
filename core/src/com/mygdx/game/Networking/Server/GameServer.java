@@ -39,14 +39,7 @@ public class GameServer {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartRequest) {
 
-                    Network.GameStartRequest player = (Network.GameStartRequest) object;
-                    players.add(new PlayerInstance(player.nickname, player.speed, player.angularSpeed));
 
-                    if (players.size() >= lobbySize) {
-
-                            server.sendToAllTCP(Network.GameStartResponse.class);
-
-                    }
 
                 }
                 if (object instanceof Network.GameUpdateRequest) {

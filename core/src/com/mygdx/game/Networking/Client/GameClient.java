@@ -17,8 +17,6 @@ public class GameClient {
         client.start();
         client.connect(5000, "127.0.0.1", 54555, 54777);
 
-        Kryo kryoClient = client.getKryo();
-
         addListeners(client);
     }
 
@@ -35,14 +33,6 @@ public class GameClient {
                 }
             }
         });
-    }
-    public void sendGameStartRequest(String name, Vector2 velocity, float angularVelocity){
-        Network.GameStartRequest request = new Network.GameStartRequest();
-        request.nickname = name;
-        request.speed = velocity;
-        request.angularSpeed = angularVelocity;
-
-        client.sendTCP(request);
     }
 }
 
