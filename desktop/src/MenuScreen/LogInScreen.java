@@ -18,8 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.Networking.Client.LoginClient;
 import com.mygdx.game.RaceGame;
+import de.tomgrill.gdxdialogs.core.GDXDialogs;
+import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
+import de.tomgrill.gdxdialogs.core.dialogs.GDXButtonDialog;
 
 public class LogInScreen implements Screen{
+    private GDXDialogs dialogs;
+
     private final int TEXTFIELD_LOGINBUTTON_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int TEXTFIELD_USERNAME_Y = 500;
     private final int TEXTFIELD_PASSWORD_Y = 400;
@@ -51,6 +56,7 @@ public class LogInScreen implements Screen{
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        this.dialogs = GDXDialogsSystem.install();
 
         loadImages();
         textFields();
@@ -212,5 +218,10 @@ public class LogInScreen implements Screen{
     public void loginFailed()
     {
         count = 0;
+        GDXButtonDialog bDialog = dialogs.newDialog(GDXButtonDialog.class);
+        bDialog.setTitle("Oops");
+        bDialog.setMessage("Login failed. Please try again");
+        bDialog.addButton("Ok");
+        bDialog.build().show();
     }
 }

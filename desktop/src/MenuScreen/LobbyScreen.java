@@ -244,7 +244,8 @@ public class LobbyScreen implements Screen {
         // draw first column (light)
         labelList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())
+                || columnClicked == 1) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
         } else {
             batch.draw(firstColumnLight, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
@@ -260,7 +261,8 @@ public class LobbyScreen implements Screen {
             }
 
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
-                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
+                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())
+                    || (i == 0 && columnClicked == 2) || (i == 1 && columnClicked == 4)) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
             } else {
                 batch.draw(middleColumnDark, COLUMNS_X, tempDarkY);
@@ -268,7 +270,8 @@ public class LobbyScreen implements Screen {
 
             // draw middle column (light)
             if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
-                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
+                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())
+                    || (i == 0 && columnClicked == 3) || (i == 1 && columnClicked == 5)) {
                 batch.draw(middleColumnLightActive, COLUMNS_X, tempLightY);
             } else {
                 batch.draw(middleColumnLight, COLUMNS_X, tempLightY);
@@ -280,7 +283,8 @@ public class LobbyScreen implements Screen {
         // draw last column (dark)
         labelList.get(5).setPosition(COLUMNS_X + 20, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight()/3) - 10);
         if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())
+                || columnClicked == 6) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
         } else {
             batch.draw(lastColumnDark, COLUMNS_X, LAST_COLUMN_DARK_Y);
