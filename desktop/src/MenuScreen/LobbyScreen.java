@@ -394,8 +394,19 @@ public class LobbyScreen implements Screen {
                                     Gdx.app.postRunnable(new Runnable() {
                                         @Override
                                         public void run() {
-                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
-                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                            menu.refreshLobbies();
+                                            new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Gdx.app.postRunnable(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
+                                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                        }
+                                                    });
+                                                }
+                                            }).start();
                                         }
                                     });
                                 }
