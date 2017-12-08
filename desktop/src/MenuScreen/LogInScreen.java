@@ -21,6 +21,9 @@ import com.mygdx.game.RaceGame;
 import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 import de.tomgrill.gdxdialogs.core.dialogs.GDXButtonDialog;
+import org.lwjgl.Sys;
+
+import java.util.concurrent.ExecutorService;
 
 public class LogInScreen implements Screen{
     private GDXDialogs dialogs;
@@ -202,7 +205,14 @@ public class LogInScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 count++;
                 if(count == 1) {
-                    LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
+                    try {
+                        LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
+                    }
+                    catch (NullPointerException e)
+                    {
+                        System.out.println("server uit");
+                        //TODO: server staat niet aan msg @lucas
+                    }
                 }
             }
         });
