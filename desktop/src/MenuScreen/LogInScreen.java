@@ -123,6 +123,13 @@ public class LogInScreen implements Screen{
         stage.addActor(username);
         stage.addActor(password);
         stage.addActor(loginButtonInvisible);
+
+        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
+            }
+        });
     }
 
     @Override
@@ -134,7 +141,6 @@ public class LogInScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         logInScreen();
-        isClicked();
 
         // draw stage
         stage.act(delta);
@@ -197,27 +203,6 @@ public class LogInScreen implements Screen{
         batch.end();
     }
 
-    // check if some button is clicked
-    private void isClicked(){
-        // login button
-        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1) {
-                    try {
-                        LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
-                    }
-                    catch (NullPointerException e)
-                    {
-                        System.out.println("server uit");
-                        //TODO: server staat niet aan msg @lucas
-                    }
-                }
-            }
-        });
-    }
-
     public void loginPassed(Player player)
     {
         menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
@@ -227,7 +212,6 @@ public class LogInScreen implements Screen{
 
     public void loginFailed()
     {
-        count = 0;
         GDXButtonDialog bDialog = dialogs.newDialog(GDXButtonDialog.class);
         bDialog.setTitle("Oops");
         bDialog.setMessage("Login failed. Please try again");

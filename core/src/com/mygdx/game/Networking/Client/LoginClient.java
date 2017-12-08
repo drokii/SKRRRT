@@ -33,7 +33,7 @@ public class LoginClient {
         }
         catch(IOException e)
         {
-            throw new NullPointerException();
+            screen.loginFailed();
         }
         Kryo kryoClient = client.getKryo();
         kryoClient.register(LoginRequest.class);

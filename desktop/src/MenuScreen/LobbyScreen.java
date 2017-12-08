@@ -171,6 +171,72 @@ public class LobbyScreen implements Screen {
         stage.addActor(createButtonInvisible);
         stage.addActor(joinButtonInvisible);
         stage.addActor(backButtonInvisible);
+
+        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                    GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
+                    textPrompt.setTitle("Name");
+                    textPrompt.setMessage("Please fill in your lobby name");
+                    textPrompt.setCancelButtonLabel("Cancel");
+                    textPrompt.setConfirmButtonLabel("Create");
+
+                    textPrompt.setTextPromptListener(new TextPromptListener() {
+                        @Override
+                        public void cancel() {
+                            count = 0;
+                        }
+
+                        @Override
+                        public void confirm(final String text) {
+                            menu.createLobby(text);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Gdx.app.postRunnable(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            menu.refreshLobbies();
+                                            new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Gdx.app.postRunnable(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
+                                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                        }
+                                                    });
+                                                }
+                                            }).start();
+                                        }
+                                    });
+                                }
+                            }).start();
+                        }
+                    });
+                    textPrompt.build().show();
+            }
+        });
+
+        // join button
+        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (columnClicked != 0) {
+                    Lobby lobby = menu.getLobbies().get((columnClicked-1));
+                    menu.joinLobby((columnClicked-1), currentPlayer);
+                }
+            }
+        });
+
+        // back button
+        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new MenuScreen(game, currentPlayer));
+            }
+        });
     }
 
     @Override
@@ -369,80 +435,6 @@ public class LobbyScreen implements Screen {
                 columnClicked = 6;
             }
         }
-
-
-        // create button
-        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if (count == 1) {
-                    GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
-                    textPrompt.setTitle("Name");
-                    textPrompt.setMessage("Please fill in your lobby name");
-                    textPrompt.setCancelButtonLabel("Cancel");
-                    textPrompt.setConfirmButtonLabel("Create");
-
-                    textPrompt.setTextPromptListener(new TextPromptListener() {
-                        @Override
-                        public void cancel() {
-                            count = 0;
-                        }
-
-                        @Override
-                        public void confirm(final String text) {
-                            menu.createLobby(text);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Gdx.app.postRunnable(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            menu.refreshLobbies();
-                                            new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Gdx.app.postRunnable(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
-                                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
-                                                        }
-                                                    });
-                                                }
-                                            }).start();
-                                        }
-                                    });
-                                }
-                            }).start();
-                        }
-                    });
-                    textPrompt.build().show();
-                }
-            }
-        });
-
-        // join button
-        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if (count == 1 && columnClicked != 0) {
-                    Lobby lobby = menu.getLobbies().get((columnClicked-1));
-                    menu.joinLobby((columnClicked-1), currentPlayer);
-                }
-            }
-        });
-
-        // back button
-        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if (count == 1)
-                    game.setScreen(new MenuScreen(game, currentPlayer));
-            }
-        });
     }
 
 

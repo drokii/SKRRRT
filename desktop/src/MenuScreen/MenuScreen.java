@@ -96,6 +96,38 @@ public class MenuScreen implements Screen {
         stage.addActor(playButtonInvisible);
         stage.addActor(settingsButtonInvisible);
         stage.addActor(exitButtonInvisible);
+
+        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
+                    try {
+                        game.setScreen(new LobbyScreen(game, currentPlayer));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
+
+        // settings button
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+//                count++;
+//                if(count == 1)
+            }
+        });
+
+        // exit button
+        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
+                    Gdx.app.exit();
+            }
+        });
     }
 
     @Override
@@ -106,7 +138,6 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         menuScreen();
-        isClicked();
 
         // draw stage
         stage.act(delta);
@@ -181,41 +212,5 @@ public class MenuScreen implements Screen {
         // draw yellow car
         batch.draw(yellowCar, (1440 - 398) - 100, 0);
         batch.end();
-    }
-
-    // check if some button is clicked
-    private void isClicked(){
-        // playbutton
-        playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1)
-                    try {
-                        game.setScreen(new LobbyScreen(game, currentPlayer));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-            }
-        });
-
-        // settings button
-        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
-            }
-        });
-
-        // exit button
-        exitButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1)
-                    Gdx.app.exit();
-            }
-        });
     }
 }
