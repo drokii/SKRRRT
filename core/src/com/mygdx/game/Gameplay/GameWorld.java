@@ -85,7 +85,7 @@ public class GameWorld implements ApplicationListener {
         //Client
         client = new GameClient();
 
-        // Create batch
+        // Create batch 
         batch = new SpriteBatch();
         deltaTime = 0;
 

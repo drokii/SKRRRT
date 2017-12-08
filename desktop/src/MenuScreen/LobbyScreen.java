@@ -325,110 +325,110 @@ public class LobbyScreen implements Screen {
             }
         }
 
-                // middle columns (light & dark)
-                for (int i = 0; i < 2; i++) {
-                    // middle column (dark)
-                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
-                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
-                        if (Gdx.input.isTouched()) {
-                            if (i == 0) {
-                                columnClicked = 2;
-                            }
-                            if (i == 1) {
-                                columnClicked = 4;
-                            }
-                        }
+        // middle columns (light & dark)
+        for (int i = 0; i < 2; i++) {
+            // middle column (dark)
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
+                if (Gdx.input.isTouched()) {
+                    if (i == 0) {
+                        columnClicked = 2;
                     }
-
-                    // middle column (light)
-                    if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
-                            && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
-                        if (Gdx.input.isTouched()) {
-                            if (i == 0) {
-                                columnClicked = 3;
-                            }
-                            if (i == 1) {
-                                columnClicked = 5;
-                            }
-                        }
-
-                        tempDarkY -= 241;
-                        tempLightY -= 241;
+                    if (i == 1) {
+                        columnClicked = 4;
                     }
                 }
+            }
 
-
-                // last column (dark)
-                if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
-                        && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
-                    if (Gdx.input.isTouched()) {
-                        columnClicked = 6;
+            // middle column (light)
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+                    && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
+                if (Gdx.input.isTouched()) {
+                    if (i == 0) {
+                        columnClicked = 3;
+                    }
+                    if (i == 1) {
+                        columnClicked = 5;
                     }
                 }
+            }
+
+            tempDarkY -= 241;
+            tempLightY -= 241;
+        }
 
 
-                // create button
-                createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        count++;
-                        if (count == 1) {
-                            GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
-                            textPrompt.setTitle("Name");
-                            textPrompt.setMessage("Please fill in your lobby name");
-                            textPrompt.setCancelButtonLabel("Cancel");
-                            textPrompt.setConfirmButtonLabel("Create");
+        // last column (dark)
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
+            if (Gdx.input.isTouched()) {
+                columnClicked = 6;
+            }
+        }
 
-                            textPrompt.setTextPromptListener(new TextPromptListener() {
+
+        // create button
+        createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if (count == 1) {
+                    GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
+                    textPrompt.setTitle("Name");
+                    textPrompt.setMessage("Please fill in your lobby name");
+                    textPrompt.setCancelButtonLabel("Cancel");
+                    textPrompt.setConfirmButtonLabel("Create");
+
+                    textPrompt.setTextPromptListener(new TextPromptListener() {
+                        @Override
+                        public void cancel() {
+                            count = 0;
+                        }
+
+                        @Override
+                        public void confirm(final String text) {
+                            menu.createLobby(text);
+                            new Thread(new Runnable() {
                                 @Override
-                                public void cancel() {
-                                    count = 0;
-                                }
-
-                                @Override
-                                public void confirm(final String text) {
-                                    menu.createLobby(text);
-                                    new Thread(new Runnable() {
+                                public void run() {
+                                    Gdx.app.postRunnable(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Gdx.app.postRunnable(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
-                                                    //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
-                                                }
-                                            });
+                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
+                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
                                         }
-                                    }).start();
+                                    });
                                 }
-                            });
-                            textPrompt.build().show();
+                            }).start();
                         }
-                    }
-                });
-
-                // join button
-                joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        count++;
-                        if (count == 1 && columnClicked != 0) {
-                            Lobby lobby = menu.getLobbies().get((columnClicked-1));
-                            menu.joinLobby((columnClicked-1), currentPlayer);
-                        }
-                    }
-                });
-
-                // back button
-                backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        count++;
-                        if (count == 1)
-                            game.setScreen(new MenuScreen(game, currentPlayer));
-                    }
-                });
+                    });
+                    textPrompt.build().show();
+                }
             }
+        });
+
+        // join button
+        joinButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if (count == 1 && columnClicked != 0) {
+                    Lobby lobby = menu.getLobbies().get((columnClicked-1));
+                    menu.joinLobby((columnClicked-1), currentPlayer);
+                }
+            }
+        });
+
+        // back button
+        backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if (count == 1)
+                    game.setScreen(new MenuScreen(game, currentPlayer));
+            }
+        });
+    }
 
 
     public void refreshLobbies()
