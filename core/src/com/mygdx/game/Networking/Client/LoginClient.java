@@ -33,7 +33,7 @@ public class LoginClient {
         }
         catch(IOException e)
         {
-            e.printStackTrace();
+            screen.loginFailed();
         }
         Kryo kryoClient = client.getKryo();
         kryoClient.register(LoginRequest.class);
@@ -42,6 +42,7 @@ public class LoginClient {
         LoginRequest request = new LoginRequest(username, password);
         client.sendTCP(request);
         addListeners(client);
+
     }
 
     public LoginClient(String username, String password)

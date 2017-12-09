@@ -21,9 +21,11 @@ public class LobbyServer extends Application {
     private static Server lobbyServer;
     private static Kryo kryo;
     private static List<Lobby> lobbyList;
+    private static int[] totalCon;
 
     public static void main(String[] args) throws IOException, SQLException {
         lobbyList = new ArrayList<Lobby>();
+        totalCon = new int[50];
         lobbyServer = new Server();
         lobbyServer.start();
         lobbyServer.bind(62452, 62452);
@@ -38,8 +40,11 @@ public class LobbyServer extends Application {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
                     lobbyList.add(lobby);
-                    //test
-                    server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
+                    for (int id: totalCon) {
+                        if(id != 0)
+                        server.sendToTCP(id, new Network.CreateLobbyResponse(lobbyList));
+                    }
+                    //server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
                 }
                 if(object instanceof Network.JoinLobbyRequest)
                 {
@@ -67,6 +72,13 @@ public class LobbyServer extends Application {
                 if(object instanceof Network.getLobbyRequest)
                 {
                     connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
+                    for (int i : totalCon) {
+                        if (totalCon[i] == 0)
+                        {
+                            totalCon[i] = connection.getID();
+                            break;
+                        }
+                    }
                 }
             }
         });

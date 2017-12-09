@@ -18,8 +18,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.Networking.Client.LoginClient;
 import com.mygdx.game.RaceGame;
+import de.tomgrill.gdxdialogs.core.GDXDialogs;
+import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
+import de.tomgrill.gdxdialogs.core.dialogs.GDXButtonDialog;
+import org.lwjgl.Sys;
+
+import java.util.concurrent.ExecutorService;
 
 public class LogInScreen implements Screen{
+    private GDXDialogs dialogs;
+
     private final int TEXTFIELD_LOGINBUTTON_X = (Gdx.graphics.getWidth()/2) - (322/2);
     private final int TEXTFIELD_USERNAME_Y = 500;
     private final int TEXTFIELD_PASSWORD_Y = 400;
@@ -51,6 +59,7 @@ public class LogInScreen implements Screen{
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        this.dialogs = GDXDialogsSystem.install();
 
         loadImages();
         textFields();
@@ -114,6 +123,13 @@ public class LogInScreen implements Screen{
         stage.addActor(username);
         stage.addActor(password);
         stage.addActor(loginButtonInvisible);
+
+        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
+            }
+        });
     }
 
     @Override
@@ -125,7 +141,6 @@ public class LogInScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         logInScreen();
-        isClicked();
 
         // draw stage
         stage.act(delta);
@@ -188,29 +203,19 @@ public class LogInScreen implements Screen{
         batch.end();
     }
 
-    // check if some button is clicked
-    private void isClicked(){
-        // login button
-        loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1) {
-                    LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
-                }
-            }
-        });
-    }
-
     public void loginPassed(Player player)
     {
         menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
-        menuSound.play();
+        //menuSound.play();
         game.setScreen(new MenuScreen(game, player));
     }
 
     public void loginFailed()
     {
-        count = 0;
+        GDXButtonDialog bDialog = dialogs.newDialog(GDXButtonDialog.class);
+        bDialog.setTitle("Oops");
+        bDialog.setMessage("Login failed. Please try again");
+        bDialog.addButton("Ok");
+        bDialog.build().show();
     }
 }

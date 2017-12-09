@@ -85,7 +85,7 @@ public class GameWorld implements ApplicationListener {
         //Client
         client = new GameClient();
 
-        // Create batch
+        // Create batch 
         batch = new SpriteBatch();
         deltaTime = 0;
 
@@ -103,7 +103,7 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void create() {
-        client.sendGameStartRequest(car.getName(), null,0f);
+        //client.sendGameStartRequest(car.getName(), null,0f);
 
     }
 
