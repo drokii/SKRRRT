@@ -37,6 +37,9 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     }
 
 
+    private boolean driftRight = false;
+    private boolean driftLeft = false;
+
     private float speed;
     private Vector2 velocity;
 
@@ -150,7 +153,19 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        if(driftRight)
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
+        }
+        else if(driftLeft)
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() + 30);
+        }
+        else
+        {
+            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
+        }
+        //batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
@@ -244,6 +259,32 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         velocity = new Vector2(angle, speed * MathUtils.cosDeg(MathUtils.radiansToDegrees * kartBody.getAngle()));
         kartBody.setLinearVelocity(angle, speed * MathUtils.cosDeg(MathUtils.radiansToDegrees * kartBody.getAngle()));
+    }
+
+    public void driftRight()
+    {
+        if(!driftRight)
+        {
+            stopDrift();
+            driftRight = true;
+        }
+
+    }
+    public void driftLeft()
+    {
+        if(!driftLeft)
+        {
+            stopDrift();
+            driftLeft = true;
+        }
+    }
+
+    public void stopDrift()
+    {
+        if(driftLeft)
+            driftLeft = false;
+        if(driftRight)
+            driftRight = false;
     }
 }
 
