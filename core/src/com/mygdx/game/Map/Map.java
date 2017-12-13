@@ -60,7 +60,7 @@ public class Map implements ApplicationListener{
 
     public void createForTesting(){
         TiledMap tiledMap;
-        tiledMap = new TmxMapLoader().load("core\\assets\\Map\\SkrrrtMap.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\Map\\BigSkrrrt.tmx");
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
         finishLayer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
