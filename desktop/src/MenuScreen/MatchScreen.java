@@ -163,6 +163,54 @@ public class MatchScreen implements Screen{
         stage.addActor(kickButtonInvisible);
         stage.addActor(settingsButtonInvisible);
         stage.addActor(leaveButtonInvisible);
+
+        // start button
+        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1)
+                    try {
+                        game.setScreen(new GameScreen(game, currentPlayer));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
+
+        // kick button
+        kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+//                count++;
+//                if(count == 1)
+            }
+        });
+
+
+        // settings button
+        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+//                count++;
+//                if(count == 1)
+            }
+        });
+
+        // leave button
+        leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                count++;
+                if(count == 1){
+                    if(currentPlayer == lobby.getHost()){
+                        menu.removeLobby(lobby);
+                    }
+                    lobby.leaveLobby(currentPlayer);
+                    game.setScreen(new LobbyScreen(game, currentPlayer, menu));
+                }
+            }
+        });
     }
 
     @Override
@@ -354,53 +402,5 @@ public class MatchScreen implements Screen{
                 //
             }
         }
-
-        // start button
-        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1)
-                    try {
-                        game.setScreen(new GameScreen(game, currentPlayer));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-            }
-        });
-
-        // kick button
-        kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
-            }
-        });
-
-
-        // settings button
-        settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
-            }
-        });
-
-        // leave button
-        leaveButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1){
-                    if(currentPlayer == lobby.getHost()){
-                        menu.removeLobby(lobby);
-                    }
-                    lobby.leaveLobby(currentPlayer);
-                    game.setScreen(new LobbyScreen(game, currentPlayer, menu));
-                }
-            }
-        });
     }
 }
