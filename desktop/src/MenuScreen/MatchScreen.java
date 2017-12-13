@@ -22,14 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchScreen implements Screen{
+public class MatchScreen implements Screen {
     private final int COLUMNS_X = 30;
     private final int FIRST_COLUMN_LIGHT_Y = 650;
     private final int MIDDLE_COLUMN_DARK_Y = 532;
     private final int MIDDLE_COLUMN_LIGHT_Y = 409;
     private final int LAST_COLUMN_DARK_Y = 43;
 
-    private int count= 0;
+    private int count = 0;
 
     private final int BUTTONS_X = 1223;
     private final int START_BUTTON_Y = 731;
@@ -71,7 +71,7 @@ public class MatchScreen implements Screen{
     private List<Label> playerList;
     private Label.LabelStyle labelStyle;
 
-    public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu){
+    public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu) {
         // set up
         this.game = game;
         this.stage = new Stage();
@@ -85,7 +85,7 @@ public class MatchScreen implements Screen{
     }
 
     // load some images
-    private void loadImages(){
+    private void loadImages() {
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\SkrrrtSmall.png");
         this.firstColumnLight = new Texture("core\\assets\\Menu\\FirstColumnLight.png");
@@ -107,7 +107,7 @@ public class MatchScreen implements Screen{
     }
 
     // draw some invisibleButtons
-    private void invisibleButtons(){
+    private void invisibleButtons() {
         // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
@@ -149,11 +149,11 @@ public class MatchScreen implements Screen{
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
         List<Player> players = lobby.getPlayers();
-        for(int i = 0; i < players.size(); i++){
+        for (int i = 0; i < players.size(); i++) {
             playerList.add(new Label(players.get(i).toString(), labelStyle));
             stage.addActor(playerList.get(i));
         }
-        for(int i = players.size(); i < 4; i++){
+        for (int i = players.size(); i < 4; i++) {
             playerList.add(new Label("Empty", labelStyle));
             stage.addActor(playerList.get(i));
         }
@@ -168,13 +168,11 @@ public class MatchScreen implements Screen{
         startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1)
-                    try {
-                        game.setScreen(new GameScreen(game, currentPlayer));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    game.setScreen(new GameScreen(game, currentPlayer));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -182,8 +180,6 @@ public class MatchScreen implements Screen{
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
             }
         });
 
@@ -192,8 +188,6 @@ public class MatchScreen implements Screen{
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                count++;
-//                if(count == 1)
             }
         });
 
@@ -202,8 +196,8 @@ public class MatchScreen implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
-                if(count == 1){
-                    if(currentPlayer == lobby.getHost()){
+                if (count == 1) {
+                    if (currentPlayer == lobby.getHost()) {
                         menu.removeLobby(lobby);
                     }
                     lobby.leaveLobby(currentPlayer);
@@ -273,7 +267,7 @@ public class MatchScreen implements Screen{
     }
 
     // draw match screen
-    private void matchScreen(){
+    private void matchScreen() {
         batch.begin();
 
         // draw title
@@ -284,8 +278,8 @@ public class MatchScreen implements Screen{
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
 
         // draw first column (light)
-        playerList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
+        playerList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight() / 3) - 10);
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
         } else {
@@ -293,15 +287,15 @@ public class MatchScreen implements Screen{
         }
 
         // draw middle columns (light & dark)
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             // draw middle column (dark)
             int tempLabelY = FIRST_COLUMN_LIGHT_Y - firstColumnLight.getHeight();
-            for(int j = 1; j < 4; j++){
-                playerList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
+            for (int j = 1; j < 4; j++) {
+                playerList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight() / 3));
                 tempLabelY -= 120;
             }
 
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
             } else {
@@ -309,18 +303,19 @@ public class MatchScreen implements Screen{
             }
 
             // draw middle column (light)
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
                 batch.draw(middleColumnLightActive, COLUMNS_X, tempLightY);
             } else {
                 batch.draw(middleColumnLight, COLUMNS_X, tempLightY);
             }
 
-            tempDarkY -= 241; tempLightY -= 241;
+            tempDarkY -= 241;
+            tempLightY -= 241;
         }
 
         // draw last column (dark)
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
         } else {
@@ -328,7 +323,7 @@ public class MatchScreen implements Screen{
         }
 
         // draw start button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + startButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + startButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > START_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (START_BUTTON_Y + startButton.getHeight())) {
             batch.draw(startButtonActive, BUTTONS_X, START_BUTTON_Y);
         } else {
@@ -336,7 +331,7 @@ public class MatchScreen implements Screen{
         }
 
         // draw kick button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + kickButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + kickButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > KICK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (KICK_BUTTON_Y + kickButton.getHeight())) {
             batch.draw(kickButtonActive, BUTTONS_X, KICK_BUTTON_Y);
         } else {
@@ -344,7 +339,7 @@ public class MatchScreen implements Screen{
         }
 
         // draw settings button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + settingsButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + settingsButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > SETTINGS_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (SETTINGS_BUTTON_Y + settingsButton.getHeight())) {
             batch.draw(settingsButtonActive, BUTTONS_X, SETTINGS_BUTTON_Y);
         } else {
@@ -352,7 +347,7 @@ public class MatchScreen implements Screen{
         }
 
         // draw leave button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + leaveButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + leaveButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LEAVE_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LEAVE_BUTTON_Y + leaveButton.getHeight())) {
             batch.draw(leaveButtonActive, BUTTONS_X, LEAVE_BUTTON_Y);
         } else {
@@ -363,42 +358,43 @@ public class MatchScreen implements Screen{
     }
 
     // check if some button is clicked
-    private void isClicked(){
+    private void isClicked() {
         int tempDarkY = MIDDLE_COLUMN_DARK_Y;
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
         // first column (light)
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())) {
-            if(Gdx.input.isTouched()){
+            if (Gdx.input.isTouched()) {
                 //
             }
         }
 
         // middle columns (light & dark)
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             // middle column (dark)
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())) {
-                if(Gdx.input.isTouched()){
+                if (Gdx.input.isTouched()) {
                     //
                 }
             }
 
             // middle column (light)
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())) {
-                if(Gdx.input.isTouched()){
+                if (Gdx.input.isTouched()) {
                     //
                 }
             }
 
-            tempDarkY -= 241; tempLightY -= 241;
+            tempDarkY -= 241;
+            tempLightY -= 241;
         }
 
         // last column (dark)
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())) {
-            if(Gdx.input.isTouched()){
+            if (Gdx.input.isTouched()) {
                 //
             }
         }
