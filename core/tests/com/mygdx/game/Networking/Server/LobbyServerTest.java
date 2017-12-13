@@ -38,6 +38,7 @@ public class LobbyServerTest {
     public void tests(){
         createLobbyTest();
         joinLobbyTest();
+        getLobbyRequestTest();
     }
 
     public void createLobbyTest(){

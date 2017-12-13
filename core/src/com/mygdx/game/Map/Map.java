@@ -49,7 +49,7 @@ public class Map implements ApplicationListener{
     @Override
     public void create() {
         TiledMap tiledMap;
-        tiledMap = new TmxMapLoader().load("core\\assets\\Map\\SkrrrtMap.tmx");
+        tiledMap = new TmxMapLoader().load("core\\assets\\Map\\BigSkrrrt.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");

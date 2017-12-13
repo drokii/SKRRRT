@@ -111,7 +111,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1050, 800),-1.56f);
+        //kartBody.setTransform(new Vector2(1050, 800),-1.56f);
+        kartBody.setTransform(new Vector2(1700, 600),-1.56f);
 
         //renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor

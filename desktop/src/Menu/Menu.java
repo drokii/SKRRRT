@@ -25,6 +25,12 @@ public class Menu {
         this.screen = screen;
     }
 
+    public Menu(RaceGame game) throws IOException {
+        client = new LobbyClient(this);
+        this.lobbies = new ArrayList<Lobby>();
+        this.game = game;
+    }
+
     public List<Lobby> getLobbies(){
         return lobbies;
     }
