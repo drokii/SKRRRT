@@ -93,7 +93,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         // Reference to game Camera
         this.camera = camera;
         batch = new SpriteBatch();
-        kart = new Texture("core\\assets\\CarYellow.png");
+        kart = new Texture("core\\assets\\MiniCar.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
 
