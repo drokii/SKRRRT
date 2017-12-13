@@ -29,7 +29,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     private Body kartBody;
     private float posX, posY;
 
-    private Box2DDebugRenderer renderer;
+    //private Box2DDebugRenderer renderer;
 
     private CarInputProcessorHelper input;
     public CarInputProcessorHelper getInput() {
@@ -110,7 +110,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         kartBody.setTransform(new Vector2(1050, 800),-1.56f);
 
-        renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+        //renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
@@ -155,7 +155,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         camera.update();
         batch.end();
 
-        renderer.render(world, camera.combined);
+        //renderer.render(world, camera.combined);
 
         map.isOnFinnishLine(this);
     }
