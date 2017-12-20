@@ -80,6 +80,7 @@ public class Menu {
     public void setReadyPlayers(List<Player> players)
     {
         currentLobby.setReadyPlayers(players);
+        matchScreen.getCurrentLabelPlayer(currentLobby.getReadyPlayers());
     }
 
     public void getLobbiesRequest()
