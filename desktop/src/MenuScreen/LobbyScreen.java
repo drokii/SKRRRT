@@ -68,7 +68,6 @@ public class LobbyScreen implements Screen {
     private Texture refreshButtonActive;
     private Texture backButton;
     private Texture backButtonActive;
-    private Texture playerReady;
 
     private TextButton.TextButtonStyle textButtonStyle;
     private TextButton createButtonInvisible;
@@ -125,7 +124,6 @@ public class LobbyScreen implements Screen {
         this.refreshButtonActive = new Texture("core\\assets\\Menu\\RefreshButtonActive.png");
         this.backButton = new Texture("core\\assets\\Menu\\BackButton.png");
         this.backButtonActive = new Texture("core\\assets\\Menu\\BackButtonActive.png");
-        this.playerReady = new Texture("core\\assets\\Menu\\PlayerReady.png");
     }
 
     // draw some invisible buttons
