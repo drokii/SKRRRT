@@ -30,6 +30,8 @@ public class Network {
         kryo.register(JoinLobbyRequest.class);
         kryo.register(JoinLobbyResponse.class);
         kryo.register(getLobbyRequest.class);
+        kryo.register(playerReadyRequest.class);
+        kryo.register(playerReadyResponse.class);
         kryo.register(Map.class);
         kryo.register(Player.class);
         kryo.register(ESkin.class);
@@ -39,19 +41,12 @@ public class Network {
         kryo.register(Vector2.class);
         kryo.register(int[].class);
         kryo.register(float.class);
-
     }
 
     static public class LoginRequest{
 
     }
     static public class LoginResponse{
-
-    }
-    static public class RetrieveLobbiesRequest{
-
-    }
-    public class RetrieveLobbiesResponse{
 
     }
 
@@ -157,6 +152,56 @@ public class Network {
 
         public void setLobby(List<Lobby> lobbyList) {
             this.lobbyList = lobbyList;
+        }
+    }
+
+    public static class playerReadyRequest{
+        private int index;
+        private Player player;
+
+        public playerReadyRequest()
+        {}
+
+        public playerReadyRequest(int index, Player player)
+        {
+            this.index = index;
+            this.player = player;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public void setPlayer(Player player) {
+            this.player = player;
+        }
+    }
+
+    public static class playerReadyResponse{
+        private List<Player> readyPlayers;
+
+        public playerReadyResponse()
+        {}
+
+        public playerReadyResponse(List<Player> playerList)
+        {
+            readyPlayers = playerList;
+        }
+
+        public List<Player> getReadyPlayers() {
+            return readyPlayers;
+        }
+
+        public void setReadyPlayers(List<Player> readyPlayers) {
+            this.readyPlayers = readyPlayers;
         }
     }
 

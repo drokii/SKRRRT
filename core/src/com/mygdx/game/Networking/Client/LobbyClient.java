@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
 import com.mygdx.game.RaceGame;
+import sun.nio.ch.Net;
 
 import java.io.IOException;
 
@@ -46,7 +47,8 @@ public class LobbyClient {
 
     public void playerReady(int index, Player player)
     {
-
+        Network.playerReadyRequest readyRequest = new Network.playerReadyRequest(index, player);
+        client.sendTCP(readyRequest);
     }
 
 
@@ -62,6 +64,10 @@ public class LobbyClient {
                 {
                     Lobby lobby = ((Network.JoinLobbyResponse) object).getLobby();
                     menu.setLobbyPlayers(lobby);
+                }
+                if(object instanceof Network.playerReadyResponse)
+                {
+                    menu.setReadyPlayers(((Network.playerReadyResponse) object).getReadyPlayers());
                 }
             }
         });

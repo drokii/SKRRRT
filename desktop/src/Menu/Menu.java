@@ -17,6 +17,7 @@ public class Menu {
     private RaceGame game;
     private Player currentPlayer;
     private LobbyScreen screen;
+    private Lobby currentLobby;
 
     public Menu(RaceGame game, LobbyScreen screen) throws IOException {
         client = new LobbyClient(this);
@@ -51,12 +52,13 @@ public class Menu {
     public void joinLobby(int index, Player player)
     {
         currentPlayer = player;
+        currentLobby = lobbies.get(index);
         client.joinLobby(index, player);
     }
 
     public void playerReady(int index)
     {
-        //client.
+        client.playerReady(index, currentPlayer);
     }
 
     public void setLobbyPlayers(final Lobby lobby)
@@ -72,6 +74,11 @@ public class Menu {
                 });
             }
         }).start();
+    }
+
+    public void setReadyPlayers(List<Player> players)
+    {
+        currentLobby.setReadyPlayers(players);
     }
 
     public void getLobbiesRequest()
