@@ -53,17 +53,18 @@ public class MatchScreen implements Screen {
     private Texture middleColumnLightActive;
     private Texture lastColumnDark;
     private Texture lastColumnDarkActive;
-    private Texture startButton;
-    private Texture startButtonActive;
+    private Texture readyButton;
+    private Texture readyButtonActive;
     private Texture kickButton;
     private Texture kickButtonActive;
     private Texture settingsButton;
     private Texture settingsButtonActive;
     private Texture leaveButton;
     private Texture leaveButtonActive;
+    private Texture playerReady;
 
     private TextButton.TextButtonStyle textButtonStyle;
-    private TextButton startButtonInvisible;
+    private TextButton readyButtonInvisible;
     private TextButton kickButtonInvisible;
     private TextButton settingsButtonInvisible;
     private TextButton leaveButtonInvisible;
@@ -96,14 +97,15 @@ public class MatchScreen implements Screen {
         this.middleColumnLightActive = new Texture("core\\assets\\Menu\\MiddleColumnLightActive.png");
         this.lastColumnDark = new Texture("core\\assets\\Menu\\LastColumnDark.png");
         this.lastColumnDarkActive = new Texture("core\\assets\\Menu\\LastColumnDarkActive.png");
-        this.startButton = new Texture("core\\assets\\Menu\\StartButton.png");
-        this.startButtonActive = new Texture("core\\assets\\Menu\\StartButtonActive.png");
+        this.readyButton = new Texture("core\\assets\\Menu\\ReadyButton.png");
+        this.readyButtonActive = new Texture("core\\assets\\Menu\\ReadyButtonActive.png");
         this.kickButton = new Texture("core\\assets\\Menu\\KickButton.png");
         this.kickButtonActive = new Texture("core\\assets\\Menu\\KickButtonActive.png");
         this.settingsButton = new Texture("core\\assets\\Menu\\SettingsButtonSmall.png");
         this.settingsButtonActive = new Texture("core\\assets\\Menu\\SettingsButtonSmallActive.png");
         this.leaveButton = new Texture("core\\assets\\Menu\\LeaveButton.png");
         this.leaveButtonActive = new Texture("core\\assets\\Menu\\LeaveButtonActive.png");
+        this.playerReady = new Texture("core\\assets\\Menu\\PlayerReady.png");
     }
 
     // draw some invisibleButtons
@@ -113,10 +115,10 @@ public class MatchScreen implements Screen {
         this.textButtonStyle.font = new BitmapFont();
 
         // draw invisible start button
-        this.startButtonInvisible = new TextButton("", textButtonStyle);
-        this.startButtonInvisible.setPosition(BUTTONS_X, START_BUTTON_Y);
-        this.startButtonInvisible.setWidth(startButton.getWidth());
-        this.startButtonInvisible.setHeight(startButton.getHeight());
+        this.readyButtonInvisible = new TextButton("", textButtonStyle);
+        this.readyButtonInvisible.setPosition(BUTTONS_X, START_BUTTON_Y);
+        this.readyButtonInvisible.setWidth(readyButton.getWidth());
+        this.readyButtonInvisible.setHeight(readyButton.getHeight());
 
         // draw invisible kick button
         this.kickButtonInvisible = new TextButton("", textButtonStyle);
@@ -159,20 +161,21 @@ public class MatchScreen implements Screen {
         }
 
         // add actors to stage
-        stage.addActor(startButtonInvisible);
+        stage.addActor(readyButtonInvisible);
         stage.addActor(kickButtonInvisible);
         stage.addActor(settingsButtonInvisible);
         stage.addActor(leaveButtonInvisible);
 
         // start button
-        startButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+        readyButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
-                    game.setScreen(new GameScreen(game, currentPlayer));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, playerlist.get(currentPlayer));
+//                try {
+//                    game.setScreen(new GameScreen(game, currentPlayer));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
@@ -206,6 +209,11 @@ public class MatchScreen implements Screen {
             }
         });
     }
+
+//    public Label getCurrentLabelPlayer(){
+//        foreach()
+//        return playerList.get(currentPlayer.getName());
+//    }
 
     @Override
     public void show() {
@@ -254,8 +262,8 @@ public class MatchScreen implements Screen {
         middleColumnLightActive.dispose();
         lastColumnDark.dispose();
         lastColumnDarkActive.dispose();
-        startButton.dispose();
-        startButtonActive.dispose();
+        readyButton.dispose();
+        readyButtonActive.dispose();
         kickButton.dispose();
         kickButtonActive.dispose();
         settingsButton.dispose();
@@ -323,11 +331,11 @@ public class MatchScreen implements Screen {
         }
 
         // draw start button
-        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + startButton.getWidth())
-                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > START_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (START_BUTTON_Y + startButton.getHeight())) {
-            batch.draw(startButtonActive, BUTTONS_X, START_BUTTON_Y);
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + readyButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > START_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (START_BUTTON_Y + readyButton.getHeight())) {
+            batch.draw(readyButtonActive, BUTTONS_X, START_BUTTON_Y);
         } else {
-            batch.draw(startButton, BUTTONS_X, START_BUTTON_Y);
+            batch.draw(readyButton, BUTTONS_X, START_BUTTON_Y);
         }
 
         // draw kick button
