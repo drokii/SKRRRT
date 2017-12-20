@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.Network;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sun.nio.ch.Net;
@@ -59,11 +60,7 @@ public class LobbyServer extends Application {
                         }
                     }
                     for (Integer id: lobbyList.get(index).getIds()) {
-                        if(id == 0)
-                        {
-
-                        }
-                        else
+                        if(id != 0)
                         {
                             server.sendToTCP(id, new Network.JoinLobbyResponse(lobbyList.get(index)));
                         }
@@ -77,6 +74,24 @@ public class LobbyServer extends Application {
                         {
                             totalCon[i] = connection.getID();
                             break;
+                        }
+                    }
+                }
+                if(object instanceof Network.playerReadyRequest)
+                {
+                    int index = ((Network.playerReadyRequest) object).getIndex();
+                    lobbyList.get(index).getReadyPlayers().add(((Network.playerReadyRequest) object).getPlayer());
+                    if(lobbyList.get(index).getReadyPlayers().size() == lobbyList.get(index).getPlayers().size())
+                    {
+                        //TODO: allreadyresponse
+                    }
+                    else
+                    {
+                        for (Integer id: lobbyList.get(index).getIds()) {
+                            if(id != 0)
+                            {
+                                server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                            }
                         }
                     }
                 }
