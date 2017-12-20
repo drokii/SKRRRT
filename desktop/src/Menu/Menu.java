@@ -56,9 +56,9 @@ public class Menu {
         client.joinLobby(index, player);
     }
 
-    public void playerReady(int index)
+    public void playerReady(Lobby lobby)
     {
-        client.playerReady(index, currentPlayer);
+        client.playerReady(lobby, currentPlayer);
     }
 
     public void setLobbyPlayers(final Lobby lobby)

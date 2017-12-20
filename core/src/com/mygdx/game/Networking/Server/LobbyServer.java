@@ -79,21 +79,21 @@ public class LobbyServer extends Application {
                 }
                 if(object instanceof Network.playerReadyRequest)
                 {
-                    int index = ((Network.playerReadyRequest) object).getIndex();
-                    lobbyList.get(index).getReadyPlayers().add(((Network.playerReadyRequest) object).getPlayer());
-                    if(lobbyList.get(index).getReadyPlayers().size() == lobbyList.get(index).getPlayers().size())
-                    {
+                    //Lobby lobby = ;
+                    //lobbyList.get(index).getReadyPlayers().add(((Network.playerReadyRequest) object).getPlayer());
+                    //if(lobbyList.get(index).getReadyPlayers().size() == lobbyList.get(index).getPlayers().size())
+                    //{
                         //TODO: allreadyresponse
-                    }
-                    else
-                    {
-                        for (Integer id: lobbyList.get(index).getIds()) {
-                            if(id != 0)
-                            {
-                                server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
-                            }
-                        }
-                    }
+                    //}
+                    //else
+                    //{
+                    //for (Integer id: lobbyList.get(index).getIds()) {
+                    //        if(id != 0)
+                    //        {
+                    //            server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                    //        }
+                    //}
+                    //}
                 }
             }
         });

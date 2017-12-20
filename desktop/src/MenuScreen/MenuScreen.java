@@ -17,7 +17,7 @@ import com.mygdx.game.RaceGame;
 import java.io.IOException;
 
 public class MenuScreen implements Screen {
-    private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth()/2) - (322/2);
+    private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth() / 2) - (322 / 2);
     private final int PLAY_BUTTON_Y = 500;
     private final int SETTINGS_BUTTON_Y = 400;
     private final int EXIT_BUTTON_Y = 300;
@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
     private TextButton settingsButtonInvisible;
     private TextButton exitButtonInvisible;
 
-    public MenuScreen(RaceGame game, Player player){
+    public MenuScreen(RaceGame game, Player player) {
         // set up
         this.currentPlayer = player;
         this.game = game;
@@ -56,7 +56,7 @@ public class MenuScreen implements Screen {
     }
 
     // load some images
-    private void loadImages(){
+    private void loadImages() {
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\Skrrrt.png");
         this.playButton = new Texture("core\\assets\\Menu\\PlayButton.png");
@@ -69,7 +69,7 @@ public class MenuScreen implements Screen {
     }
 
     // draw some invisible buttons
-    private void invisibleButtons(){
+    private void invisibleButtons() {
         // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
@@ -100,13 +100,11 @@ public class MenuScreen implements Screen {
         playButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                count++;
-                if(count == 1)
-                    try {
-                        game.setScreen(new LobbyScreen(game, currentPlayer));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    game.setScreen(new LobbyScreen(game, currentPlayer));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -124,7 +122,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 count++;
-                if(count == 1)
+                if (count == 1)
                     Gdx.app.exit();
             }
         });
@@ -179,14 +177,14 @@ public class MenuScreen implements Screen {
     }
 
     // draw menu screen
-    private void menuScreen(){
+    private void menuScreen() {
         batch.begin();
 
         // draw title
-        batch.draw(title, (1440/2) - (665/2), 670);
+        batch.draw(title, (1440 / 2) - (665 / 2), 670);
 
         // draw play button
-        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+        if (Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > PLAY_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (PLAY_BUTTON_Y + playButton.getHeight())) {
             batch.draw(playButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, PLAY_BUTTON_Y);
         } else {
@@ -194,7 +192,7 @@ public class MenuScreen implements Screen {
         }
 
         // draw settings button
-        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+        if (Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > SETTINGS_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (SETTINGS_BUTTON_Y + playButton.getHeight())) {
             batch.draw(settingsButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, SETTINGS_BUTTON_Y);
         } else {
@@ -202,7 +200,7 @@ public class MenuScreen implements Screen {
         }
 
         // draw exit button
-        if(Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
+        if (Gdx.input.getX() > PLAY_SETTINGS_EXIT_BUTTONS_X && Gdx.input.getX() < (PLAY_SETTINGS_EXIT_BUTTONS_X + playButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > EXIT_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (EXIT_BUTTON_Y + playButton.getHeight())) {
             batch.draw(exitButtonActive, PLAY_SETTINGS_EXIT_BUTTONS_X, EXIT_BUTTON_Y);
         } else {

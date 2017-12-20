@@ -156,24 +156,24 @@ public class Network {
     }
 
     public static class playerReadyRequest{
-        private int index;
+        private Lobby lobby;
         private Player player;
 
         public playerReadyRequest()
         {}
 
-        public playerReadyRequest(int index, Player player)
+        public playerReadyRequest(Lobby lobby, Player player)
         {
-            this.index = index;
+            this.lobby = lobby;
             this.player = player;
         }
 
-        public int getIndex() {
-            return index;
+        public Lobby getLobby() {
+            return lobby;
         }
 
-        public void setIndex(int index) {
-            this.index = index;
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
         }
 
         public Player getPlayer() {

@@ -45,9 +45,9 @@ public class LobbyClient {
         client.sendTCP(lobbyRequest);
     }
 
-    public void playerReady(int index, Player player)
+    public void playerReady(Lobby lobby, Player player)
     {
-        Network.playerReadyRequest readyRequest = new Network.playerReadyRequest(index, player);
+        Network.playerReadyRequest readyRequest = new Network.playerReadyRequest(lobby, player);
         client.sendTCP(readyRequest);
     }
 
