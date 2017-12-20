@@ -44,6 +44,11 @@ public class LobbyClient {
         client.sendTCP(lobbyRequest);
     }
 
+    public void playerReady(int index, Player player)
+    {
+
+    }
+
 
     public void addListeners(Client client) {
         client.addListener(new Listener()  {
