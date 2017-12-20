@@ -40,7 +40,6 @@ public class MatchScreen implements Screen {
     private RaceGame game;
     private Stage stage;
     private Player currentPlayer;
-    private boolean readyPlayer;
     private Lobby lobby;
     private Menu menu;
 
@@ -71,6 +70,7 @@ public class MatchScreen implements Screen {
     private TextButton leaveButtonInvisible;
 
     private List<Label> playerList;
+    private List<Label> readyPlayerlist;
     private Label.LabelStyle labelStyle;
 
     public MatchScreen(RaceGame game, Player player, Lobby lobby, Menu menu) {
@@ -149,6 +149,7 @@ public class MatchScreen implements Screen {
 
         // draw and add empty lobbies
         this.playerList = new ArrayList<Label>();
+        this.readyPlayerlist = new ArrayList<Label>();
         this.labelStyle = new Label.LabelStyle();
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
@@ -173,7 +174,6 @@ public class MatchScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 menu.playerReady(lobby);
-                readyPlayer = true;
             }
         });
 
@@ -208,13 +208,14 @@ public class MatchScreen implements Screen {
         });
     }
 
-    public Label getCurrentLabelPlayer(){
-        for(Label playerLabel : playerList){
-            if(currentPlayer.toString().equals(playerLabel.getText().toString())){
-                return playerLabel;
+    public void getReadyLabelPlayers(List<Player> readyPlayers){
+        for(Player player : readyPlayers){
+            for(Label playerLabel : playerList){
+                if(player.toString().equals(playerLabel.getText().toString())){
+                    readyPlayerlist.add(playerLabel);
+                }
             }
         }
-        return null;
     }
 
     @Override
@@ -364,8 +365,8 @@ public class MatchScreen implements Screen {
             batch.draw(leaveButton, BUTTONS_X, LEAVE_BUTTON_Y);
         }
 
-        if(readyPlayer) {
-            batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, getCurrentLabelPlayer().getY());
+        for(Label readyPlayer : readyPlayerlist){
+            batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, readyPlayer.getY());
         }
 
         batch.end();
