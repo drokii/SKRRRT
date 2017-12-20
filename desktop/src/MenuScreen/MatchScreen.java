@@ -170,16 +170,8 @@ public class MatchScreen implements Screen {
         readyButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-<<<<<<< HEAD
                 menu.playerReady(menu.getLobbies().indexOf(lobby));
-=======
                 batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, getCurrentLabelPlayer().getY());
-//                try {
-//                    game.setScreen(new GameScreen(game, currentPlayer));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
->>>>>>> 550a18f0077c025b7ff8ebc59295735d2f10e334
             }
         });
 
