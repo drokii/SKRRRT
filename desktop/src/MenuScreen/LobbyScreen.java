@@ -41,9 +41,9 @@ public class LobbyScreen implements Screen {
     private final int BUTTONS_X = 1223;
     private final int CREATE_BUTTON_Y = 731;
     private final int JOIN_BUTTON_Y = 671;
+    private final int REFRESH_BUTTON_Y = 611;
     private final int BACK_BUTTON_Y = 43;
 
-    private int count;
     private int refreshCount;
 
     private RaceGame game;
@@ -64,12 +64,16 @@ public class LobbyScreen implements Screen {
     private Texture createButtonActive;
     private Texture joinButton;
     private Texture joinButtonActive;
+    private Texture refreshButton;
+    private Texture refreshButtonActive;
     private Texture backButton;
     private Texture backButtonActive;
+    private Texture playerReady;
 
     private TextButton.TextButtonStyle textButtonStyle;
     private TextButton createButtonInvisible;
     private TextButton joinButtonInvisible;
+    private TextButton refreshButtonInvisible;
     private TextButton backButtonInvisible;
 
     private List<Label> labelList;
@@ -117,8 +121,11 @@ public class LobbyScreen implements Screen {
         this.createButtonActive = new Texture("core\\assets\\Menu\\CreateButtonActive.png");
         this.joinButton = new Texture("core\\assets\\Menu\\JoinButton.png");
         this.joinButtonActive = new Texture("core\\assets\\Menu\\JoinButtonActive.png");
+        this.refreshButton = new Texture("core\\assets\\Menu\\RefreshButton.png");
+        this.refreshButtonActive = new Texture("core\\assets\\Menu\\RefreshButtonActive.png");
         this.backButton = new Texture("core\\assets\\Menu\\BackButton.png");
         this.backButtonActive = new Texture("core\\assets\\Menu\\BackButtonActive.png");
+        this.playerReady = new Texture("core\\assets\\Menu\\PlayerReady.png");
     }
 
     // draw some invisible buttons
@@ -138,6 +145,12 @@ public class LobbyScreen implements Screen {
         this.joinButtonInvisible.setPosition(BUTTONS_X, JOIN_BUTTON_Y);
         this.joinButtonInvisible.setWidth(joinButton.getWidth());
         this.joinButtonInvisible.setHeight(joinButton.getHeight());
+
+        // draw invisible refresh button
+        this.refreshButtonInvisible = new TextButton("", textButtonStyle);
+        this.refreshButtonInvisible.setPosition(BUTTONS_X, REFRESH_BUTTON_Y);
+        this.refreshButtonInvisible.setWidth(refreshButton.getWidth());
+        this.refreshButtonInvisible.setHeight(refreshButton.getHeight());
 
         // draw invisible back button
         this.backButtonInvisible = new TextButton("", textButtonStyle);
@@ -171,6 +184,7 @@ public class LobbyScreen implements Screen {
         stage.addActor(createButtonInvisible);
         stage.addActor(joinButtonInvisible);
         stage.addActor(backButtonInvisible);
+        stage.addActor(refreshButtonInvisible);
 
         createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
@@ -184,7 +198,6 @@ public class LobbyScreen implements Screen {
                     textPrompt.setTextPromptListener(new TextPromptListener() {
                         @Override
                         public void cancel() {
-                            count = 0;
                         }
 
                         @Override
@@ -227,6 +240,14 @@ public class LobbyScreen implements Screen {
                     Lobby lobby = menu.getLobbies().get((columnClicked-1));
                     menu.joinLobby((columnClicked-1), currentPlayer);
                 }
+            }
+        });
+
+        // refresh button
+        refreshButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refreshLobbies();
             }
         });
 
@@ -372,6 +393,14 @@ public class LobbyScreen implements Screen {
             batch.draw(joinButton, BUTTONS_X, JOIN_BUTTON_Y);
         }
 
+        // draw refresh button
+        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + refreshButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > REFRESH_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (REFRESH_BUTTON_Y + refreshButton.getHeight())) {
+            batch.draw(refreshButtonActive, BUTTONS_X, REFRESH_BUTTON_Y);
+        } else {
+            batch.draw(refreshButton, BUTTONS_X, REFRESH_BUTTON_Y);
+        }
+
         // draw back button
         if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + backButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > BACK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (BACK_BUTTON_Y + backButton.getHeight())) {
@@ -440,9 +469,9 @@ public class LobbyScreen implements Screen {
 
     public void refreshLobbies()
     {
-        refreshCount++;
-        if(refreshCount == 1)
-        {
+        //refreshCount++;
+        //if(refreshCount == 1)
+        //{
             menu.getLobbiesRequest();
             new Thread(new Runnable() {
                 @Override
@@ -466,7 +495,7 @@ public class LobbyScreen implements Screen {
                     });
                 }
             }).start();
-        }
+        //}
     }
 }
 
