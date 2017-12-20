@@ -40,6 +40,7 @@ public class MatchScreen implements Screen {
     private RaceGame game;
     private Stage stage;
     private Player currentPlayer;
+    private boolean readyPlayer;
     private Lobby lobby;
     private Menu menu;
 
@@ -170,8 +171,13 @@ public class MatchScreen implements Screen {
         readyButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+<<<<<<< HEAD
                 menu.playerReady(lobby);
                 batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, getCurrentLabelPlayer().getY());
+=======
+                //menu.playerReady(menu.getLobbies().indexOf(lobby));
+                readyPlayer = true;
+>>>>>>> 3a6dda138d1318b49b5b2e8050d3a9b71cddc653
             }
         });
 
@@ -208,7 +214,7 @@ public class MatchScreen implements Screen {
 
     public Label getCurrentLabelPlayer(){
         for(Label playerLabel : playerList){
-            if(currentPlayer.toString() == playerLabel.getText().toString()){
+            if(currentPlayer.toString().equals(playerLabel.getText().toString())){
                 return playerLabel;
             }
         }
@@ -360,6 +366,10 @@ public class MatchScreen implements Screen {
             batch.draw(leaveButtonActive, BUTTONS_X, LEAVE_BUTTON_Y);
         } else {
             batch.draw(leaveButton, BUTTONS_X, LEAVE_BUTTON_Y);
+        }
+
+        if(readyPlayer) {
+            batch.draw(playerReady, COLUMNS_X + firstColumnLight.getWidth() - 100, getCurrentLabelPlayer().getY());
         }
 
         batch.end();
