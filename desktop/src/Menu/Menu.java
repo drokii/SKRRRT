@@ -54,6 +54,11 @@ public class Menu {
         client.joinLobby(index, player);
     }
 
+    public void playerReady(int index)
+    {
+        //client.
+    }
+
     public void setLobbyPlayers(final Lobby lobby)
     {
         new Thread(new Runnable() {
