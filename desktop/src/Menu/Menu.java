@@ -16,14 +16,15 @@ public class Menu {
     private LobbyClient client;
     private RaceGame game;
     private Player currentPlayer;
-    private LobbyScreen screen;
+    private LobbyScreen lobbyScreen;
+    private MatchScreen matchScreen;
     private Lobby currentLobby;
 
-    public Menu(RaceGame game, LobbyScreen screen) throws IOException {
+    public Menu(RaceGame game, LobbyScreen lobbyScreen) throws IOException {
         client = new LobbyClient(this);
         this.lobbies = new ArrayList<Lobby>();
         this.game = game;
-        this.screen = screen;
+        this.lobbyScreen = lobbyScreen;
     }
 
     public Menu(RaceGame game) throws IOException {
@@ -88,6 +89,11 @@ public class Menu {
 
     public void refreshLobbies()
     {
-        screen.refreshLobbies();
+        lobbyScreen.refreshLobbies();
+    }
+
+    public void setMatchScreen(MatchScreen matchScreen)
+    {
+        this.matchScreen = matchScreen;
     }
 }

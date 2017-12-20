@@ -80,6 +80,7 @@ public class MatchScreen implements Screen {
         this.currentPlayer = player;
         this.lobby = lobby;
         this.menu = menu;
+        menu.setMatchScreen(this);
         Gdx.input.setInputProcessor(stage);
 
         loadImages();

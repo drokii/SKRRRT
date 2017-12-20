@@ -22,6 +22,7 @@ public class Lobby implements Serializable{
     public Lobby(String name){
         this.name = name;
         this.players = new ArrayList<Player>();
+        this.readyPlayers = new ArrayList<Player>();
         ids = new int[4];
     }
 
