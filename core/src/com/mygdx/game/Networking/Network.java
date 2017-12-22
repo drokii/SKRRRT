@@ -32,6 +32,8 @@ public class Network {
         kryo.register(getLobbyRequest.class);
         kryo.register(playerReadyRequest.class);
         kryo.register(playerReadyResponse.class);
+        kryo.register(AllReadyResponse.class);
+        kryo.register(GetReadyRequest.class);
         kryo.register(Map.class);
         kryo.register(Player.class);
         kryo.register(ESkin.class);
@@ -43,11 +45,11 @@ public class Network {
         kryo.register(float.class);
     }
 
-    static public class LoginRequest{
+    static public class AllReadyResponse{
+        public AllReadyResponse()
+        {
 
-    }
-    static public class LoginResponse{
-
+        }
     }
 
     public static class JoinLobbyRequest{
@@ -202,6 +204,26 @@ public class Network {
 
         public void setReadyPlayers(List<Player> readyPlayers) {
             this.readyPlayers = readyPlayers;
+        }
+    }
+
+    public static class GetReadyRequest{
+        private Lobby lobby;
+
+        public GetReadyRequest(Lobby lobby)
+        {
+            this.lobby = lobby;
+        }
+
+        public GetReadyRequest()
+        {}
+
+        public Lobby getLobby() {
+            return lobby;
+        }
+
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
         }
     }
 

@@ -1,11 +1,13 @@
 package Menu;
 
+import MenuScreen.GameScreen;
 import MenuScreen.LobbyScreen;
 import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Networking.Client.LobbyClient;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.RaceGame;
+import org.lwjgl.Sys;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ public class Menu {
         currentPlayer = player;
         currentLobby = lobbies.get(index);
         client.joinLobby(index, player);
+        client.getReadyPlayers(currentLobby);
     }
 
     public void playerReady(Lobby lobby)
@@ -70,7 +73,9 @@ public class Menu {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(new MatchScreen(game, currentPlayer, lobby, Menu.this ));
+                        MatchScreen newMatchScreen = new MatchScreen(game, currentPlayer, lobby, Menu.this );
+                        matchScreen = newMatchScreen;
+                        game.setScreen(newMatchScreen);
                     }
                 });
             }
@@ -80,7 +85,13 @@ public class Menu {
     public void setReadyPlayers(List<Player> players)
     {
         currentLobby.setReadyPlayers(players);
-        matchScreen.getReadyLabelPlayers(currentLobby.getReadyPlayers());
+        if(currentLobby.getReadyPlayers().size() != 0)
+        {
+            System.out.println(currentLobby.getReadyPlayers().size());
+            System.out.println(matchScreen);
+            // crashes cus matchscreen is null; only crashes when theres already somebody ready in lobby? otherwise the matchscreen != null...
+            matchScreen.getReadyLabelPlayers(currentLobby.getReadyPlayers());
+        }
     }
 
     public void getLobbiesRequest()
@@ -91,6 +102,24 @@ public class Menu {
     public void refreshLobbies()
     {
         lobbyScreen.refreshLobbies();
+    }
+
+    public void gameStart() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            game.setScreen(new GameScreen(game, currentPlayer));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     public void setMatchScreen(MatchScreen matchScreen)

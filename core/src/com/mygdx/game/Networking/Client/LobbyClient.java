@@ -51,6 +51,14 @@ public class LobbyClient {
         client.sendTCP(readyRequest);
     }
 
+    public void getReadyPlayers(Lobby lobby)
+    {
+        System.out.println("start getting playerreadies");
+        Network.GetReadyRequest readyRequest = new Network.GetReadyRequest(lobby);
+        System.out.println("sending cshit to client");
+        client.sendTCP(readyRequest);
+        System.out.println("sent request");
+    }
 
     public void addListeners(Client client) {
         client.addListener(new Listener()  {
@@ -68,6 +76,11 @@ public class LobbyClient {
                 if(object instanceof Network.playerReadyResponse)
                 {
                     menu.setReadyPlayers(((Network.playerReadyResponse) object).getReadyPlayers());
+                }
+                if(object instanceof Network.AllReadyResponse)
+                {
+                    System.out.println("about to call menu.gamestart");
+                    menu.gameStart();
                 }
             }
         });

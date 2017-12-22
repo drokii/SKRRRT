@@ -77,16 +77,32 @@ public class LobbyServer extends Application {
                         if (((Network.playerReadyRequest) object).getLobby().getName().equals(lobby.getName())) {
                             index = lobbyList.indexOf(lobby);
                             lobbyList.get(index).getReadyPlayers().add(((Network.playerReadyRequest) object).getPlayer());
+                            for (Integer id : lobbyList.get(index).getIds()) {
+                                if (id != 0) {
+                                    server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                                }
+                            }
                             if (lobbyList.get(index).getReadyPlayers().size() == lobbyList.get(index).getPlayers().size()) {
-                                //TODO: allreadyresponse
-                            } else {
                                 for (Integer id : lobbyList.get(index).getIds()) {
                                     if (id != 0) {
-                                        server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                                        server.sendToTCP(id, new Network.AllReadyResponse());
                                     }
                                 }
                             }
                             break;
+                        }
+                    }
+                }
+                if(object instanceof Network.GetReadyRequest) {
+                    int index = 0;
+                    for (Lobby lobby : lobbyList) {
+                        if (((Network.GetReadyRequest) object).getLobby().getName().equals(lobby.getName())) {
+                            index = lobbyList.indexOf(lobby);
+                            for (Integer id : lobbyList.get(index).getIds()) {
+                                if (id != 0) {
+                                    server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                                }
+                            }
                         }
                     }
                 }
