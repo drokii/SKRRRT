@@ -22,6 +22,7 @@ public class Menu {
     private List<Lobby> lobbies;
     private LobbyClient lobbyClient;
     private GameClient gameClient;
+    private GameWorld gameWorld;
     private RaceGame game;
     private Player currentPlayer;
     private LobbyScreen lobbyScreen;
@@ -123,7 +124,8 @@ public class Menu {
                     @Override
                     public void run() {
                         try {
-                            //game.setScreen(new GameScreen(game, currentPlayer));
+                            gameWorld = new GameWorld(game, currentPlayer);
+                            game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
                             if(currentPlayer.isHost())
                             {
                                 //send host ip to lobbyserver and send it to other clients
@@ -147,7 +149,7 @@ public class Menu {
     }
 
     public void CreateGameClient(String ip) throws IOException {
-        gameClient = new GameClient(ip);
+        gameWorld.setClient(ip);
     }
     public void setMatchScreen(MatchScreen matchScreen)
     {

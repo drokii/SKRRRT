@@ -70,12 +70,10 @@ public class GameWorld implements ApplicationListener {
         // Set up map
         map = new Map(camera, world);
 
+        //in pedros code werdt hier de client eerst gemaakt.
         // Create cars and assign them to list
         carList = new ArrayList<RemoteCar>();
         instantiateCars();
-
-        //Client
-        //client = new GameClient(car, currentPlayer, ip);
 
         // Set up statistics handler
         stats = new StatisticsHandler(car);
@@ -106,6 +104,11 @@ public class GameWorld implements ApplicationListener {
     public void create() {
         //client.sendGameStartRequest(car.getName(), null,0f);
 
+    }
+
+    public void setClient(String ip) throws IOException {
+        //Client
+        client = new GameClient(car, currentPlayer, ip);
     }
 
     @Override
@@ -182,7 +185,8 @@ public class GameWorld implements ApplicationListener {
     }
 
     public void instantiateCars() {
-        /*java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
+        //client is hier nog null...
+        java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
 
         for (java.util.Map.Entry<String, Vector2> player: spawnLocations.entrySet()) {
             if (player.getKey() != currentPlayer.getName()) {
@@ -191,6 +195,6 @@ public class GameWorld implements ApplicationListener {
             }else{
                 car = new Car(camera, world, map, player.getValue());
             }
-        }*/
+        }
     }
 }
