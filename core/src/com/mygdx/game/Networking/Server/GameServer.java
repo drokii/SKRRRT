@@ -32,10 +32,6 @@ public class GameServer {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        new GameServer();
-    }
-
     private void addListenersToServer(final Server server) {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {

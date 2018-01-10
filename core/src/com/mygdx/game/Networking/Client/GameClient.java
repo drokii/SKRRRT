@@ -16,18 +16,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class GameClient {
-    private final Car car;
-    private final Player player;
+    //private final Car car;
+    //private final Player player;
     private Client client;
     private Map<String, Vector2> spawnLocations;
 
-<<<<<<< HEAD
-    public GameClient(String ip) throws IOException {
-=======
-    public GameClient(Car car, Player player) throws IOException {
-        this.car = car;
-        this.player = player;
->>>>>>> 9a5e25a7987b5c92f0e7519fc9ffa58624f5e7c3
+    public GameClient(/*Car car, Player player, */String ip) throws IOException {
+        //this.car = car;
+        //this.player = player;
         client = new Client();
         client.start();
         //GET GAMEserver host ip through constructor
@@ -37,24 +33,20 @@ public class GameClient {
         addListeners(client);
     }
 
-<<<<<<< HEAD
-    public static void addListeners(Client client) {
-=======
     public void addListeners(Client client) {
->>>>>>> 9a5e25a7987b5c92f0e7519fc9ffa58624f5e7c3
         client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartResponse) {
-                    spawnLocations = ((Network.GameStartResponse) object).startPositions;
+                    //spawnLocations = ((Network.GameStartResponse) object).startPositions;
 
                 }
                 if (object instanceof Network.GameUpdateResponse) {
 
-                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                    /*Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
                     gameUpdateRequest.nickname = player.getName();
                     gameUpdateRequest.angularVelocity = car.getKartBody().getAngularVelocity();
                     gameUpdateRequest.velocity = car.getKartBody().getLinearVelocity();
-                    client.sendTCP(gameUpdateRequest);
+                    client.sendTCP(gameUpdateRequest);*/
                 }
             }
 
@@ -71,7 +63,7 @@ public class GameClient {
         try {
 
             Network.GameStartRequest gsr = new Network.GameStartRequest();
-            gsr.nickname = player.getName();
+            //gsr.nickname = player.getName();
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
@@ -106,7 +98,5 @@ public class GameClient {
 
         return completableFuture;
     }
-
-
 }
 

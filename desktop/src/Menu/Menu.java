@@ -4,6 +4,7 @@ import MenuScreen.GameScreen;
 import MenuScreen.LobbyScreen;
 import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.Gameplay.GameWorld;
 import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.Networking.Client.LobbyClient;
 import com.mygdx.game.Networking.Lobby;
@@ -13,12 +14,8 @@ import com.mygdx.game.RaceGame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 public class Menu {
@@ -126,30 +123,17 @@ public class Menu {
                     @Override
                     public void run() {
                         try {
-                            game.setScreen(new GameScreen(game, currentPlayer));
+                            //game.setScreen(new GameScreen(game, currentPlayer));
                             if(currentPlayer.isHost())
                             {
                                 //send host ip to lobbyserver and send it to other clients
                                 GameServer gameServer = new GameServer();
-
-                                /*Enumeration e = NetworkInterface.getNetworkInterfaces();
-                                while(e.hasMoreElements())
-                                {
-                                    NetworkInterface n = (NetworkInterface) e.nextElement();
-                                    Enumeration ee = n.getInetAddresses();
-                                    while (ee.hasMoreElements())
-                                    {
-                                        InetAddress i = (InetAddress) ee.nextElement();
-                                        System.out.println(i.getHostAddress());
-                                    }
-                                }*/
 
                                 URL whatismyip = new URL("http://checkip.amazonaws.com");
                                 BufferedReader in = new BufferedReader(new InputStreamReader(
                                         whatismyip.openStream()));
 
                                 String ip = in.readLine(); //you get the IP as a String
-                                System.out.println(ip);
 
                                 lobbyClient.CreatedServer(ip, currentLobby);
                             }
@@ -165,7 +149,6 @@ public class Menu {
     public void CreateGameClient(String ip) throws IOException {
         gameClient = new GameClient(ip);
     }
-
     public void setMatchScreen(MatchScreen matchScreen)
     {
         this.matchScreen = matchScreen;

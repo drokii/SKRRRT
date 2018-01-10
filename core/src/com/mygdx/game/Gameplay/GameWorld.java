@@ -30,15 +30,15 @@ public class GameWorld implements ApplicationListener {
 
 
     private RaceGame game;
-    private Player currentPlayer;
+    private  Player currentPlayer;
     private Sound sound;
     private StatisticsHandler stats;
     private World world;
     private OrthographicCamera camera;
     private Map map;
-    private Car car;
+    private  Car car;
     private ArrayList<RemoteCar> carList;
-    private GameClient client;
+    private  GameClient client;
     private boolean gameStarted;
 
     private SpriteBatch batch;
@@ -74,6 +74,9 @@ public class GameWorld implements ApplicationListener {
         carList = new ArrayList<RemoteCar>();
         instantiateCars();
 
+        //Client
+        //client = new GameClient(car, currentPlayer, ip);
+
         // Set up statistics handler
         stats = new StatisticsHandler(car);
 
@@ -81,12 +84,6 @@ public class GameWorld implements ApplicationListener {
         LogInScreen.menuSound.stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
-
-<<<<<<< HEAD
-=======
-        //Client
-        client = new GameClient(car, currentPlayer);
->>>>>>> 9a5e25a7987b5c92f0e7519fc9ffa58624f5e7c3
 
         // Create batch 
         batch = new SpriteBatch();
@@ -185,7 +182,7 @@ public class GameWorld implements ApplicationListener {
     }
 
     public void instantiateCars() {
-        java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
+        /*java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
 
         for (java.util.Map.Entry<String, Vector2> player: spawnLocations.entrySet()) {
             if (player.getKey() != currentPlayer.getName()) {
@@ -194,6 +191,6 @@ public class GameWorld implements ApplicationListener {
             }else{
                 car = new Car(camera, world, map, player.getValue());
             }
-        }
+        }*/
     }
 }

@@ -7,21 +7,19 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
-import com.mygdx.game.RaceGame;
-import sun.nio.ch.Net;
 
 import java.io.IOException;
 
 public class LobbyClient {
     private Client client;
     private Menu menu;
+    private String ip = null;
 
     public LobbyClient(Menu menu) throws IOException {
         this.menu = menu;
         client = new Client();
         client.start();
         client.connect(5000, "127.0.0.1", 62452, 62452);
-        //client.connect(5000, "145.93.169.164", 62452, 62452);
         Network.register(client);
 
         addListeners(client);
@@ -90,11 +88,13 @@ public class LobbyClient {
                 }
                 if(object instanceof Network.CreatedGameServer)
                 {
+                    ip = (((Network.CreatedGameServer) object).getIp());
                     try {
-                        menu.CreateGameClient(((Network.CreatedGameServer) object).getIp());
+                        menu.CreateGameClient(ip);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                 }
             }
         });

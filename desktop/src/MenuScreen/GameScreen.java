@@ -14,10 +14,10 @@ public class  GameScreen implements Screen{
     Player currentPlayer;
     GameWorld gameWorld;
 
-    public GameScreen(RaceGame game, Player player) throws IOException {
+    public GameScreen(RaceGame game, Player player, GameWorld gameWorld) throws IOException {
         this.game = game;
         this.currentPlayer = player;
-        gameWorld = new GameWorld(game, currentPlayer);
+        this.gameWorld = gameWorld;
     }
 
     @Override
