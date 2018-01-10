@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Gameplay.Enums.ESkin;
 import com.mygdx.game.Networking.Server.PlayerInstance;
+import com.mygdx.game.Networking.Server.Velocities;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class Network {
         kryo.register(Vector2.class);
         kryo.register(int[].class);
         kryo.register(float.class);
+        kryo.register(Velocities.class);
     }
 
     static public class AllReadyResponse{
@@ -228,19 +230,21 @@ public class Network {
     }
 
     public static class GameStartRequest {
-
-        public Vector2 speed;
-        public float angularSpeed;
         public String nickname;
-
     }
 
     static public class GameStartResponse{
-
+        public Map<Vector2, String> startPositions;
     }
 
     static public class GameUpdateRequest{
         public String nickname;
+        public Vector2 speed;
+        public float angularSpeed;
+    }
+
+    static public class GameUpdateResponse{
+        public Map<String, Velocities> movementVectors;
     }
 
 }
