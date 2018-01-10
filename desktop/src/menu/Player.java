@@ -9,6 +9,7 @@ public class Player implements Serializable{
     private Car car;
     private ESkin carSkin;
     private String name;
+    private boolean host;
 
     public Player(String name){
         this.name = name;
@@ -30,6 +31,14 @@ public class Player implements Serializable{
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
     }
 
     @Override

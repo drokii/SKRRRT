@@ -215,7 +215,8 @@ public class LobbyScreen implements Screen {
                                                     @Override
                                                     public void run() {
                                                         menu.joinLobby((menu.getLobbies().size() - 1), currentPlayer);
-                                                        //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                        menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                        menu.getCurrentPlayer().setHost(true);
                                                     }
                                                 });
                                             }

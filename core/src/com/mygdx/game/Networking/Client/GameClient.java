@@ -15,14 +15,10 @@ public class GameClient {
     public GameClient() throws IOException {
         client = new Client();
         client.start();
-        client.connect(5000, "127.0.0.1", 54555, 54777);
+        //GET GAMEserver host ip through constructor
+        client.connect(5000, "127.0.0.1", 32221, 34321);
 
         addListeners(client);
-    }
-
-    public static void main(String[] args) throws IOException {
-        new GameClient();
-
     }
 
     public static void addListeners(Client client) {

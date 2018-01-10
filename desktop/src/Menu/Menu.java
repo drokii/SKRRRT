@@ -4,10 +4,11 @@ import MenuScreen.GameScreen;
 import MenuScreen.LobbyScreen;
 import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.Networking.Client.LobbyClient;
 import com.mygdx.game.Networking.Lobby;
+import com.mygdx.game.Networking.Server.GameServer;
 import com.mygdx.game.RaceGame;
-import org.lwjgl.Sys;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import java.util.List;
 
 public class Menu {
     private List<Lobby> lobbies;
-    private LobbyClient client;
+    private LobbyClient lobbyClient;
+    private GameClient gameClient;
     private RaceGame game;
     private Player currentPlayer;
     private LobbyScreen lobbyScreen;
@@ -23,14 +25,14 @@ public class Menu {
     private Lobby currentLobby;
 
     public Menu(RaceGame game, LobbyScreen lobbyScreen) throws IOException {
-        client = new LobbyClient(this);
+        lobbyClient = new LobbyClient(this);
         this.lobbies = new ArrayList<Lobby>();
         this.game = game;
         this.lobbyScreen = lobbyScreen;
     }
 
     public Menu(RaceGame game) throws IOException {
-        client = new LobbyClient(this);
+        lobbyClient = new LobbyClient(this);
         this.lobbies = new ArrayList<Lobby>();
         this.game = game;
     }
@@ -40,7 +42,7 @@ public class Menu {
     }
 
     public void createLobby(String name)  {
-        client.CreateLobby(name);
+        lobbyClient.CreateLobby(name);
     }
 
     public void removeLobby(Lobby lobby){
@@ -52,17 +54,22 @@ public class Menu {
         lobbies = lobbyList;
     }
 
+    public Player getCurrentPlayer()
+    {
+        return currentPlayer;
+    }
+
     public void joinLobby(int index, Player player)
     {
         currentPlayer = player;
         currentLobby = lobbies.get(index);
-        client.joinLobby(index, player);
-        client.getReadyPlayers(currentLobby);
+        lobbyClient.joinLobby(index, player);
+        lobbyClient.getReadyPlayers(currentLobby);
     }
 
     public void playerReady(Lobby lobby)
     {
-        client.playerReady(lobby, currentPlayer);
+        lobbyClient.playerReady(lobby, currentPlayer);
     }
 
     public void setLobbyPlayers(final Lobby lobby)
@@ -96,7 +103,7 @@ public class Menu {
 
     public void getLobbiesRequest()
     {
-        client.getLobbyRequest();
+        lobbyClient.getLobbyRequest();
     }
 
     public void refreshLobbies()
@@ -113,6 +120,12 @@ public class Menu {
                     public void run() {
                         try {
                             game.setScreen(new GameScreen(game, currentPlayer));
+                            if(currentPlayer.isHost())
+                            {
+                                //send host ip to lobbyserver and send it to other clients
+                                GameServer gameServer = new GameServer(/* add ip for gameserver*/);
+                            }
+                            gameClient = new GameClient();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
