@@ -206,7 +206,7 @@ public class LogInScreen implements Screen{
     public void loginPassed(Player player)
     {
         menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
-        //menuSound.play();
+        menuSound.play();
         game.setScreen(new MenuScreen(game, player));
     }
 

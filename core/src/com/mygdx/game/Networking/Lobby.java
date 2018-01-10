@@ -14,6 +14,7 @@ public class Lobby implements Serializable{
     private String name;
     private String map;
     private List<Player> players;
+    private List<Player> readyPlayers;
     private int[] ids;
 
     private Player host;
@@ -21,6 +22,7 @@ public class Lobby implements Serializable{
     public Lobby(String name){
         this.name = name;
         this.players = new ArrayList<Player>();
+        this.readyPlayers = new ArrayList<Player>();
         ids = new int[4];
     }
 
@@ -65,6 +67,14 @@ public class Lobby implements Serializable{
 
     public void setIds(int[] ids) {
         this.ids = ids;
+    }
+
+    public List<Player> getReadyPlayers() {
+        return readyPlayers;
+    }
+
+    public void setReadyPlayers(List<Player> readyPlayers) {
+        this.readyPlayers = readyPlayers;
     }
 
     @Override

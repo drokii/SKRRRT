@@ -30,6 +30,10 @@ public class Network {
         kryo.register(JoinLobbyRequest.class);
         kryo.register(JoinLobbyResponse.class);
         kryo.register(getLobbyRequest.class);
+        kryo.register(playerReadyRequest.class);
+        kryo.register(playerReadyResponse.class);
+        kryo.register(AllReadyResponse.class);
+        kryo.register(GetReadyRequest.class);
         kryo.register(Map.class);
         kryo.register(Player.class);
         kryo.register(ESkin.class);
@@ -39,20 +43,13 @@ public class Network {
         kryo.register(Vector2.class);
         kryo.register(int[].class);
         kryo.register(float.class);
-
     }
 
-    static public class LoginRequest{
+    static public class AllReadyResponse{
+        public AllReadyResponse()
+        {
 
-    }
-    static public class LoginResponse{
-
-    }
-    static public class RetrieveLobbiesRequest{
-
-    }
-    public class RetrieveLobbiesResponse{
-
+        }
     }
 
     public static class JoinLobbyRequest{
@@ -157,6 +154,76 @@ public class Network {
 
         public void setLobby(List<Lobby> lobbyList) {
             this.lobbyList = lobbyList;
+        }
+    }
+
+    public static class playerReadyRequest{
+        private Lobby lobby;
+        private Player player;
+
+        public playerReadyRequest()
+        {}
+
+        public playerReadyRequest(Lobby lobby, Player player)
+        {
+            this.lobby = lobby;
+            this.player = player;
+        }
+
+        public Lobby getLobby() {
+            return lobby;
+        }
+
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
+        }
+
+        public Player getPlayer() {
+            return player;
+        }
+
+        public void setPlayer(Player player) {
+            this.player = player;
+        }
+    }
+
+    public static class playerReadyResponse{
+        private List<Player> readyPlayers;
+
+        public playerReadyResponse()
+        {}
+
+        public playerReadyResponse(List<Player> playerList)
+        {
+            readyPlayers = playerList;
+        }
+
+        public List<Player> getReadyPlayers() {
+            return readyPlayers;
+        }
+
+        public void setReadyPlayers(List<Player> readyPlayers) {
+            this.readyPlayers = readyPlayers;
+        }
+    }
+
+    public static class GetReadyRequest{
+        private Lobby lobby;
+
+        public GetReadyRequest(Lobby lobby)
+        {
+            this.lobby = lobby;
+        }
+
+        public GetReadyRequest()
+        {}
+
+        public Lobby getLobby() {
+            return lobby;
+        }
+
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
         }
     }
 

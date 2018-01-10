@@ -41,10 +41,10 @@ public class LobbyScreen implements Screen {
     private final int BUTTONS_X = 1223;
     private final int CREATE_BUTTON_Y = 731;
     private final int JOIN_BUTTON_Y = 671;
+    private final int REFRESH_BUTTON_Y = 611;
     private final int BACK_BUTTON_Y = 43;
 
-    private int count;
-    private int refreshCount;
+    private int joinedLobby;
 
     private RaceGame game;
     private Stage stage;
@@ -64,12 +64,15 @@ public class LobbyScreen implements Screen {
     private Texture createButtonActive;
     private Texture joinButton;
     private Texture joinButtonActive;
+    private Texture refreshButton;
+    private Texture refreshButtonActive;
     private Texture backButton;
     private Texture backButtonActive;
 
     private TextButton.TextButtonStyle textButtonStyle;
     private TextButton createButtonInvisible;
     private TextButton joinButtonInvisible;
+    private TextButton refreshButtonInvisible;
     private TextButton backButtonInvisible;
 
     private List<Label> labelList;
@@ -88,7 +91,7 @@ public class LobbyScreen implements Screen {
         refreshLobbies();
     }
 
-    public LobbyScreen(RaceGame game, Player player, Menu menu){
+    public LobbyScreen(RaceGame game, Player player, Menu menu) {
         this.game = game;
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -102,7 +105,7 @@ public class LobbyScreen implements Screen {
     }
 
     // load some images
-    private void loadImages(){
+    private void loadImages() {
         this.batch = new SpriteBatch();
         this.title = new Texture("core\\assets\\Menu\\SkrrrtSmall.png");
         this.firstColumnLight = new Texture("core\\assets\\Menu\\FirstColumnLight.png");
@@ -117,12 +120,14 @@ public class LobbyScreen implements Screen {
         this.createButtonActive = new Texture("core\\assets\\Menu\\CreateButtonActive.png");
         this.joinButton = new Texture("core\\assets\\Menu\\JoinButton.png");
         this.joinButtonActive = new Texture("core\\assets\\Menu\\JoinButtonActive.png");
+        this.refreshButton = new Texture("core\\assets\\Menu\\RefreshButton.png");
+        this.refreshButtonActive = new Texture("core\\assets\\Menu\\RefreshButtonActive.png");
         this.backButton = new Texture("core\\assets\\Menu\\BackButton.png");
         this.backButtonActive = new Texture("core\\assets\\Menu\\BackButtonActive.png");
     }
 
     // draw some invisible buttons
-    private void invisibleButtons(){
+    private void invisibleButtons() {
         // text button style
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.font = new BitmapFont();
@@ -138,6 +143,12 @@ public class LobbyScreen implements Screen {
         this.joinButtonInvisible.setPosition(BUTTONS_X, JOIN_BUTTON_Y);
         this.joinButtonInvisible.setWidth(joinButton.getWidth());
         this.joinButtonInvisible.setHeight(joinButton.getHeight());
+
+        // draw invisible refresh button
+        this.refreshButtonInvisible = new TextButton("", textButtonStyle);
+        this.refreshButtonInvisible.setPosition(BUTTONS_X, REFRESH_BUTTON_Y);
+        this.refreshButtonInvisible.setWidth(refreshButton.getWidth());
+        this.refreshButtonInvisible.setHeight(refreshButton.getHeight());
 
         // draw invisible back button
         this.backButtonInvisible = new TextButton("", textButtonStyle);
@@ -158,11 +169,11 @@ public class LobbyScreen implements Screen {
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
         List<Lobby> lobbies = menu.getLobbies();
-        for(int i = 0; i < lobbies.size(); i++){
+        for (int i = 0; i < lobbies.size(); i++) {
             labelList.add(new Label(lobbies.get(i).toString(), labelStyle));
             stage.addActor(labelList.get(i));
         }
-        for(int i = lobbies.size(); i < 6; i++){
+        for (int i = lobbies.size(); i < 6; i++) {
             labelList.add(new Label("Empty", labelStyle));
             stage.addActor(labelList.get(i));
         }
@@ -171,51 +182,51 @@ public class LobbyScreen implements Screen {
         stage.addActor(createButtonInvisible);
         stage.addActor(joinButtonInvisible);
         stage.addActor(backButtonInvisible);
+        stage.addActor(refreshButtonInvisible);
 
         createButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                    GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
-                    textPrompt.setTitle("Name");
-                    textPrompt.setMessage("Please fill in your lobby name");
-                    textPrompt.setCancelButtonLabel("Cancel");
-                    textPrompt.setConfirmButtonLabel("Create");
+                GDXTextPrompt textPrompt = dialogs.newDialog(GDXTextPrompt.class);
+                textPrompt.setTitle("Name");
+                textPrompt.setMessage("Please fill in your lobby name");
+                textPrompt.setCancelButtonLabel("Cancel");
+                textPrompt.setConfirmButtonLabel("Create");
 
-                    textPrompt.setTextPromptListener(new TextPromptListener() {
-                        @Override
-                        public void cancel() {
-                            count = 0;
-                        }
+                textPrompt.setTextPromptListener(new TextPromptListener() {
+                    @Override
+                    public void cancel() {
+                    }
 
-                        @Override
-                        public void confirm(final String text) {
-                            menu.createLobby(text);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Gdx.app.postRunnable(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            menu.refreshLobbies();
-                                            new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Gdx.app.postRunnable(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            menu.joinLobby((menu.getLobbies().size() -1), currentPlayer);
-                                                            //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
-                                                        }
-                                                    });
-                                                }
-                                            }).start();
-                                        }
-                                    });
-                                }
-                            }).start();
-                        }
-                    });
-                    textPrompt.build().show();
+                    @Override
+                    public void confirm(final String text) {
+                        menu.createLobby(text);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Gdx.app.postRunnable(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        menu.refreshLobbies();
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Gdx.app.postRunnable(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        menu.joinLobby((menu.getLobbies().size() - 1), currentPlayer);
+                                                        //menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                                    }
+                                                });
+                                            }
+                                        }).start();
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
+                });
+                textPrompt.build().show();
             }
         });
 
@@ -224,9 +235,17 @@ public class LobbyScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (columnClicked != 0) {
-                    Lobby lobby = menu.getLobbies().get((columnClicked-1));
-                    menu.joinLobby((columnClicked-1), currentPlayer);
+                    joinedLobby = (columnClicked - 1);
+                    menu.joinLobby(joinedLobby, currentPlayer);
                 }
+            }
+        });
+
+        // refresh button
+        refreshButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refreshLobbies();
             }
         });
 
@@ -234,7 +253,7 @@ public class LobbyScreen implements Screen {
         backButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new MenuScreen(game, currentPlayer));
+                game.setScreen(new MenuScreen(game, currentPlayer));
             }
         });
     }
@@ -297,7 +316,7 @@ public class LobbyScreen implements Screen {
     }
 
     // draw lobby screen
-    private void lobbyScreen(){
+    private void lobbyScreen() {
         batch.begin();
 
         // draw title
@@ -308,8 +327,8 @@ public class LobbyScreen implements Screen {
         int tempLightY = MIDDLE_COLUMN_LIGHT_Y;
 
         // draw first column (light)
-        labelList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight()/3) - 10);
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
+        labelList.get(0).setPosition(COLUMNS_X + 20, FIRST_COLUMN_LIGHT_Y + (firstColumnLight.getHeight() / 3) - 10);
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + firstColumnLight.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > FIRST_COLUMN_LIGHT_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (FIRST_COLUMN_LIGHT_Y + firstColumnLight.getHeight())
                 || columnClicked == 1) {
             batch.draw(firstColumnLightActive, COLUMNS_X, FIRST_COLUMN_LIGHT_Y);
@@ -318,15 +337,15 @@ public class LobbyScreen implements Screen {
         }
 
         // draw middle columns (light & dark)
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             // draw middle column (dark)
             int tempLabelY = FIRST_COLUMN_LIGHT_Y - firstColumnLight.getHeight();
-            for(int j = 1; j < 5; j++){
-                labelList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight()/3));
+            for (int j = 1; j < 5; j++) {
+                labelList.get(j).setPosition(COLUMNS_X + 20, tempLabelY + (firstColumnLight.getHeight() / 3));
                 tempLabelY -= 120;
             }
 
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnDark.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempDarkY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempDarkY + middleColumnDark.getHeight())
                     || (i == 0 && columnClicked == 2) || (i == 1 && columnClicked == 4)) {
                 batch.draw(middleColumnDarkActive, COLUMNS_X, tempDarkY);
@@ -335,7 +354,7 @@ public class LobbyScreen implements Screen {
             }
 
             // draw middle column (light)
-            if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
+            if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + middleColumnLight.getWidth())
                     && (Gdx.graphics.getHeight() - Gdx.input.getY()) > tempLightY && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (tempLightY + middleColumnLight.getHeight())
                     || (i == 0 && columnClicked == 3) || (i == 1 && columnClicked == 5)) {
                 batch.draw(middleColumnLightActive, COLUMNS_X, tempLightY);
@@ -343,12 +362,13 @@ public class LobbyScreen implements Screen {
                 batch.draw(middleColumnLight, COLUMNS_X, tempLightY);
             }
 
-            tempDarkY -= 241; tempLightY -= 241;
+            tempDarkY -= 241;
+            tempLightY -= 241;
         }
 
         // draw last column (dark)
-        labelList.get(5).setPosition(COLUMNS_X + 20, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight()/3) - 10);
-        if(Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
+        labelList.get(5).setPosition(COLUMNS_X + 20, LAST_COLUMN_DARK_Y + (lastColumnDark.getHeight() / 3) - 10);
+        if (Gdx.input.getX() > COLUMNS_X && Gdx.input.getX() < (COLUMNS_X + lastColumnDark.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > LAST_COLUMN_DARK_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (LAST_COLUMN_DARK_Y + lastColumnDark.getHeight())
                 || columnClicked == 6) {
             batch.draw(lastColumnDarkActive, COLUMNS_X, LAST_COLUMN_DARK_Y);
@@ -357,7 +377,7 @@ public class LobbyScreen implements Screen {
         }
 
         // draw create button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + createButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + createButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > CREATE_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (CREATE_BUTTON_Y + createButton.getHeight())) {
             batch.draw(createButtonActive, BUTTONS_X, CREATE_BUTTON_Y);
         } else {
@@ -365,15 +385,23 @@ public class LobbyScreen implements Screen {
         }
 
         // draw join button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + joinButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + joinButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > JOIN_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (JOIN_BUTTON_Y + joinButton.getHeight())) {
             batch.draw(joinButtonActive, BUTTONS_X, JOIN_BUTTON_Y);
         } else {
             batch.draw(joinButton, BUTTONS_X, JOIN_BUTTON_Y);
         }
 
+        // draw refresh button
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + refreshButton.getWidth())
+                && (Gdx.graphics.getHeight() - Gdx.input.getY()) > REFRESH_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (REFRESH_BUTTON_Y + refreshButton.getHeight())) {
+            batch.draw(refreshButtonActive, BUTTONS_X, REFRESH_BUTTON_Y);
+        } else {
+            batch.draw(refreshButton, BUTTONS_X, REFRESH_BUTTON_Y);
+        }
+
         // draw back button
-        if(Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + backButton.getWidth())
+        if (Gdx.input.getX() > BUTTONS_X && Gdx.input.getX() < (BUTTONS_X + backButton.getWidth())
                 && (Gdx.graphics.getHeight() - Gdx.input.getY()) > BACK_BUTTON_Y && (Gdx.graphics.getHeight() - Gdx.input.getY()) < (BACK_BUTTON_Y + backButton.getHeight())) {
             batch.draw(backButtonActive, BUTTONS_X, BACK_BUTTON_Y);
         } else {
@@ -438,35 +466,26 @@ public class LobbyScreen implements Screen {
     }
 
 
-    public void refreshLobbies()
-    {
-        refreshCount++;
-        if(refreshCount == 1)
-        {
-            menu.getLobbiesRequest();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(menu.getLobbies().size() == 0)
-                            {
-                                refreshCount = 0;
-                            }
-                            else
-                            {
-                                for(int i = 0; i < menu.getLobbies().size(); i++)
-                                {
-                                    labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                                    refreshCount = 0;
-                                }
+    public void refreshLobbies() {
+
+        menu.getLobbiesRequest();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (menu.getLobbies().size() == 0) {
+
+                        } else {
+                            for (int i = 0; i < menu.getLobbies().size(); i++) {
+                                labelList.get(i).setText(menu.getLobbies().get(i).getName());
                             }
                         }
-                    });
-                }
-            }).start();
-        }
+                    }
+                });
+            }
+        }).start();
     }
 }
 

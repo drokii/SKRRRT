@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.Network;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sun.nio.ch.Net;
@@ -40,43 +41,68 @@ public class LobbyServer extends Application {
                 if (object instanceof Network.CreateLobbyRequest) {
                     Lobby lobby = new Lobby(((Network.CreateLobbyRequest) object).getLobbyName());
                     lobbyList.add(lobby);
-                    for (int id: totalCon) {
-                        if(id != 0)
-                        server.sendToTCP(id, new Network.CreateLobbyResponse(lobbyList));
+                    for (int id : totalCon) {
+                        if (id != 0)
+                            server.sendToTCP(id, new Network.CreateLobbyResponse(lobbyList));
                     }
                     //server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
                 }
-                if(object instanceof Network.JoinLobbyRequest)
-                {
+                if (object instanceof Network.JoinLobbyRequest) {
                     int index = ((Network.JoinLobbyRequest) object).getIndex();
                     lobbyList.get(index).joinLobby(((Network.JoinLobbyRequest) object).getPlayer());
-                    for(int i = 0; i< lobbyList.get(index).getIds().length; i++)
-                    {
-                        if(lobbyList.get(index).getIds()[i] == 0)
-                        {
+                    for (int i = 0; i < lobbyList.get(index).getIds().length; i++) {
+                        if (lobbyList.get(index).getIds()[i] == 0) {
                             lobbyList.get(index).getIds()[i] = (connection.getID());
                             break;
                         }
                     }
-                    for (Integer id: lobbyList.get(index).getIds()) {
-                        if(id == 0)
-                        {
-
-                        }
-                        else
-                        {
+                    for (Integer id : lobbyList.get(index).getIds()) {
+                        if (id != 0) {
                             server.sendToTCP(id, new Network.JoinLobbyResponse(lobbyList.get(index)));
                         }
                     }
                 }
-                if(object instanceof Network.getLobbyRequest)
-                {
+                if (object instanceof Network.getLobbyRequest) {
                     connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
                     for (int i : totalCon) {
-                        if (totalCon[i] == 0)
-                        {
+                        if (totalCon[i] == 0) {
                             totalCon[i] = connection.getID();
                             break;
+                        }
+                    }
+                }
+                if (object instanceof Network.playerReadyRequest) {
+                    int index = 0;
+                    for (Lobby lobby : lobbyList) {
+                        if (((Network.playerReadyRequest) object).getLobby().getName().equals(lobby.getName())) {
+                            index = lobbyList.indexOf(lobby);
+                            lobbyList.get(index).getReadyPlayers().add(((Network.playerReadyRequest) object).getPlayer());
+                            for (Integer id : lobbyList.get(index).getIds()) {
+                                if (id != 0) {
+                                    server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                                }
+                            }
+                            if (lobbyList.get(index).getReadyPlayers().size() == lobbyList.get(index).getPlayers().size()) {
+                                for (Integer id : lobbyList.get(index).getIds()) {
+                                    if (id != 0) {
+                                        server.sendToTCP(id, new Network.AllReadyResponse());
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                if(object instanceof Network.GetReadyRequest) {
+                    int index = 0;
+                    for (Lobby lobby : lobbyList) {
+                        if (((Network.GetReadyRequest) object).getLobby().getName().equals(lobby.getName())) {
+                            index = lobbyList.indexOf(lobby);
+                            for (Integer id : lobbyList.get(index).getIds()) {
+                                if (id != 0) {
+                                    server.sendToTCP(id, new Network.playerReadyResponse(lobbyList.get(index).getReadyPlayers()));
+                                }
+                            }
                         }
                     }
                 }

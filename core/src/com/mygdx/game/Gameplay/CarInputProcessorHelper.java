@@ -78,6 +78,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     car.driveBackward(timerDown);
                 }
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+                {
+                    car.driftRight();
+                }
 
                 car.keepVelocity();
 
@@ -98,6 +102,10 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                     car.driveBackward(timerDown);
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+                {
+                    car.driftLeft();
                 }
 
                 car.keepVelocity();
@@ -135,6 +143,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }, 0, 100);
             }
             if (keycode == Input.Keys.A) {
+                car.stopDrift();
                 timerLeft = new Timer(true);
                 timerLeft.scheduleAtFixedRate(new TimerTask() {
                     @Override
@@ -155,6 +164,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }, 0, 250);
             }
             if (keycode == Input.Keys.D) {
+                car.stopDrift();
                 timerRight = new Timer(true);
                 timerRight.scheduleAtFixedRate(new TimerTask() {
                     @Override
@@ -175,6 +185,7 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 }, 0, 250);
             }
             if (keycode == Input.Keys.S) {
+                car.stopDrift();
                 timerDown = new Timer(true);
                 timerDown.scheduleAtFixedRate(new TimerTask() {
                     @Override

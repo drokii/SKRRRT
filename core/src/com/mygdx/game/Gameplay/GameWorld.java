@@ -30,7 +30,7 @@ public class GameWorld implements ApplicationListener {
      * This class gathers all game elements and applies the physics simulations to them.
      * It instanciates a list of Car, a Map, and a Camera. It also starts the game music (Soon to be changed to an audio manager)
      */
-    private Box2DDebugRenderer box2DDebugRenderer;
+    //private Box2DDebugRenderer box2DDebugRenderer;
 
 
     private RaceGame game;
@@ -96,8 +96,7 @@ public class GameWorld implements ApplicationListener {
         cd4 = new Texture(Gdx.files.internal("core/assets/Countdown/4.png"));
         cd5 = new Texture(Gdx.files.internal("core/assets/Countdown/5.png"));
         cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.jpg"));
-
-        this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+        //this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
     }
 
 
@@ -124,7 +123,7 @@ public class GameWorld implements ApplicationListener {
         map.render();
         car.render();
         stats.render();
-        box2DDebugRenderer.render(world, camera.combined);
+        //box2DDebugRenderer.render(world, camera.combined);
 
         // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
         drawCountdown();

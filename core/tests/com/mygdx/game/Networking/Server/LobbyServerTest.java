@@ -38,15 +38,16 @@ public class LobbyServerTest {
     public void tests(){
         createLobbyTest();
         joinLobbyTest();
+        getLobbyRequestTest();
     }
 
-    public void createLobbyTest(){
+    public void createLobbyTest() throws InterruptedException {
         lobbyClient.CreateLobby("Test");
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
 
         assertEquals(1, menu.getLobbies().size());
@@ -54,7 +55,7 @@ public class LobbyServerTest {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -74,14 +75,14 @@ public class LobbyServerTest {
 //        System.out.println("a");
     }
 
-    public void getLobbyRequestTest(){
+    public void getLobbyRequestTest() throws InterruptedException {
         Menu menuRequestTest = null;
         LobbyClient lobbyClientRequestTest = null;
         try {
             menuRequestTest = new Menu(new RaceGame());
             lobbyClientRequestTest = new LobbyClient(menuRequestTest);
         } catch (IOException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
 
         lobbyClientRequestTest.getLobbyRequest();
@@ -89,7 +90,7 @@ public class LobbyServerTest {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
 
         assertEquals(1, menuRequestTest.getLobbies().size());

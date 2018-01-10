@@ -28,7 +28,7 @@ public class CarInputProcessorHelperTest extends GameTest {
     }
 
     @Test
-    public void keyUpTest(){
+    public void keyUpTest() throws InterruptedException {
         //Test input W
         car.setSpeed(1f);
         carInputProcessorHelper.setUnlocked(true);
@@ -47,7 +47,7 @@ public class CarInputProcessorHelperTest extends GameTest {
         try {
             Thread.sleep(150);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
 
         //Cancel up Timer for the next test
@@ -71,7 +71,7 @@ public class CarInputProcessorHelperTest extends GameTest {
         try {
             Thread.sleep(150);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 }
