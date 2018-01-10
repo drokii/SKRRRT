@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GameServer {
 
-    private static Server server;
+    private static Server gameServer;
     private List<String> players;
     private Map<String, Velocities> velocityMap;
 
@@ -25,12 +25,12 @@ public class GameServer {
     public GameServer() throws IOException {
 
         players = new ArrayList<String>();
-        server = new Server();
-        server.start();
-        server.bind(54555, 54777);
+        gameServer = new Server();
+        gameServer.start();
+        gameServer.bind(54376, 56432);
 
-        Network.register(server);
-        addListenersToServer(server);
+        Network.register(gameServer);
+        addListenersToServer(gameServer);
 
     }
 

@@ -33,6 +33,12 @@ public class LobbyClient {
         client.sendTCP(lobby);
     }
 
+    public void CreatedServer(String ip, Lobby lobby)
+    {
+        Network.CreatedGameServer gameServer = new Network.CreatedGameServer(ip, lobby);
+        client.sendTCP(gameServer);
+    }
+
     public void joinLobby(int index, Player player)
     {
         Network.JoinLobbyRequest joinRequest = new Network.JoinLobbyRequest(index, player);
@@ -81,6 +87,14 @@ public class LobbyClient {
                 {
                     System.out.println("about to call menu.gamestart");
                     menu.gameStart();
+                }
+                if(object instanceof Network.CreatedGameServer)
+                {
+                    try {
+                        menu.CreateGameClient(((Network.CreatedGameServer) object).getIp());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

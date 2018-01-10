@@ -12,11 +12,12 @@ import java.io.IOException;
 public class GameClient {
     Client client;
 
-    public GameClient() throws IOException {
+    public GameClient(String ip) throws IOException {
         client = new Client();
         client.start();
         //GET GAMEserver host ip through constructor
-        client.connect(5000, "127.0.0.1", 32221, 34321);
+        client.connect(5000, ip, 54376, 56432);
+        System.out.println("gameclient connected");
 
         addListeners(client);
     }

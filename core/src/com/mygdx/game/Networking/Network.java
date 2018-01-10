@@ -35,6 +35,7 @@ public class Network {
         kryo.register(playerReadyResponse.class);
         kryo.register(AllReadyResponse.class);
         kryo.register(GetReadyRequest.class);
+        kryo.register(CreatedGameServer.class);
         kryo.register(Map.class);
         kryo.register(Player.class);
         kryo.register(ESkin.class);
@@ -51,6 +52,37 @@ public class Network {
         public AllReadyResponse()
         {
 
+        }
+    }
+
+    public static class CreatedGameServer
+    {
+        private String ip;
+        private Lobby lobby;
+
+        public CreatedGameServer()
+        {}
+
+        public CreatedGameServer(String ip, Lobby lobby)
+        {
+            this.ip = ip;
+            this.lobby = lobby;
+        }
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public Lobby getLobby() {
+            return lobby;
+        }
+
+        public void setLobby(Lobby lobby) {
+            this.lobby = lobby;
         }
     }
 

@@ -82,8 +82,6 @@ public class GameWorld implements ApplicationListener {
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
 
-        //Client
-        client = new GameClient();
 
         // Create batch 
         batch = new SpriteBatch();

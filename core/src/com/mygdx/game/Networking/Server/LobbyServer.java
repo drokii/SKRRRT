@@ -62,6 +62,18 @@ public class LobbyServer extends Application {
                         }
                     }
                 }
+                if(object instanceof Network.CreatedGameServer)
+                {
+                    for (Lobby lobby:lobbyList) {
+                        if (lobby.getName().equals(((Network.CreatedGameServer) object).getLobby().getName()))
+                        {
+                            for (int id:lobby.getIds()) {
+                                server.sendToTCP(id, new Network.CreatedGameServer(((Network.CreatedGameServer) object).getIp(), ((Network.CreatedGameServer) object).getLobby()));
+                            }
+                        }
+
+                    }
+                }
                 if (object instanceof Network.getLobbyRequest) {
                     connection.sendTCP(new Network.CreateLobbyResponse(lobbyList));
                     for (int i : totalCon) {
