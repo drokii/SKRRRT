@@ -1,25 +1,29 @@
 package com.mygdx.game.Networking.Client;
 
+import Menu.Player;
 import com.badlogic.gdx.math.Vector2;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class GameClient {
-    Client client;
-    Map<String, Vector2> spawnLocations;
+    private final Car car;
+    private final Player player;
+    private Client client;
+    private Map<String, Vector2> spawnLocations;
 
-    public GameClient() throws IOException {
+    public GameClient(Car car, Player player) throws IOException {
+        this.car = car;
+        this.player = player;
         client = new Client();
         client.start();
         client.connect(5000, "127.0.0.1", 54555, 54777);
@@ -27,23 +31,39 @@ public class GameClient {
         addListeners(client);
     }
 
-    public static void main(String[] args) throws IOException {
-        new GameClient();
-
-    }
-
-    public static void addListeners(Client client) {
+    public void addListeners(Client client) {
         client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartResponse) {
-                    //begin countdown
+                    spawnLocations = ((Network.GameStartResponse) object).startPositions;
+
+                }
+                if (object instanceof Network.GameUpdateResponse) {
+
+                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                    gameUpdateRequest.nickname = player.getName();
+                    gameUpdateRequest.angularVelocity = car.getKartBody().getAngularVelocity();
+                    gameUpdateRequest.velocity = car.getKartBody().getLinearVelocity();
+                    client.sendTCP(gameUpdateRequest);
                 }
             }
+
         });
     }
 
+
+    /**
+     * Sends a game start request implying that the client is ready to run the game, and then waits for
+     * a response from the Game Server. This happens in another thread.
+     * @return 
+     */
     public Map<String, Vector2> getGameStartResponse(){
         try {
+
+            Network.GameStartRequest gsr = new Network.GameStartRequest();
+            gsr.nickname = player.getName();
+            client.sendTCP(gsr);
+
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
             Map<String, Vector2> spawnpositions = waitForResponse.get();
             return spawnpositions;
@@ -76,5 +96,7 @@ public class GameClient {
 
         return completableFuture;
     }
+
+
 }
 

@@ -83,7 +83,7 @@ public class GameWorld implements ApplicationListener {
         sound.play();
 
         //Client
-        client = new GameClient();
+        client = new GameClient(car, currentPlayer);
 
         // Create batch 
         batch = new SpriteBatch();
@@ -183,6 +183,7 @@ public class GameWorld implements ApplicationListener {
 
     public void instantiateCars() {
         java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
+
         for (java.util.Map.Entry<String, Vector2> player: spawnLocations.entrySet()) {
             if (player.getKey() != currentPlayer.getName()) {
                 RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());

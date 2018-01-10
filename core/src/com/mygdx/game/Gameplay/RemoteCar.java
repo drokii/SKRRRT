@@ -22,7 +22,7 @@ import java.util.TimerTask;
 public class RemoteCar extends ApplicationAdapter implements ICar{
 
     /**
-     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * This class keeps track of the maxspeed, velocity and velocity of the car.
      * Also it calculates new vector values used to rotate the car.
      */
 

@@ -18,7 +18,7 @@ import java.util.TimerTask;
 public class Car extends ApplicationAdapter implements ApplicationListener, ICar {
 
     /**
-     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * This class keeps track of the maxspeed, velocity and velocity of the car.
      * Also it calculates new vector values used to rotate the car.
      */
 
@@ -189,7 +189,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     /**
      * The method driveBackward(Timer timer), when called it speeds up the car in a backward motion.
      *
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     * @param timer this is the timer that caculates the velocity dropoff, since the method is for acceleration the timer needs to be cancelled.
      */
     public void driveBackward(Timer timer) {
         if (timer != null) {
@@ -212,7 +212,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     /**
      * The method driveForward(Timer timer), when called it speeds up the car in a forward motion.
      *
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     * @param timer this is the timer that caculates the velocity dropoff, since the method is for acceleration the timer needs to be cancelled.
      */
     public void driveForward(Timer timer) {
 
