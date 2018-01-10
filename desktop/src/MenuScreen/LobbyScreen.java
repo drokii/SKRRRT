@@ -296,6 +296,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose() {
+        System.out.println("aa");
         title.dispose();
         firstColumnLight.dispose();
         firstColumnLightActive.dispose();

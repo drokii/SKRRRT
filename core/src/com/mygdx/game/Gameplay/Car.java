@@ -86,7 +86,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     }
 
     //Constructor for Car
-    public Car(OrthographicCamera camera, World world, Map map) {
+    public Car(OrthographicCamera camera, World world, Map map, Vector2 startPos) {
         //Reference to map
         this.map = map;
 
@@ -113,14 +113,14 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         shape.dispose();
 
         //kartBody.setTransform(new Vector2(1050, 800),-1.56f);
-        kartBody.setTransform(new Vector2(1700, 600), -1.56f);
+        kartBody.setTransform(startPos, -1.56f);
 
         //renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
 
-    public Car(World world) {
+    public Car(World world, Vector2 startPos) {
         // Reference to game Camera
         this.camera = new OrthographicCamera();
 
@@ -138,7 +138,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1050, 800), -1.56f);
+        kartBody.setTransform(startPos, -1.56f);
 
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
