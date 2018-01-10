@@ -22,7 +22,7 @@ import java.util.TimerTask;
 public class RemoteCar extends ApplicationAdapter implements ICar{
 
     /**
-     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * This class keeps track of the maxspeed, velocity and velocity of the car.
      * Also it calculates new vector values used to rotate the car.
      */
 
@@ -60,7 +60,7 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
     }
 
     //fix dit via player
-    private String name = "CarBoy";
+    private String name;
 
 
     public boolean getIsOnFinishLine() {
@@ -81,8 +81,8 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
 
 
     //Constructor for Car
-    public RemoteCar(OrthographicCamera camera, World world) {
-
+    public RemoteCar(OrthographicCamera camera, World world, String name, Vector2 startPos) {
+        this.name = name;
 
         // Reference to game Camera
         this.camera = camera;
@@ -114,7 +114,6 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
 
     @Override
     public void render() {
-        input.render();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 

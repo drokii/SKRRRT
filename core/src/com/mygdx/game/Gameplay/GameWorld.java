@@ -1,28 +1,24 @@
 package com.mygdx.game.Gameplay;
 
 import Menu.Player;
-import MenuScreen.*;
 import Menu.StatisticsHandler;
+import MenuScreen.FinishScreen;
+import MenuScreen.LogInScreen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.RaceGame;
 
-
-import javax.security.auth.login.LoginContext;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameWorld implements ApplicationListener {
 
@@ -41,12 +37,17 @@ public class GameWorld implements ApplicationListener {
     private OrthographicCamera camera;
     private Map map;
     private Car car;
-    private ArrayList<ICar> carList;
+    private ArrayList<RemoteCar> carList;
     private GameClient client;
     private boolean gameStarted;
 
     private SpriteBatch batch;
     private float deltaTime;
+
+    private Vector2 spawn1 = new Vector2(1700, 600);
+    private Vector2 spawn2 = new Vector2(1700, 640);
+    private Vector2 spawn3 = new Vector2(1700, 680);
+    private Vector2 spawn4 = new Vector2(1700, 720);
 
     Texture cd1;
     Texture cd2;
@@ -70,18 +71,22 @@ public class GameWorld implements ApplicationListener {
         map = new Map(camera, world);
 
         // Create cars and assign them to list
-        carList = new ArrayList<ICar>();
-        car = new Car(camera, world, map);
-        carList.add(car);
+        carList = new ArrayList<RemoteCar>();
+        instantiateCars();
 
         // Set up statistics handler
-        stats = new StatisticsHandler(carList);
+        stats = new StatisticsHandler(car);
 
         // Start background music!!
         LogInScreen.menuSound.stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
 
+<<<<<<< HEAD
+=======
+        //Client
+        client = new GameClient(car, currentPlayer);
+>>>>>>> 9a5e25a7987b5c92f0e7519fc9ffa58624f5e7c3
 
         // Create batch 
         batch = new SpriteBatch();
@@ -95,6 +100,8 @@ public class GameWorld implements ApplicationListener {
         cd5 = new Texture(Gdx.files.internal("core/assets/Countdown/5.png"));
         cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.jpg"));
         //this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+
+
     }
 
 
@@ -117,6 +124,12 @@ public class GameWorld implements ApplicationListener {
 
         //Map collision check
         //map.CheckCollision();
+
+        for (RemoteCar car : carList) {
+            car.setAngularVelocity(1f);
+            car.setLinearVelocity(new Vector2(1f, 1f));
+            car.render();
+        }
 
         map.render();
         car.render();
@@ -153,27 +166,34 @@ public class GameWorld implements ApplicationListener {
         // Draws the Countdown timer at the start of the game
         deltaTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        if (deltaTime <5){
+        if (deltaTime < 5) {
             batch.draw(cdReady, 500, 400);
-        }
-        else if(deltaTime < 6){
-            batch.draw(cd5,500,400);
-        }
-        else if(deltaTime < 7){
-            batch.draw(cd4,500,400);
-        }
-        else if(deltaTime < 8){
-            batch.draw(cd3,500,400);
-        }
-        else if(deltaTime < 9){
-            batch.draw(cd2,500,400);
-        }
-        else if(deltaTime < 10){
-            batch.draw(cd1,500,400);
-        }
-        else{
+        } else if (deltaTime < 6) {
+            batch.draw(cd5, 500, 400);
+        } else if (deltaTime < 7) {
+            batch.draw(cd4, 500, 400);
+        } else if (deltaTime < 8) {
+            batch.draw(cd3, 500, 400);
+        } else if (deltaTime < 9) {
+            batch.draw(cd2, 500, 400);
+        } else if (deltaTime < 10) {
+            batch.draw(cd1, 500, 400);
+        } else {
             car.getInput().setUnlocked(true);
         }
         batch.end();
+    }
+
+    public void instantiateCars() {
+        java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
+
+        for (java.util.Map.Entry<String, Vector2> player: spawnLocations.entrySet()) {
+            if (player.getKey() != currentPlayer.getName()) {
+                RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
+                carList.add(car);
+            }else{
+                car = new Car(camera, world, map, player.getValue());
+            }
+        }
     }
 }

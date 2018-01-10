@@ -18,7 +18,7 @@ import java.util.TimerTask;
 public class Car extends ApplicationAdapter implements ApplicationListener, ICar {
 
     /**
-     * This class keeps track of the maxspeed, speed and velocity of the car.
+     * This class keeps track of the maxspeed, velocity and velocity of the car.
      * Also it calculates new vector values used to rotate the car.
      */
 
@@ -86,7 +86,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     }
 
     //Constructor for Car
-    public Car(OrthographicCamera camera, World world, Map map) {
+    public Car(OrthographicCamera camera, World world, Map map, Vector2 startPos) {
         //Reference to map
         this.map = map;
 
@@ -113,14 +113,14 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         shape.dispose();
 
         //kartBody.setTransform(new Vector2(1050, 800),-1.56f);
-        kartBody.setTransform(new Vector2(1700, 600), -1.56f);
+        kartBody.setTransform(startPos, -1.56f);
 
         //renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
 
-    public Car(World world) {
+    public Car(World world, Vector2 startPos) {
         // Reference to game Camera
         this.camera = new OrthographicCamera();
 
@@ -138,7 +138,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1050, 800), -1.56f);
+        kartBody.setTransform(startPos, -1.56f);
 
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
@@ -189,7 +189,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     /**
      * The method driveBackward(Timer timer), when called it speeds up the car in a backward motion.
      *
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     * @param timer this is the timer that caculates the velocity dropoff, since the method is for acceleration the timer needs to be cancelled.
      */
     public void driveBackward(Timer timer) {
         if (timer != null) {
@@ -212,7 +212,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     /**
      * The method driveForward(Timer timer), when called it speeds up the car in a forward motion.
      *
-     * @param timer this is the timer that caculates the speed dropoff, since the method is for acceleration the timer needs to be cancelled.
+     * @param timer this is the timer that caculates the velocity dropoff, since the method is for acceleration the timer needs to be cancelled.
      */
     public void driveForward(Timer timer) {
 

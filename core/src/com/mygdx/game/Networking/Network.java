@@ -266,13 +266,13 @@ public class Network {
     }
 
     static public class GameStartResponse{
-        public Map<Vector2, String> startPositions;
+        public Map<String,Vector2> startPositions;
     }
 
     static public class GameUpdateRequest{
         public String nickname;
-        public Vector2 speed;
-        public float angularSpeed;
+        public Vector2 velocity;
+        public float angularVelocity;
     }
 
     static public class GameUpdateResponse{

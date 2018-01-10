@@ -1,11 +1,9 @@
 package com.mygdx.game.Networking.Server;
 
 import com.badlogic.gdx.math.Vector2;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
@@ -41,17 +39,19 @@ public class GameServer {
     private void addListenersToServer(final Server server) {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
+
                 /*
                 If a gamestart request is recieved, the sending player is added to the playerlist
                 If the playerlist contains 2 players, the gamestart response is sent with
                 a map containing players and their spawns.
                 */
+
                 if (object instanceof Network.GameStartRequest) {
 
                     players.add(((Network.GameStartRequest) object).nickname);
                     if(players.size() <= 2){
                         server.sendToAllTCP(generateGameStartResponse(players));
-                        velocityMap = new HashMap<String, Velocities>();
+                        velocityMap = new HashMap<>();
 
                         for (String player :
                                 players) {
@@ -67,8 +67,8 @@ public class GameServer {
                 if (object instanceof Network.GameUpdateRequest) {
 
                     String nickname = ((Network.GameUpdateRequest) object).nickname;
-                    Vector2 linearSpeed = ((Network.GameUpdateRequest) object).speed;
-                    float angularSpeed = ((Network.GameUpdateRequest) object).angularSpeed;
+                    Vector2 linearSpeed = ((Network.GameUpdateRequest) object).velocity;
+                    float angularSpeed = ((Network.GameUpdateRequest) object).angularVelocity;
                     velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
 
                     Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse();
@@ -95,11 +95,11 @@ public class GameServer {
         vector2List.add(v3);
         vector2List.add(v4);
 
-        Map<Vector2, String> startPositions = new HashMap<Vector2, String>();
+        Map<String, Vector2> startPositions = new HashMap<String, Vector2> ();
         int i = 0;
         for (String p :
                 players) {
-            startPositions.put(vector2List.get(i), p);
+            startPositions.put(p, vector2List.get(i));
             i++;
         }
         nsr.startPositions = startPositions ;
