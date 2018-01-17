@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class GameServer {
 
     private static Server gameServer;
     private List<String> players;
     private Map<String, Velocities> velocityMap;
-
 
 
     public GameServer() throws IOException {
@@ -45,14 +45,14 @@ public class GameServer {
                 if (object instanceof Network.GameStartRequest) {
                     System.out.println("server ecksdeeeee");
                     players.add(((Network.GameStartRequest) object).getNickname());
-                    if(players.size() <= 2){
+                    if (players.size() <= 2) {
                         System.out.println("send response :^)");
                         server.sendToAllTCP(generateGameStartResponse(players));
                         velocityMap = new HashMap<>();
 
                         for (String player :
                                 players) {
-                            velocityMap.put(player, new Velocities(new Vector2(0,0),0f));
+                            velocityMap.put(player, new Velocities(new Vector2(0, 0), 0f));
                         }
                     }
 
@@ -62,22 +62,34 @@ public class GameServer {
                 sending player the updated map with the speeds of the other players.
                 */
                 if (object instanceof Network.GameUpdateRequest) {
+                    Thread t = new Thread(() -> {
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        String nickname = ((Network.GameUpdateRequest) object).getNickname();
+                        Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
+                        float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
+                        velocityMap.remove(nickname);
+                        velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
 
-                    String nickname = ((Network.GameUpdateRequest) object).getNickname();
-                    Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
-                    float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
-                    velocityMap.remove(nickname);
-                    velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
+                        Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
+                        connection.sendTCP(gameUpdateResponse);
+                    });
 
-                    Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
-                    connection.sendTCP(gameUpdateResponse);
+                    t.start();
+
 
                 }
-            }
-        });
-    }
 
-    private Network.GameStartResponse generateGameStartResponse(List<String> names){
+            }
+
+
+    });
+}
+
+    private Network.GameStartResponse generateGameStartResponse(List<String> names) {
 
         Network.GameStartResponse nsr = new Network.GameStartResponse();
         Vector2 v1 = new Vector2(1700, 600);
@@ -91,7 +103,7 @@ public class GameServer {
         vector2List.add(v3);
         vector2List.add(v4);
 
-        Map<String, Vector2> startPositions = new HashMap<String, Vector2> ();
+        Map<String, Vector2> startPositions = new HashMap<String, Vector2>();
         int i = 0;
         for (String p :
                 players) {
