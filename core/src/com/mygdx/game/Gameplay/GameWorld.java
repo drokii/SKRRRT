@@ -207,8 +207,8 @@ public class GameWorld implements ApplicationListener {
                 RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
                 carList.add(car);
             } else {
-                gameClient.setCar(car);
                 car = new Car(camera, world, map, player.getValue());
+                gameClient.setCar(car);
             }
         }
     }

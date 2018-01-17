@@ -23,7 +23,7 @@ public class GameServer {
     public GameServer() throws IOException {
 
         players = new ArrayList<String>();
-        gameServer = new Server();
+        gameServer = new Server(100000, 100000);
         gameServer.start();
         gameServer.bind(54376, 56432);
 

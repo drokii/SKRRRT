@@ -31,7 +31,7 @@ public class GameClient {
 
     public GameClient(String ip, Player player) throws IOException {
         this.player = player;
-        client = new Client();
+        client = new Client(100000, 100000);
         client.start();
         //GET GAMEserver host ip through constructor
         client.connect(5000, ip, 54376, 56432);
@@ -51,9 +51,7 @@ public class GameClient {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartResponse) {
                     spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
-                    if (car != null) {
-                        sendUpdate();
-                    }
+
                 }
                 if (object instanceof Network.GameUpdateResponse) {
 
