@@ -33,6 +33,7 @@ public class GameWorld implements ApplicationListener {
     private  Player currentPlayer;
     private Sound sound;
     private StatisticsHandler stats;
+    private GameClient gameClient;
     private World world;
     private OrthographicCamera camera;
     private Map map;
@@ -57,7 +58,7 @@ public class GameWorld implements ApplicationListener {
     Texture cdReady;
 
 
-    public GameWorld(RaceGame game, Player player) throws IOException {
+    public GameWorld(RaceGame game, Player player, String ip) throws IOException {
         this.game = game;
         this.currentPlayer = player;
         // Create physics world
@@ -66,6 +67,9 @@ public class GameWorld implements ApplicationListener {
         // Set camera and viewport
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 600, 400);
+
+        // Connect to gameserver
+        gameClient = new GameClient(ip);
 
         // Set up map
         map = new Map(camera, world);
@@ -108,7 +112,7 @@ public class GameWorld implements ApplicationListener {
 
     public void setClient(String ip) throws IOException {
         //Client
-        client = new GameClient(car, currentPlayer, ip);
+        //client = new GameClient(car, currentPlayer, ip);
     }
 
     @Override

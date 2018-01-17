@@ -4,6 +4,7 @@ import MenuScreen.GameScreen;
 import MenuScreen.LobbyScreen;
 import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Gameplay.GameWorld;
 import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.Networking.Client.LobbyClient;
@@ -124,8 +125,8 @@ public class Menu {
                     @Override
                     public void run() {
                         try {
-                            gameWorld = new GameWorld(game, currentPlayer);
-                            game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
+                            //gameWorld = new GameWorld(game, currentPlayer);
+                            //game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
                             if(currentPlayer.isHost())
                             {
                                 //send host ip to lobbyserver and send it to other clients
@@ -149,7 +150,10 @@ public class Menu {
     }
 
     public void CreateGameClient(String ip) throws IOException {
-        gameWorld.setClient(ip);
+        //gameWorld.setClient(ip);
+        //GameClient client = new GameClient(ip);
+        gameWorld = new GameWorld(game, currentPlayer, ip);
+        game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
     }
     public void setMatchScreen(MatchScreen matchScreen)
     {

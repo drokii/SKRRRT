@@ -70,7 +70,6 @@ public class LobbyClient {
                 if (object instanceof Network.CreateLobbyResponse)
                 {
                     menu.setLobbies(((Network.CreateLobbyResponse) object).getLobby());
-                    menu.refreshLobbies();
                 }
                 if(object instanceof Network.JoinLobbyResponse)
                 {

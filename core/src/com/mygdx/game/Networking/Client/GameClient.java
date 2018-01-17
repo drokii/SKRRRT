@@ -21,9 +21,7 @@ public class GameClient {
     private Client client;
     private Map<String, Vector2> spawnLocations;
 
-    public GameClient(Car car, Player player, String ip) throws IOException {
-        //this.car = car;
-        //this.player = player;
+    public GameClient(String ip) throws IOException {
         client = new Client();
         client.start();
         //GET GAMEserver host ip through constructor
