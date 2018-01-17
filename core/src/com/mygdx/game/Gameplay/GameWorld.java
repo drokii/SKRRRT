@@ -178,6 +178,7 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void dispose() {
+        if(car != null)
         car.dispose();
         map.dispose();
         sound.stop();

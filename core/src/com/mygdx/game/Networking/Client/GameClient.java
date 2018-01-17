@@ -41,33 +41,34 @@ public class GameClient {
         addListeners(client);
     }
 
-    public void setCar(Car car){
+    public void setCar(Car car) {
         this.car = car;
     }
 
     public void addListeners(Client client) {
-        client.addListener(new Listener()  {
+        client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartResponse) {
                     spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
+                    if (car != null) {
 
-                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
-                    gameUpdateRequest.setNickname(player.getName());
-                    gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
-                    gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
-                    client.sendTCP(gameUpdateRequest);
-
-
+                        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                        gameUpdateRequest.setNickname(player.getName());
+                        gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
+                        gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
+                        client.sendTCP(gameUpdateRequest);
+                    }
                 }
                 if (object instanceof Network.GameUpdateResponse) {
 
                     velocitiesMap = ((Network.GameUpdateResponse) object).getMovementVectors();
-
-                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
-                    gameUpdateRequest.setNickname(player.getName());
-                    gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
-                    gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
-                    client.sendTCP(gameUpdateRequest);
+                    if (car != null) {
+                        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                        gameUpdateRequest.setNickname(player.getName());
+                        gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
+                        gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
+                        client.sendTCP(gameUpdateRequest);
+                    }
                 }
             }
 
@@ -78,9 +79,10 @@ public class GameClient {
     /**
      * Sends a game start request implying that the client is ready to run the game, and then waits for
      * a response from the Game Server. This happens in another thread.
-     * @return 
+     *
+     * @return
      */
-    public Map<String, Vector2> getGameStartResponse(){
+    public Map<String, Vector2> getGameStartResponse() {
         try {
 
             Network.GameStartRequest gsr = new Network.GameStartRequest(player.getName());
