@@ -79,13 +79,9 @@ public class GameWorld implements ApplicationListener {
         // Set up map
         map = new Map(camera, world);
 
-        //in pedros code werdt hier de client eerst gemaakt.
         // Create cars and assign them to list
         carList = new ArrayList<>();
-        Future<Void> setUpCars = waitForResponse();
-        setUpCars.get();
-
-
+        instantiateCars();
 
         // Start background music!!
         LogInScreen.menuSound.stop();
@@ -115,11 +111,6 @@ public class GameWorld implements ApplicationListener {
 
     }
 
-    public void setClient(String ip) throws IOException {
-        //Client
-        //client = new GameClient(car, currentPlayer, ip);
-    }
-
     @Override
     public void resize(int width, int height) {
 
@@ -136,10 +127,6 @@ public class GameWorld implements ApplicationListener {
 
         if (car != null) {
 
-
-            //Map collision check
-            //map.CheckCollision();
-
             for (RemoteCar car : carList) {
                 if (gameClient.getVelocitiesMap() != null) {
 
@@ -154,7 +141,10 @@ public class GameWorld implements ApplicationListener {
             }
 
             car.render();
-            stats.render();
+            if (stats != null){
+                stats.render();
+            }
+
             //box2DDebugRenderer.render(world, camera.combined);
 
             // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
@@ -221,23 +211,5 @@ public class GameWorld implements ApplicationListener {
                 car = new Car(camera, world, map, player.getValue());
             }
         }
-    }
-
-    public Future<Void> waitForResponse() throws InterruptedException {
-        CompletableFuture<Void> completableFuture
-                = new CompletableFuture<>();
-
-        Executors.newCachedThreadPool().submit(() -> {
-
-            while (!completableFuture.isDone()) {
-                System.out.println("Calculating...");
-                instantiateCars();
-                stats = new StatisticsHandler(car);
-                completableFuture.complete(null);
-            }
-            return null;
-        });
-
-        return completableFuture;
     }
 }
