@@ -133,6 +133,7 @@ public class GameWorld implements ApplicationListener {
                     Velocities v = gameClient.getVelocitiesMap().get(car.getName());
                     car.setLinearVelocity(v.getLinear());
                     car.setAngularVelocity(v.getAngular());
+                    car.render();
                 }
                 else{
                     System.out.println("Wake me up");

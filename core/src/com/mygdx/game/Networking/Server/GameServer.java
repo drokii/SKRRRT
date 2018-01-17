@@ -66,6 +66,7 @@ public class GameServer {
                     String nickname = ((Network.GameUpdateRequest) object).getNickname();
                     Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
                     float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
+                    velocityMap.remove(nickname);
                     velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
 
                     Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
