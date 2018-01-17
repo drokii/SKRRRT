@@ -51,23 +51,14 @@ public class GameClient {
                 if (object instanceof Network.GameStartResponse) {
                     spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
                     if (car != null) {
-
-                        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
-                        gameUpdateRequest.setNickname(player.getName());
-                        gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
-                        gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
-                        client.sendTCP(gameUpdateRequest);
+                        sendUpdate();
                     }
                 }
                 if (object instanceof Network.GameUpdateResponse) {
 
                     velocitiesMap = ((Network.GameUpdateResponse) object).getMovementVectors();
                     if (car != null) {
-                        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
-                        gameUpdateRequest.setNickname(player.getName());
-                        gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
-                        gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
-                        client.sendTCP(gameUpdateRequest);
+                        sendUpdate();
                     }
                 }
             }
@@ -75,6 +66,13 @@ public class GameClient {
         });
     }
 
+    private void sendUpdate() {
+        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+        gameUpdateRequest.setNickname(player.getName());
+        gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
+        gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
+        client.sendTCP(gameUpdateRequest);
+    }
 
     /**
      * Sends a game start request implying that the client is ready to run the game, and then waits for

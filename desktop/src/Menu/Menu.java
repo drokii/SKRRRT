@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Menu {
     private List<Lobby> lobbies;
@@ -165,6 +166,10 @@ public class Menu {
                             gameWorld = new GameWorld(game, currentPlayer, ip);
                             game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
                     }

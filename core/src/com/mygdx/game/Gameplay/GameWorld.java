@@ -21,6 +21,10 @@ import com.mygdx.game.RaceGame;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class GameWorld implements ApplicationListener {
 
@@ -59,7 +63,7 @@ public class GameWorld implements ApplicationListener {
     Texture cdReady;
 
 
-    public GameWorld(RaceGame game, Player player, String ip) throws IOException {
+    public GameWorld(RaceGame game, Player player, String ip) throws IOException, InterruptedException, ExecutionException {
         this.game = game;
         this.currentPlayer = player;
         // Create physics world
@@ -78,12 +82,9 @@ public class GameWorld implements ApplicationListener {
         //in pedros code werdt hier de client eerst gemaakt.
         // Create cars and assign them to list
         carList = new ArrayList<>();
-        new Thread(() -> Gdx.app.postRunnable(() -> {
-            instantiateCars();
-            // Set up statistics handler
-            stats = new StatisticsHandler(car);
-            gameClient.setCar(car);
-        })).start();
+        Future<Void> setUpCars = waitForResponse();
+        setUpCars.get();
+
 
 
         // Start background music!!
@@ -216,8 +217,27 @@ public class GameWorld implements ApplicationListener {
                 RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
                 carList.add(car);
             } else {
+                gameClient.setCar(car);
                 car = new Car(camera, world, map, player.getValue());
             }
         }
+    }
+
+    public Future<Void> waitForResponse() throws InterruptedException {
+        CompletableFuture<Void> completableFuture
+                = new CompletableFuture<>();
+
+        Executors.newCachedThreadPool().submit(() -> {
+
+            while (!completableFuture.isDone()) {
+                System.out.println("Calculating...");
+                instantiateCars();
+                stats = new StatisticsHandler(car);
+                completableFuture.complete(null);
+            }
+            return null;
+        });
+
+        return completableFuture;
     }
 }
