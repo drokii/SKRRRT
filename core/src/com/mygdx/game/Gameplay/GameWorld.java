@@ -126,7 +126,7 @@ public class GameWorld implements ApplicationListener {
         map.render();
 
         if (car != null) {
-
+            gameClient.setCar(car);
             for (RemoteCar car : carList) {
                 if (gameClient.getVelocitiesMap() != null) {
 

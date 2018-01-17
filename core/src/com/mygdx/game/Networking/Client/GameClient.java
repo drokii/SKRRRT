@@ -43,6 +43,7 @@ public class GameClient {
 
     public void setCar(Car car) {
         this.car = car;
+        sendUpdate();
     }
 
     public void addListeners(Client client) {
