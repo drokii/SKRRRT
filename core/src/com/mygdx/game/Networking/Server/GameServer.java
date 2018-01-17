@@ -44,7 +44,7 @@ public class GameServer {
 
                 if (object instanceof Network.GameStartRequest) {
 
-                    players.add(((Network.GameStartRequest) object).nickname);
+                    players.add(((Network.GameStartRequest) object).getNickname());
                     if(players.size() <= 2){
                         server.sendToAllTCP(generateGameStartResponse(players));
                         velocityMap = new HashMap<>();
@@ -62,14 +62,12 @@ public class GameServer {
                 */
                 if (object instanceof Network.GameUpdateRequest) {
 
-                    String nickname = ((Network.GameUpdateRequest) object).nickname;
-                    Vector2 linearSpeed = ((Network.GameUpdateRequest) object).velocity;
-                    float angularSpeed = ((Network.GameUpdateRequest) object).angularVelocity;
+                    String nickname = ((Network.GameUpdateRequest) object).getNickname();
+                    Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
+                    float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
                     velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
 
-                    Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse();
-                    gameUpdateResponse.movementVectors = velocityMap;
-
+                    Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
                     connection.sendTCP(gameUpdateResponse);
 
                 }
@@ -98,7 +96,7 @@ public class GameServer {
             startPositions.put(p, vector2List.get(i));
             i++;
         }
-        nsr.startPositions = startPositions ;
+        nsr.setStartPositions(startPositions);
         return nsr;
     }
 }

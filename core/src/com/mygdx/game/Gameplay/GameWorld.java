@@ -3,6 +3,7 @@ package com.mygdx.game.Gameplay;
 import Menu.Player;
 import Menu.StatisticsHandler;
 import MenuScreen.FinishScreen;
+import MenuScreen.GameScreen;
 import MenuScreen.LogInScreen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -30,16 +31,15 @@ public class GameWorld implements ApplicationListener {
 
 
     private RaceGame game;
-    private  Player currentPlayer;
+    private Player currentPlayer;
     private Sound sound;
     private StatisticsHandler stats;
     private GameClient gameClient;
     private World world;
     private OrthographicCamera camera;
     private Map map;
-    private  Car car;
+    private Car car;
     private ArrayList<RemoteCar> carList;
-    private  GameClient client;
     private boolean gameStarted;
 
     private SpriteBatch batch;
@@ -69,25 +69,28 @@ public class GameWorld implements ApplicationListener {
         camera.setToOrtho(false, 600, 400);
 
         // Connect to gameserver
-        gameClient = new GameClient(ip);
+        gameClient = new GameClient(ip, currentPlayer);
 
         // Set up map
         map = new Map(camera, world);
 
         //in pedros code werdt hier de client eerst gemaakt.
         // Create cars and assign them to list
-        carList = new ArrayList<RemoteCar>();
-        instantiateCars();
+        carList = new ArrayList<>();
+        new Thread(() -> Gdx.app.postRunnable(() -> {
+            instantiateCars();
+            // Set up statistics handler
+            stats = new StatisticsHandler(car);
+            gameClient.setCar(car);
+        })).start();
 
-        // Set up statistics handler
-        stats = new StatisticsHandler(car);
 
         // Start background music!!
         LogInScreen.menuSound.stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
 
-        // Create batch 
+        // Create batch
         batch = new SpriteBatch();
         deltaTime = 0;
 
@@ -120,32 +123,37 @@ public class GameWorld implements ApplicationListener {
 
     }
 
+
+
     @Override
     public void render() {
         //Physics world iteration at 60hz
         world.step(Gdx.graphics.getRawDeltaTime(), 10, 2);
 
+        if (car != null) {
 
-        //Map collision check
-        //map.CheckCollision();
 
-        for (RemoteCar car : carList) {
-            car.setAngularVelocity(1f);
-            car.setLinearVelocity(new Vector2(1f, 1f));
+            //Map collision check
+            //map.CheckCollision();
+
+            for (RemoteCar car : carList) {
+                car.setAngularVelocity(1f);
+                car.setLinearVelocity(new Vector2(1f, 1f));
+                car.render();
+            }
+
+            map.render();
             car.render();
-        }
+            stats.render();
+            //box2DDebugRenderer.render(world, camera.combined);
 
-        map.render();
-        car.render();
-        stats.render();
-        //box2DDebugRenderer.render(world, camera.combined);
+            // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
+            drawCountdown();
 
-        // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
-        drawCountdown();
-
-        //Check if a car reached the finish line
-        if (car.getIsOnFinishLine()) {
-            game.setScreen(new FinishScreen(game, currentPlayer, stats.getFinishLogList()));
+            //Check if a car reached the finish line
+            if (car.getIsOnFinishLine()) {
+                game.setScreen(new FinishScreen(game, currentPlayer, stats.getFinishLogList()));
+            }
         }
     }
 
@@ -190,13 +198,14 @@ public class GameWorld implements ApplicationListener {
 
     public void instantiateCars() {
         //client is hier nog null...
-        java.util.Map<String, Vector2> spawnLocations = client.getGameStartResponse();
+        System.out.println("initiatecars");
+        java.util.Map<String, Vector2> spawnLocations = gameClient.getGameStartResponse();
 
-        for (java.util.Map.Entry<String, Vector2> player: spawnLocations.entrySet()) {
+        for (java.util.Map.Entry<String, Vector2> player : spawnLocations.entrySet()) {
             if (player.getKey() != currentPlayer.getName()) {
                 RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
                 carList.add(car);
-            }else{
+            } else {
                 car = new Car(camera, world, map, player.getValue());
             }
         }

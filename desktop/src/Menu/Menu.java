@@ -6,6 +6,8 @@ import MenuScreen.MatchScreen;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Gameplay.GameWorld;
+import com.mygdx.game.Gameplay.RemoteCar;
+import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client.GameClient;
 import com.mygdx.game.Networking.Client.LobbyClient;
 import com.mygdx.game.Networking.Lobby;
@@ -152,8 +154,24 @@ public class Menu {
     public void CreateGameClient(String ip) throws IOException {
         //gameWorld.setClient(ip);
         //GameClient client = new GameClient(ip);
-        gameWorld = new GameWorld(game, currentPlayer, ip);
-        game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            System.out.println("skrrt");
+                            gameWorld = new GameWorld(game, currentPlayer, ip);
+                            game.setScreen(new GameScreen(game, currentPlayer, gameWorld));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }).start();
+
     }
     public void setMatchScreen(MatchScreen matchScreen)
     {

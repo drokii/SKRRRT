@@ -22,10 +22,11 @@ public class Network {
     // This registers objects that are going to be sent over the network.
     static public void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
-        kryo.register(GameStartRequest.class);
-        kryo.register(GameStartResponse.class);
         kryo.register(PlayerInstance.class);
         kryo.register(GameUpdateRequest.class);
+        kryo.register(GameUpdateResponse.class);
+        kryo.register(GameStartRequest.class);
+        kryo.register(GameStartResponse.class);
         kryo.register(CreateLobbyRequest.class);
         kryo.register(CreateLobbyResponse.class);
         kryo.register(JoinLobbyRequest.class);
@@ -262,21 +263,105 @@ public class Network {
     }
 
     public static class GameStartRequest {
-        public String nickname;
+        private String nickname;
+
+        public GameStartRequest()
+        {
+
+        }
+
+        public GameStartRequest(String nickname)
+        {
+            this.nickname = nickname;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
     }
 
-    static public class GameStartResponse{
-        public Map<String,Vector2> startPositions;
+    public static class GameStartResponse{
+        private Map<String,Vector2> startPositions;
+
+        public GameStartResponse()
+        {}
+
+        public GameStartResponse(Map<String, Vector2> map)
+        {
+            this.startPositions = map;
+        }
+
+        public Map<String, Vector2> getStartPositions() {
+            return startPositions;
+        }
+
+        public void setStartPositions(Map<String, Vector2> startPositions) {
+            this.startPositions = startPositions;
+        }
     }
 
-    static public class GameUpdateRequest{
-        public String nickname;
-        public Vector2 velocity;
-        public float angularVelocity;
+    public static class GameUpdateRequest{
+        private String nickname;
+        private Vector2 velocity;
+        private float angularVelocity;
+
+        public GameUpdateRequest()
+        {}
+
+        public GameUpdateRequest(String nickname, Vector2 velocity, float angularVelocity)
+        {
+            this.nickname = nickname;
+            this.velocity = velocity;
+            this.angularVelocity = angularVelocity;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public Vector2 getVelocity() {
+            return velocity;
+        }
+
+        public void setVelocity(Vector2 velocity) {
+            this.velocity = velocity;
+        }
+
+        public float getAngularVelocity() {
+            return angularVelocity;
+        }
+
+        public void setAngularVelocity(float angularVelocity) {
+            this.angularVelocity = angularVelocity;
+        }
     }
 
-    static public class GameUpdateResponse{
-        public Map<String, Velocities> movementVectors;
+    public static class GameUpdateResponse{
+        private Map<String, Velocities> movementVectors;
+
+        public GameUpdateResponse()
+        {}
+
+        public GameUpdateResponse(Map<String, Velocities> movementVectors)
+        {
+            this.movementVectors = movementVectors;
+        }
+
+        public Map<String, Velocities> getMovementVectors() {
+            return movementVectors;
+        }
+
+        public void setMovementVectors(Map<String, Velocities> movementVectors) {
+            this.movementVectors = movementVectors;
+        }
     }
 
 }

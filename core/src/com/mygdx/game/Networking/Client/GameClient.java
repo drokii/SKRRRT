@@ -16,12 +16,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class GameClient {
-    //private final Car car;
-    //private final Player player;
+    private Car car;
+    private Player player;
     private Client client;
     private Map<String, Vector2> spawnLocations;
 
-    public GameClient(String ip) throws IOException {
+    public GameClient(String ip, Player player) throws IOException {
+        this.player = player;
         client = new Client();
         client.start();
         //GET GAMEserver host ip through constructor
@@ -29,6 +30,10 @@ public class GameClient {
         System.out.println("gameclient connected");
 
         addListeners(client);
+    }
+
+    public void setCar(Car car){
+        this.car = car;
     }
 
     public void addListeners(Client client) {
@@ -61,7 +66,7 @@ public class GameClient {
         try {
 
             Network.GameStartRequest gsr = new Network.GameStartRequest();
-            //gsr.nickname = player.getName();
+            gsr.setNickname(player.getName());
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
