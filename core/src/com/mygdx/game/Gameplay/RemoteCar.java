@@ -35,31 +35,12 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
 
     private Box2DDebugRenderer renderer;
 
-    private CarInputProcessorHelper input;
-    public CarInputProcessorHelper getInput() {
-        return input;
-    }
-
-
     private float speed = 1f;
-    private boolean driftRight = false;
-    private boolean driftLeft = false;
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    private float maxspeed = 300f;
 
     public String getName() {
         return name;
     }
 
-    //fix dit via player
     private String name;
 
 
@@ -87,7 +68,7 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
         // Reference to game Camera
         this.camera = camera;
         batch = new SpriteBatch();
-        kart = new Texture("core\\assets\\CarYellow.png");
+        kart = new Texture("core\\assets\\CarPink.png");
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
 
@@ -106,10 +87,9 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
 
         shape.dispose();
 
-        kartBody.setTransform(new Vector2(1050, 800),-1.56f);
+        kartBody.setTransform(startPos,-1.56f);
 
         renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
-        // Reference to Input Processor
     }
 
     @Override
@@ -117,23 +97,11 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        world.step(1f / 60f, 10, 10);
         kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
-        if(driftRight)
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
-        }
-        else if(driftLeft)
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() + 30);
-        }
-        else
-        {
-            batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        }
+        batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();

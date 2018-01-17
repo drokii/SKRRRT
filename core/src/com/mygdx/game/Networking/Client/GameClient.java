@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Gameplay.Car;
 import com.mygdx.game.Networking.Network;
+import com.mygdx.game.Networking.Server.Velocities;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,6 +22,12 @@ public class GameClient {
     private Player player;
     private Client client;
     private Map<String, Vector2> spawnLocations;
+
+    public Map<String, Velocities> getVelocitiesMap() {
+        return velocitiesMap;
+    }
+
+    private Map<String, Velocities> velocitiesMap;
 
     public GameClient(String ip, Player player) throws IOException {
         this.player = player;
@@ -44,8 +51,17 @@ public class GameClient {
                 if (object instanceof Network.GameStartResponse) {
                     spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
 
+                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                    gameUpdateRequest.setNickname(player.getName());
+                    gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
+                    gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
+                    client.sendTCP(gameUpdateRequest);
+
+
                 }
                 if (object instanceof Network.GameUpdateResponse) {
+
+                    velocitiesMap = ((Network.GameUpdateResponse) object).getMovementVectors();
 
                     Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
                     gameUpdateRequest.setNickname(player.getName());
@@ -72,6 +88,7 @@ public class GameClient {
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
             Map<String, Vector2> spawnpositions = waitForResponse.get();
+
             return spawnpositions;
         } catch (InterruptedException e) {
             e.printStackTrace();

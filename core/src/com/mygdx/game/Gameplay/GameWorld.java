@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Map.Map;
 import com.mygdx.game.Networking.Client.GameClient;
+import com.mygdx.game.Networking.Server.Velocities;
 import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
@@ -139,9 +140,16 @@ public class GameWorld implements ApplicationListener {
             //map.CheckCollision();
 
             for (RemoteCar car : carList) {
-                car.setAngularVelocity(1f);
-                car.setLinearVelocity(new Vector2(1f, 1f));
-                car.render();
+                if (gameClient.getVelocitiesMap() != null) {
+
+                    Velocities v = gameClient.getVelocitiesMap().get(car.getName());
+                    car.setLinearVelocity(v.getLinear());
+                    car.setAngularVelocity(v.getAngular());
+                }
+                else{
+                    System.out.println("Wake me up");
+                }
+
             }
 
             car.render();

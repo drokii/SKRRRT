@@ -149,12 +149,11 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         input.render();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-        world.step(1f / 60f, 10, 10);
         //kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
+
         if (driftRight) {
             batch.draw(kartSprite, getKartBody().getPosition().x - 16, getKartBody().getPosition().y - 16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation() - 30);
         } else if (driftLeft) {

@@ -80,9 +80,9 @@ public class GameServer {
 
         Network.GameStartResponse nsr = new Network.GameStartResponse();
         Vector2 v1 = new Vector2(1700, 600);
-        Vector2 v2 = new Vector2(1700, 630);
-        Vector2 v3 = new Vector2(1700, 660);
-        Vector2 v4 = new Vector2(1700, 690);
+        Vector2 v2 = new Vector2(1700, 700);
+        Vector2 v3 = new Vector2(1700, 800);
+        Vector2 v4 = new Vector2(1700, 900);
 
         List<Vector2> vector2List = new ArrayList<Vector2>();
         vector2List.add(v1);
