@@ -44,6 +44,7 @@ public class Network {
         kryo.register(Lobby.class);
         kryo.register(String.class);
         kryo.register(Vector2.class);
+        kryo.register(HashMap.class);
         kryo.register(int[].class);
         kryo.register(float.class);
         kryo.register(Velocities.class);

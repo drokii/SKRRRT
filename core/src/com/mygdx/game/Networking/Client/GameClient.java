@@ -1,6 +1,7 @@
 package com.mygdx.game.Networking.Client;
 
 import Menu.Player;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -27,6 +28,7 @@ public class GameClient {
         client.start();
         //GET GAMEserver host ip through constructor
         client.connect(5000, ip, 54376, 56432);
+        Network.register(client);
         System.out.println("gameclient connected");
 
         addListeners(client);
@@ -40,16 +42,16 @@ public class GameClient {
         client.addListener(new Listener()  {
             public void received(Connection connection, Object object) {
                 if (object instanceof Network.GameStartResponse) {
-                    //spawnLocations = ((Network.GameStartResponse) object).startPositions;
+                    spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
 
                 }
                 if (object instanceof Network.GameUpdateResponse) {
 
-                    /*Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
-                    gameUpdateRequest.nickname = player.getName();
-                    gameUpdateRequest.angularVelocity = car.getKartBody().getAngularVelocity();
-                    gameUpdateRequest.velocity = car.getKartBody().getLinearVelocity();
-                    client.sendTCP(gameUpdateRequest);*/
+                    Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
+                    gameUpdateRequest.setNickname(player.getName());
+                    gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
+                    gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
+                    client.sendTCP(gameUpdateRequest);
                 }
             }
 
@@ -65,8 +67,7 @@ public class GameClient {
     public Map<String, Vector2> getGameStartResponse(){
         try {
 
-            Network.GameStartRequest gsr = new Network.GameStartRequest();
-            gsr.setNickname(player.getName());
+            Network.GameStartRequest gsr = new Network.GameStartRequest(player.getName());
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();

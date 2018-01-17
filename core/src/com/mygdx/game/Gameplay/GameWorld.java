@@ -130,6 +130,8 @@ public class GameWorld implements ApplicationListener {
         //Physics world iteration at 60hz
         world.step(Gdx.graphics.getRawDeltaTime(), 10, 2);
 
+        map.render();
+
         if (car != null) {
 
 
@@ -142,7 +144,6 @@ public class GameWorld implements ApplicationListener {
                 car.render();
             }
 
-            map.render();
             car.render();
             stats.render();
             //box2DDebugRenderer.render(world, camera.combined);
@@ -202,7 +203,7 @@ public class GameWorld implements ApplicationListener {
         java.util.Map<String, Vector2> spawnLocations = gameClient.getGameStartResponse();
 
         for (java.util.Map.Entry<String, Vector2> player : spawnLocations.entrySet()) {
-            if (player.getKey() != currentPlayer.getName()) {
+            if (!player.getKey().equals(currentPlayer.getName())) {
                 RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
                 carList.add(car);
             } else {
