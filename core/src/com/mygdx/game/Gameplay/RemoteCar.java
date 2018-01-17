@@ -96,13 +96,9 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
     public void render() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-        kartBody.applyTorque(torque, true);
-        kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
         batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
-        camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
 
