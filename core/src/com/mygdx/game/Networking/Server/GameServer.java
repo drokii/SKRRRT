@@ -45,7 +45,7 @@ public class GameServer {
                 if (object instanceof Network.GameStartRequest) {
                     System.out.println("server ecksdeeeee");
                     players.add(((Network.GameStartRequest) object).getNickname());
-                    if (players.size() <= 2) {
+                    if (players.size() <= 3) {
                         System.out.println("send response :^)");
                         server.sendToAllTCP(generateGameStartResponse(players));
                         velocityMap = new HashMap<>();
@@ -62,12 +62,6 @@ public class GameServer {
                 sending player the updated map with the speeds of the other players.
                 */
                 if (object instanceof Network.GameUpdateRequest) {
-                    Thread t = new Thread(() -> {
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         String nickname = ((Network.GameUpdateRequest) object).getNickname();
                         Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
                         float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
@@ -76,16 +70,8 @@ public class GameServer {
 
                         Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
                         connection.sendTCP(gameUpdateResponse);
-                    });
-
-                    t.start();
-
-
                 }
-
             }
-
-
     });
 }
 
@@ -94,7 +80,7 @@ public class GameServer {
         Network.GameStartResponse nsr = new Network.GameStartResponse();
         Vector2 v1 = new Vector2(1700, 600);
         Vector2 v2 = new Vector2(1700, 700);
-        Vector2 v3 = new Vector2(1700, 800);
+        Vector2 v3 = new Vector2(1700, 760);
         Vector2 v4 = new Vector2(1700, 900);
 
         List<Vector2> vector2List = new ArrayList<Vector2>();
