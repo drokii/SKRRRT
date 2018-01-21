@@ -11,7 +11,7 @@ public class LoginResponse {
 
     public LoginResponse()
     {
-
+        // niet gebruikt
     }
 
     public Boolean getLoginPassed() {

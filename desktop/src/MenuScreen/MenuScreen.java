@@ -15,8 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuScreen implements Screen {
+    private static final Logger LOGGER = Logger.getLogger(MenuScreen.class.getName());
+
     private final int PLAY_SETTINGS_EXIT_BUTTONS_X = (Gdx.graphics.getWidth() / 2) - (322 / 2);
     private final int PLAY_BUTTON_Y = 500;
     private final int SETTINGS_BUTTON_Y = 400;
@@ -102,8 +106,9 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 try {
                     game.setScreen(new LobbyScreen(game, currentPlayer));
+                    dispose();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.log( Level.SEVERE, e.toString(), e );
                 }
             }
         });
@@ -144,22 +149,22 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        /// ok
     }
 
     @Override
     public void pause() {
-
+        /// okkkkkkkk niet gebruikt
     }
 
     @Override
     public void resume() {
-
+        // jep deze ook niet
     }
 
     @Override
     public void hide() {
-        this.dispose();
+            // deze al helemaal niet
     }
 
     @Override

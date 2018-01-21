@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.RaceGame;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,15 +140,15 @@ public class MatchScreen implements Screen {
         this.leaveButtonInvisible.setHeight(leaveButton.getHeight());
 
         // load font
-        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        FTFP.size = 55;
-        BitmapFont bitmapFont = FTFG.generateFont(FTFP);
-        FTFG.dispose();
+        FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter ftfp = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        ftfp.size = 55;
+        BitmapFont bitmapFont = ftfg.generateFont(ftfp);
+        ftfg.dispose();
 
         // draw and add empty lobbies
-        this.playerList = new ArrayList<Label>();
-        this.readyPlayerlist = new ArrayList<Label>();
+        this.playerList = new ArrayList<>();
+        this.readyPlayerlist = new ArrayList<>();
         this.labelStyle = new Label.LabelStyle();
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
@@ -203,6 +202,7 @@ public class MatchScreen implements Screen {
                     }
                     lobby.leaveLobby(currentPlayer);
                     game.setScreen(new LobbyScreen(game, currentPlayer, menu));
+                    dispose();
                 }
             }
         });
@@ -220,7 +220,7 @@ public class MatchScreen implements Screen {
 
     @Override
     public void show() {
-
+        // LEEEEEEG
     }
 
     @Override
@@ -236,22 +236,22 @@ public class MatchScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+            /// geen reden
     }
 
     @Override
     public void pause() {
-
+        // is gwn zoooo
     }
 
     @Override
     public void resume() {
-
+        /// is gewoon leeeeeeg wittewel
     }
 
     @Override
     public void hide() {
-
+        // nie tgebruikt makn
     }
 
     @Override

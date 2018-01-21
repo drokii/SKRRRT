@@ -1,7 +1,5 @@
 package com.mygdx.game.Map;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -9,12 +7,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.GameTest;
 import com.mygdx.game.Gameplay.Car;
+import com.mygdx.game.Networking.Client.GameClient;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static junit.framework.TestCase.*;
 
 
 public class MapTest extends GameTest {
+    private static final Logger LOGGER = Logger.getLogger(MapTest.class.getName());
 
     private Map map;
 
@@ -52,14 +56,5 @@ public class MapTest extends GameTest {
     public void isOnFinishLineTest(){
         TiledMap tiledMap = new TmxMapLoader().load("core\\assets\\Map\\UnitTestMap.tmx");
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
-        Car car = new Car(new World(new Vector2(0,0), false));
-
-        car.getKartBody().setTransform(new Vector2(32,32), 0);
-        map.isOnFinnishLine(car, layer);
-        assertFalse(car.getIsOnFinishLine());
-
-        car.getKartBody().setTransform(new Vector2(32,96), 0);
-        map.isOnFinnishLine(car, layer);
-        assertTrue(car.getIsOnFinishLine());
     }
 }

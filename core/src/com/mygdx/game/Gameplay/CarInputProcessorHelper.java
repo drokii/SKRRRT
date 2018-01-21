@@ -64,7 +64,8 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (timerRight != null) {
                     timerRight.cancel();
                 }
-                if ((torque -= 0.025f) < -1f) {
+                float torque2 = torque -= 0.025f;
+                if (torque2 < -1f) {
                     torque = -1f;
                 } else {
                     torque -= 0.025f;
@@ -89,7 +90,8 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (timerLeft != null) {
                     timerLeft.cancel();
                 }
-                if ((torque += 0.025f) > 1f) {
+                float torque3 = torque += 0.025f;
+                if (torque3 > 1f) {
                     torque = 1f;
                 } else {
                     torque += 0.025f;

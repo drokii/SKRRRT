@@ -1,7 +1,6 @@
 package com.mygdx.game.Networking.Client;
 
 import Menu.Player;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -16,8 +15,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameClient {
+    private static final Logger LOGGER = Logger.getLogger(GameClient.class.getName());
+
     private Car car;
     private Player player;
     private Client client;
@@ -36,7 +39,6 @@ public class GameClient {
         //GET GAMEserver host ip through constructor
         client.connect(5000, ip, 54376, 56432);
         Network.register(client);
-        System.out.println("gameclient connected");
 
         addListeners(client);
     }
@@ -90,10 +92,11 @@ public class GameClient {
 
             return spawnpositions;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
             return null;
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
             return null;
         }
     }
@@ -105,7 +108,6 @@ public class GameClient {
         Executors.newCachedThreadPool().submit(() -> {
 
             while (!completableFuture.isDone()) {
-                System.out.println("Calculating...");
 
                 if (spawnLocations != null) {
                     completableFuture.complete(spawnLocations);

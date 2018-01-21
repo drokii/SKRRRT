@@ -21,9 +21,6 @@ import com.mygdx.game.RaceGame;
 import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 import de.tomgrill.gdxdialogs.core.dialogs.GDXButtonDialog;
-import org.lwjgl.Sys;
-
-import java.util.concurrent.ExecutorService;
 
 public class LogInScreen implements Screen{
     private GDXDialogs dialogs;
@@ -33,9 +30,7 @@ public class LogInScreen implements Screen{
     private final int TEXTFIELD_PASSWORD_Y = 400;
     private final int LOGIN_BUTTON_Y = 300;
 
-    private int count;
-
-    public static Sound menuSound;
+    private static Sound menuSound;
 
     private RaceGame game;
     private Stage stage;
@@ -66,6 +61,10 @@ public class LogInScreen implements Screen{
         invisibleButtons();
     }
 
+    public static Sound getMenuSound() {
+        return menuSound;
+    }
+
     // load some images
     private void loadImages(){
         this.batch = new SpriteBatch();
@@ -81,11 +80,11 @@ public class LogInScreen implements Screen{
         // text field style
         this.textFieldStyle = new TextField.TextFieldStyle();
         // load font
-        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        FTFP.size = 55;
-        this.bitmapFont = FTFG.generateFont(FTFP);
-        FTFG.dispose();
+        FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter ftfp = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        ftfp.size = 55;
+        this.bitmapFont = ftfg.generateFont(ftfp);
+        ftfg.dispose();
         // set font / settings
         this.textFieldStyle.font = bitmapFont;
         this.textFieldStyle.fontColor = Color.valueOf("a3a3a3");
@@ -127,14 +126,14 @@ public class LogInScreen implements Screen{
         loginButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LoginClient client = new LoginClient(username.getText(), password.getText(), LogInScreen.this);
+                new LoginClient(username.getText(), password.getText(), LogInScreen.this);
             }
         });
     }
 
     @Override
     public void show() {
-
+        // never used part 2
     }
 
     @Override
@@ -149,22 +148,22 @@ public class LogInScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
-
+        // never used part3
     }
 
     @Override
     public void pause() {
-
+        // nooit gebruikt deel 23
     }
 
     @Override
     public void resume() {
-
+            // noooooooit!!!
     }
 
     @Override
     public void hide() {
-
+        /// GAST
     }
 
     @Override
@@ -208,6 +207,7 @@ public class LogInScreen implements Screen{
         menuSound = Gdx.audio.newSound(Gdx.files.internal("core/assets/gas.ogg"));
         menuSound.play();
         game.setScreen(new MenuScreen(game, player));
+        dispose();
     }
 
     public void loginFailed()

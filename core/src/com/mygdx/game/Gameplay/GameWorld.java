@@ -3,7 +3,6 @@ package com.mygdx.game.Gameplay;
 import Menu.Player;
 import Menu.StatisticsHandler;
 import MenuScreen.FinishScreen;
-import MenuScreen.GameScreen;
 import MenuScreen.LogInScreen;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -20,11 +19,7 @@ import com.mygdx.game.RaceGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class GameWorld implements ApplicationListener {
 
@@ -32,9 +27,6 @@ public class GameWorld implements ApplicationListener {
      * This class gathers all game elements and applies the physics simulations to them.
      * It instanciates a list of Car, a Map, and a Camera. It also starts the game music (Soon to be changed to an audio manager)
      */
-    //private Box2DDebugRenderer box2DDebugRenderer;
-
-
     private RaceGame game;
     private Player currentPlayer;
     private Sound sound;
@@ -45,15 +37,9 @@ public class GameWorld implements ApplicationListener {
     private Map map;
     private Car car;
     private ArrayList<RemoteCar> carList;
-    private boolean gameStarted;
 
     private SpriteBatch batch;
     private float deltaTime;
-
-    private Vector2 spawn1 = new Vector2(1700, 600);
-    private Vector2 spawn2 = new Vector2(1700, 640);
-    private Vector2 spawn3 = new Vector2(1700, 680);
-    private Vector2 spawn4 = new Vector2(1700, 720);
 
     Texture cd1;
     Texture cd2;
@@ -84,7 +70,7 @@ public class GameWorld implements ApplicationListener {
         instantiateCars();
 
         // Start background music!!
-        LogInScreen.menuSound.stop();
+        LogInScreen.getMenuSound().stop();
         sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/dejavu.ogg"));
         sound.play();
 
@@ -99,7 +85,6 @@ public class GameWorld implements ApplicationListener {
         cd4 = new Texture(Gdx.files.internal("core/assets/Countdown/4.png"));
         cd5 = new Texture(Gdx.files.internal("core/assets/Countdown/5.png"));
         cdReady = new Texture(Gdx.files.internal("core/assets/Countdown/engine.jpg"));
-        //this.box2DDebugRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 
 
     }
@@ -107,7 +92,6 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void create() {
-        //client.sendGameStartRequest(car.getName(), null,0f);
 
     }
 
@@ -127,16 +111,13 @@ public class GameWorld implements ApplicationListener {
 
         if (car != null) {
             gameClient.setCar(car);
-            for (RemoteCar car : carList) {
+            for (RemoteCar currentCar : carList) {
                 if (gameClient.getVelocitiesMap() != null) {
 
-                    Velocities v = gameClient.getVelocitiesMap().get(car.getName());
-                    car.setLinearVelocity(v.getLinear());
-                    car.setAngularVelocity(v.getAngular());
-                    car.render();
-                }
-                else{
-                    System.out.println("Wake me up");
+                    Velocities v = gameClient.getVelocitiesMap().get(currentCar.getName());
+                    currentCar.setLinearVelocity(v.getLinear());
+                    currentCar.setAngularVelocity(v.getAngular());
+                    currentCar.render();
                 }
 
             }
@@ -146,9 +127,7 @@ public class GameWorld implements ApplicationListener {
                 stats.render();
             }
 
-            //box2DDebugRenderer.render(world, camera.combined);
-
-            // Draw the Countdown timer. TODO: WAIT FOR SERVER RESPONSE
+            // Draw the Countdown timer.
             drawCountdown();
 
             //Check if a car reached the finish line
@@ -160,19 +139,19 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void pause() {
-
+        // never used
     }
 
     @Override
     public void resume() {
-
+        // never used man leeeeeeeeg
     }
 
     @Override
     public void dispose() {
-        if(car != null)
-        car.dispose();
-        map.dispose();
+        if(car != null) {
+            car.dispose();
+        }
         sound.stop();
     }
 
@@ -200,13 +179,12 @@ public class GameWorld implements ApplicationListener {
 
     public void instantiateCars() {
         //client is hier nog null...
-        System.out.println("initiatecars");
         java.util.Map<String, Vector2> spawnLocations = gameClient.getGameStartResponse();
 
         for (java.util.Map.Entry<String, Vector2> player : spawnLocations.entrySet()) {
             if (!player.getKey().equals(currentPlayer.getName())) {
-                RemoteCar car = new RemoteCar(camera, world, player.getKey(), player.getValue());
-                carList.add(car);
+                RemoteCar currentCar = new RemoteCar(camera, world, player.getKey(), player.getValue());
+                carList.add(currentCar);
             } else {
                 car = new Car(camera, world, map, player.getValue());
                 gameClient.setCar(car);

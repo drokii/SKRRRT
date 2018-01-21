@@ -9,11 +9,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Map.Map;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Car extends ApplicationAdapter implements ApplicationListener, ICar {
 
@@ -29,8 +27,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     private Body kartBody;
     private float posX, posY;
 
-    //private Box2DDebugRenderer renderer;
-
     private CarInputProcessorHelper input;
 
     public CarInputProcessorHelper getInput() {
@@ -43,12 +39,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     private float speed;
     private Vector2 velocity;
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public float angularVelocity;
 
     public float getSpeed() {
         return speed;
@@ -112,10 +102,8 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
         shape.dispose();
 
-        //kartBody.setTransform(new Vector2(1050, 800),-1.56f);
         kartBody.setTransform(startPos, -1.56f);
 
-        //renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
         // Reference to Input Processor
         input = new CarInputProcessorHelper(this);
     }
@@ -149,7 +137,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         input.render();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        //kartBody.applyTorque(torque, true);
         kartSprite.setPosition(kartBody.getPosition().x, kartBody.getPosition().y);
         kartSprite.setRotation((float) Math.toDegrees(kartBody.getAngle()));
         kartSprite.setPosition(kartBody.getTransform().getPosition().x, kartBody.getTransform().getPosition().y);
@@ -161,12 +148,9 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         } else {
             batch.draw(kartSprite, getKartBody().getPosition().x - 16, getKartBody().getPosition().y - 16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         }
-        //batch.draw(kartSprite, getKartBody().getPosition().x-16, getKartBody().getPosition().y-16, kartSprite.getOriginX(), kartSprite.getOriginY(), 32, 32, kartSprite.getScaleX(), kartSprite.getScaleY(), kartSprite.getRotation());
         camera.position.set(getKartSprite().getX(), getKartSprite().getY(), 0);
         camera.update();
         batch.end();
-
-        //renderer.render(world, camera.combined);
 
         map.isOnFinnishLine(this);
     }

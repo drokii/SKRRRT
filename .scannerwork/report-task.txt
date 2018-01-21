@@ -2,5 +2,5 @@ projectKey=my:ProfApplication
 serverUrl=http://localhost:9000
 serverVersion=6.7.0.33306
 dashboardUrl=http://localhost:9000/dashboard/index/my:ProfApplication
-ceTaskId=AWEPAfMG3IGbuEqYxir1
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWEPAfMG3IGbuEqYxir1
+ceTaskId=AWEZqb5Wde0eglrvF-1g
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWEZqb5Wde0eglrvF-1g

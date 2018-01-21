@@ -4,7 +4,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -12,14 +11,12 @@ import com.badlogic.gdx.utils.Array;
 
 public class MapBodyBuilder {
     // The pixels per tile. If your tiles are 16x16, this is set to 16f
-    //private static float ppt;
 
     public MapBodyBuilder(){
 
     }
 
     public Array<Body> buildShapes(TiledMap map, World world) {
-        //ppt = pixels;
         MapObjects objects = map.getLayers().get("Obstacles").getObjects();
 
         Array<Body> bodies = new Array<Body>();
@@ -72,9 +69,6 @@ public class MapBodyBuilder {
     private PolygonShape getPolygon(PolygonMapObject polygonObject) {
         PolygonShape polygon = new PolygonShape();
         float[] vertices = polygonObject.getPolygon().getTransformedVertices();
-
-        System.out.println(vertices.length);
-        System.out.println(vertices[1]);
 
         float[] worldVertices = new float[vertices.length];
 

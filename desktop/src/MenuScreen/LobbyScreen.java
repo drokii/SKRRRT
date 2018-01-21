@@ -157,14 +157,14 @@ public class LobbyScreen implements Screen {
         this.backButtonInvisible.setHeight(backButton.getHeight());
 
         // load font
-        FreeTypeFontGenerator FTFG = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter FTFP = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        FTFP.size = 55;
-        BitmapFont bitmapFont = FTFG.generateFont(FTFP);
-        FTFG.dispose();
+        FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("core\\assets\\Menu\\BerlinSansFBRegular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter ftfp = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        ftfp.size = 55;
+        BitmapFont bitmapFont = ftfg.generateFont(ftfp);
+        ftfg.dispose();
 
         // draw and add empty lobbies
-        this.labelList = new ArrayList<Label>();
+        this.labelList = new ArrayList<>();
         this.labelStyle = new Label.LabelStyle();
         this.labelStyle.font = bitmapFont;
         this.labelStyle.fontColor = Color.valueOf("ffffff");
@@ -201,30 +201,14 @@ public class LobbyScreen implements Screen {
                     @Override
                     public void confirm(final String text) {
                         menu.createLobby(text);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Gdx.app.postRunnable(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        menu.refreshLobbies();
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Gdx.app.postRunnable(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        menu.joinLobby((menu.getLobbies().size() - 1), currentPlayer);
-                                                        menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
-                                                        menu.getCurrentPlayer().setHost(true);
-                                                    }
-                                                });
-                                            }
-                                        }).start();
-                                    }
-                                });
-                            }
-                        }).start();
+                        new Thread(() -> Gdx.app.postRunnable(() -> {
+                            menu.refreshLobbies();
+                            new Thread(() -> Gdx.app.postRunnable(() -> {
+                                menu.joinLobby((menu.getLobbies().size() - 1), currentPlayer);
+                                menu.getLobbies().get(menu.getLobbies().size() -1 ).setHost(currentPlayer);
+                                menu.getCurrentPlayer().setHost(true);
+                            })).start();
+                        })).start();
                     }
                 });
                 textPrompt.build().show();
@@ -261,7 +245,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void show() {
-
+        /// doeoooo normaal
     }
 
     @Override
@@ -277,27 +261,26 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // niet gebruikt weetje wel
     }
 
     @Override
     public void pause() {
-
+        // echt nieet!!
     }
 
     @Override
     public void resume() {
-
+        // GELOOF ME
     }
 
     @Override
     public void hide() {
-
+        /// deze ook niet
     }
 
     @Override
     public void dispose() {
-        System.out.println("aa");
         title.dispose();
         firstColumnLight.dispose();
         firstColumnLightActive.dispose();
@@ -471,23 +454,15 @@ public class LobbyScreen implements Screen {
     public void refreshLobbies() {
 
         menu.getLobbiesRequest();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (menu.getLobbies().size() == 0) {
-
-                        } else {
-                            for (int i = 0; i < menu.getLobbies().size(); i++) {
-                                labelList.get(i).setText(menu.getLobbies().get(i).getName());
-                            }
-                        }
-                    }
-                });
+        new Thread(() -> Gdx.app.postRunnable(() -> {
+            if (menu.getLobbies().size() == 0) {
+                // gwn leeg mansssssss
+            } else {
+                for (int i = 0; i < menu.getLobbies().size(); i++) {
+                    labelList.get(i).setText(menu.getLobbies().get(i).getName());
+                }
             }
-        }).start();
+        })).start();
     }
 }
 

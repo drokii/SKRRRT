@@ -22,7 +22,7 @@ public class  GameScreen implements Screen{
 
     @Override
     public void show() {
-
+        // G niet leuk dit
     }
 
     @Override
@@ -34,22 +34,22 @@ public class  GameScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
-
+        // kanker saai
     }
 
     @Override
     public void pause() {
-
+        // never usssssed
     }
 
     @Override
     public void resume() {
-
+            /// nooit gebruikkktt
     }
 
     @Override
     public void hide() {
-        this.dispose();
+        /// gewoon niet
     }
 
     @Override

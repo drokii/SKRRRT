@@ -1,18 +1,13 @@
 package com.mygdx.game.Networking;
 
 import Menu.Player;
-import com.esotericsoftware.kryonet.Connection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Lobby implements Serializable{
-    private int id;
     private String name;
-    private String map;
     private List<Player> players;
     private List<Player> readyPlayers;
     private int[] ids;
@@ -21,17 +16,14 @@ public class Lobby implements Serializable{
 
     public Lobby(String name){
         this.name = name;
-        this.players = new ArrayList<Player>();
-        this.readyPlayers = new ArrayList<Player>();
+        this.players = new ArrayList<>();
+        this.readyPlayers = new ArrayList<>();
         ids = new int[4];
     }
 
     public Lobby()
     {
-    }
-
-    public void setId(int id){
-        this.id = id;
+        // is gwn leeg
     }
 
     public List<Player> getPlayers() {

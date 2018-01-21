@@ -7,10 +7,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
 public class LobbyServerTest {
+    private static final Logger LOGGER = Logger.getLogger(LobbyServerTest.class.getName());
 
     private static LobbyClient lobbyClient;
     private static Menu menu;
@@ -21,24 +24,28 @@ public class LobbyServerTest {
         try {
             LobbyServer.main(args);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
 
         try {
             menu = new Menu(new RaceGame());
             lobbyClient = new LobbyClient(menu);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
     }
 
     @Test
     public void tests(){
-        createLobbyTest();
+        try {
+            createLobbyTest();
+            getLobbyRequestTest();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         joinLobbyTest();
-        getLobbyRequestTest();
     }
 
     public void createLobbyTest() throws InterruptedException {
@@ -61,18 +68,15 @@ public class LobbyServerTest {
 
     public void joinLobbyTest(){
         //Work in progress
-//        assertEquals(0, menu.getLobbies().get(0).getPlayers().size());
-//
-//        lobbyClient.joinLobby("Test", new Player("Test"));
-//
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        assertEquals(1, menu.getLobbies().get(0).getPlayers().size());
-//        System.out.println("a");
+        assertEquals(0, menu.getLobbies().get(0).getPlayers().size());
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        assertEquals(1, menu.getLobbies().get(0).getPlayers().size());
     }
 
     public void getLobbyRequestTest() throws InterruptedException {

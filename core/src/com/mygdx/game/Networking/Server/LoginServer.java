@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class LoginServer{
 
-    private static Server loginServer;
+    private static Server server;
     private static Kryo kryo;
 
     private static java.sql.Connection conn;
@@ -22,15 +22,15 @@ public class LoginServer{
     private static ResultSet resultSet;
 
     public LoginServer() throws IOException {
-        loginServer = new Server();
-        loginServer.start();
+        server = new Server();
+        server.start();
         // port nummers veranderen? @pedro
-        loginServer.bind(54555, 54777);
+        server.bind(54555, 54777);
 
-        kryo = loginServer.getKryo();
+        kryo = server.getKryo();
         kryo.register(LoginRequest.class);
         kryo.register(LoginResponse.class);
-        addListenersToServer(loginServer);
+        addListenersToServer(server);
     }
 
     public static void main(String[] args) throws IOException, SQLException {
@@ -61,8 +61,7 @@ public class LoginServer{
                         conn.close();
                     }
                     catch(SQLException e) {
-                        System.out.println(e);
-                    } finally{
+                        // leeg
                     }
                 }
             }

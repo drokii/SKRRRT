@@ -50,7 +50,7 @@ public class FinishScreen implements Screen {
 
     @Override
     public void show() {
-
+        // gebruiken we niet
     }
 
     @Override
@@ -63,22 +63,22 @@ public class FinishScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // gebruiken we eg niet
     }
 
     @Override
     public void pause() {
-
+        // eg waar geloof me
     }
 
     @Override
     public void resume() {
-
+        // tis eg zo
     }
 
     @Override
     public void hide() {
-        this.dispose();
+        // gewoon tis ech zo
     }
 
     @Override
@@ -124,6 +124,7 @@ public class FinishScreen implements Screen {
             // exit game
             if(Gdx.input.isTouched()){
                 game.setScreen(new MenuScreen(game, currentPlayer));
+                dispose();
             }
         }
     }

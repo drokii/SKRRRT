@@ -13,7 +13,7 @@ public class LoginRequest {
 
     public LoginRequest()
     {
-
+            // nog een keer leeg
     }
 
     public String getPassword() {

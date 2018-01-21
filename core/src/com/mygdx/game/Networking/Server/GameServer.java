@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 public class GameServer {
 
-    private static Server gameServer;
+    private static Server server;
     private List<String> players;
     private Map<String, Velocities> velocityMap;
 
@@ -23,12 +22,12 @@ public class GameServer {
     public GameServer() throws IOException {
 
         players = new ArrayList<String>();
-        gameServer = new Server(100000, 100000);
-        gameServer.start();
-        gameServer.bind(54376, 56432);
+        server = new Server(100000, 100000);
+        server.start();
+        server.bind(54376, 56432);
 
-        Network.register(gameServer);
-        addListenersToServer(gameServer);
+        Network.register(server);
+        addListenersToServer(server);
 
     }
 
@@ -43,11 +42,9 @@ public class GameServer {
                 */
 
                 if (object instanceof Network.GameStartRequest) {
-                    System.out.println("server ecksdeeeee");
                     players.add(((Network.GameStartRequest) object).getNickname());
                     if (players.size() <= 3) {
-                        System.out.println("send response :^)");
-                        server.sendToAllTCP(generateGameStartResponse(players));
+                        server.sendToAllTCP(generateGameStartResponse());
                         velocityMap = new HashMap<>();
 
                         for (String player :
@@ -75,7 +72,7 @@ public class GameServer {
     });
 }
 
-    private Network.GameStartResponse generateGameStartResponse(List<String> names) {
+    private Network.GameStartResponse generateGameStartResponse() {
 
         Network.GameStartResponse nsr = new Network.GameStartResponse();
         Vector2 v1 = new Vector2(1700, 600);
@@ -89,10 +86,9 @@ public class GameServer {
         vector2List.add(v3);
         vector2List.add(v4);
 
-        Map<String, Vector2> startPositions = new HashMap<String, Vector2>();
+        Map<String, Vector2> startPositions = new HashMap<>();
         int i = 0;
-        for (String p :
-                players) {
+        for (String p : players) {
             startPositions.put(p, vector2List.get(i));
             i++;
         }

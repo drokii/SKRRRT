@@ -3,10 +3,8 @@ package Menu;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Gameplay.Car;
-import com.mygdx.game.Gameplay.ICar;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class StatisticsHandler implements ApplicationListener {
 
@@ -15,7 +13,6 @@ public class StatisticsHandler implements ApplicationListener {
      * Everytime a car passes the finish line a log is created and stored in an arraylist of strings
      * that can be requested by a menu to display the car run times through the track.
      */
-    //private ArrayList<ICar> car
     private Car car;
     private float raceTimer;
 
@@ -40,12 +37,12 @@ public class StatisticsHandler implements ApplicationListener {
 
     @Override
     public void create() {
-
+        /// jezus is gewoon leeg man
     }
 
     @Override
     public void resize(int width, int height) {
-
+        // daarom
     }
 
     @Override
@@ -56,28 +53,26 @@ public class StatisticsHandler implements ApplicationListener {
 
     @Override
     public void pause() {
-
+        // omg
     }
 
     @Override
     public void resume() {
-
+        /// GEWWOON LEEG G
     }
 
     @Override
     public void dispose() {
-
+        // houuuu op
     }
 
     private void finishLineCheck() {
         if (car.getIsOnFinishLine()) {
             logFinishCarStatistics(car);
-
         }
     }
 
     private void logFinishCarStatistics(Car car){
-
         StringBuilder strbuild = new StringBuilder();
         String finishLog;
 

@@ -1,23 +1,12 @@
 package com.mygdx.game.Gameplay;
 
-import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
-import com.mygdx.game.Networking.LoginRequest;
-import com.mygdx.game.Networking.LoginResponse;
-
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class RemoteCar extends ApplicationAdapter implements ICar{
 

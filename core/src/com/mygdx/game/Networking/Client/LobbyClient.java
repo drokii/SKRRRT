@@ -9,8 +9,11 @@ import com.mygdx.game.Networking.Lobby;
 import com.mygdx.game.Networking.Network;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LobbyClient {
+    private static final Logger LOGGER = Logger.getLogger(LobbyClient.class.getName());
     private Client client;
     private Menu menu;
     private String ip = null;
@@ -20,7 +23,6 @@ public class LobbyClient {
         client = new Client();
         client.start();
         client.connect(5000, "127.0.0.1", 62452, 62452);
-        //client.connect(5000, "145.93.168.253", 62452, 62452);
         Network.register(client);
 
         addListeners(client);
@@ -58,11 +60,8 @@ public class LobbyClient {
 
     public void getReadyPlayers(Lobby lobby)
     {
-        System.out.println("start getting playerreadies");
         Network.GetReadyRequest readyRequest = new Network.GetReadyRequest(lobby);
-        System.out.println("sending cshit to client");
         client.sendTCP(readyRequest);
-        System.out.println("sent request");
     }
 
     public void addListeners(Client client) {
@@ -83,7 +82,6 @@ public class LobbyClient {
                 }
                 if(object instanceof Network.AllReadyResponse)
                 {
-                    System.out.println("about to call menu.gamestart");
                     menu.gameStart();
                 }
                 if(object instanceof Network.CreatedGameServer)
@@ -92,7 +90,7 @@ public class LobbyClient {
                     try {
                         menu.CreateGameClient(ip);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.log( Level.SEVERE, e.toString(), e );
                     }
 
                 }

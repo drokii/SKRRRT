@@ -1,47 +1,48 @@
 package com.mygdx.game.Networking.Server;
 
-import MenuScreen.LogInScreen;
 import com.mygdx.game.GameTest;
 import com.mygdx.game.Networking.Client.LoginClient;
 import com.mygdx.game.Networking.Enums.ELogin;
-import com.mygdx.game.RaceGame;
-import javafx.stage.Stage;
-import org.junit.Before;
 import org.junit.Test;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
 public class LoginServerTest extends GameTest{
+    private static final Logger LOGGER = Logger.getLogger(LoginServerTest.class.getName());
+
     @Test
     public void mainTest(){
         String[] args = null;
         try {
             LoginServer.main(args);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
 
         String username = "meme";
-        String password = "meme";
-        LoginClient lc = new LoginClient(username, password);
+        String ww = "meme";
+        LoginClient lc = new LoginClient(username, ww);
 
         while (lc.getELogin() == ELogin.CONNECTING){
-            System.out.println(lc.getELogin());}
+            //leeg
+        }
         if(lc.getELogin() != ELogin.CONNECTING){
             assertEquals(ELogin.LOGINFAILED, lc.getELogin());
         }
 
         username = "frank";
-        password = "frank";
-        lc = new LoginClient(username, password);
+        ww = "frank";
+        lc = new LoginClient(username, ww);
 
-        while (lc.getELogin() == ELogin.CONNECTING){System.out.println(lc.getELogin());}
+        while (lc.getELogin() == ELogin.CONNECTING){//leeg
+             }
         if(lc.getELogin() != ELogin.CONNECTING){
             assertEquals(ELogin.LOGINSUCCES, lc.getELogin());
         }

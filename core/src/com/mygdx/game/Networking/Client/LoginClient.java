@@ -12,8 +12,12 @@ import com.mygdx.game.Networking.LoginRequest;
 import com.mygdx.game.Networking.LoginResponse;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginClient {
+    private static final Logger LOGGER = Logger.getLogger(LoginClient.class.getName());
+
     LogInScreen screen;
     Player player;
     String username;
@@ -29,11 +33,11 @@ public class LoginClient {
         try
         {
             client.connect(5000, "127.0.0.1", 54555, 54777);
-            //client.connect(5000, "145.93.168.253", 54555, 54777);
         }
         catch(IOException e)
         {
             screen.loginFailed();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
         Kryo kryoClient = client.getKryo();
         kryoClient.register(LoginRequest.class);
@@ -48,18 +52,16 @@ public class LoginClient {
     public LoginClient(String username, String password)
     {
         this.eLogin = ELogin.CONNECTING;
-        this.screen = screen;
         this.username = username;
         Client client = new Client();
         client.start();
         try
         {
             client.connect(5000, "127.0.0.1", 54555, 54777);
-            //client.connect(5000, "145.93.168.125", 54555, 54777);
         }
         catch(IOException e)
         {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
         Kryo kryoClient = client.getKryo();
         kryoClient.register(LoginRequest.class);
@@ -78,20 +80,15 @@ public class LoginClient {
                     LoginResponse response = (LoginResponse) object;
                     if(response.getLoginPassed())
                     {
-                        System.out.println("logged in");
-                        Gdx.app.postRunnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                player = new Player(username);
-                                screen.loginPassed(player);
-                                connection.close();
-                                client.close();
-                            }
+                        Gdx.app.postRunnable(() -> {
+                            player = new Player(username);
+                            screen.loginPassed(player);
+                            connection.close();
+                            client.close();
                         });
                     }
                     else
                     {
-                        System.out.println("login failed");
                         connection.close();
                         client.close();
                         screen.loginFailed();
@@ -108,21 +105,16 @@ public class LoginClient {
                     LoginResponse response = (LoginResponse) object;
                     if(response.getLoginPassed())
                     {
-                        System.out.println("logged in");
-                        Gdx.app.postRunnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                eLogin = ELogin.LOGINSUCCES;
-                                player = new Player(username);
-                                connection.close();
-                                client.close();
-                            }
+                        Gdx.app.postRunnable(() -> {
+                            eLogin = ELogin.LOGINSUCCES;
+                            player = new Player(username);
+                            connection.close();
+                            client.close();
                         });
                     }
                     else
                     {
                         eLogin = ELogin.LOGINFAILED;
-                        System.out.println("login failed");
                         connection.close();
                         client.close();
                     }

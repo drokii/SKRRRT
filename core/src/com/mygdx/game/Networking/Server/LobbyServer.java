@@ -5,12 +5,9 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Networking.Lobby;
-import com.mygdx.game.Networking.LoginResponse;
 import com.mygdx.game.Networking.Network;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,7 +16,7 @@ import java.util.List;
 
 public class LobbyServer extends Application {
 
-    private static Server lobbyServer;
+    private static Server server;
     private static Kryo kryo;
     private static List<Lobby> lobbyList;
     private static int[] totalCon;
@@ -27,12 +24,12 @@ public class LobbyServer extends Application {
     public static void main(String[] args) throws IOException, SQLException {
         lobbyList = new ArrayList<Lobby>();
         totalCon = new int[50];
-        lobbyServer = new Server();
-        lobbyServer.start();
-        lobbyServer.bind(62452, 62452);
+        server = new Server();
+        server.start();
+        server.bind(62452, 62452);
 
-        Network.register(lobbyServer);
-        addListenersToServer(lobbyServer);
+        Network.register(server);
+        addListenersToServer(server);
     }
 
     private static void addListenersToServer(final Server server) {
@@ -45,7 +42,6 @@ public class LobbyServer extends Application {
                         if (id != 0)
                             server.sendToTCP(id, new Network.CreateLobbyResponse(lobbyList));
                     }
-                    //server.sendToAllTCP(new Network.CreateLobbyResponse(lobbyList));
                 }
                 if (object instanceof Network.JoinLobbyRequest) {
                     int index = ((Network.JoinLobbyRequest) object).getIndex();
@@ -124,6 +120,6 @@ public class LobbyServer extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
+        // lege sjit
     }
 }

@@ -1,8 +1,6 @@
 package com.mygdx.game.Map;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -81,12 +79,12 @@ public class Map implements ApplicationListener{
 
     @Override
     public void pause() {
-
+        // is toch gewoon leeg
     }
 
     @Override
     public void resume() {
-
+        // leeggggggg
     }
 
     @Override

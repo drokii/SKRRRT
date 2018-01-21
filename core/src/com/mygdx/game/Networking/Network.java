@@ -3,13 +3,10 @@ package com.mygdx.game.Networking;
 import Menu.Player;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Gameplay.Enums.ESkin;
 import com.mygdx.game.Networking.Server.PlayerInstance;
 import com.mygdx.game.Networking.Server.Velocities;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Network {
+    private Network(){
+        // sonarqube
+    }
+
     static public final int port = 54555;
 
     // This registers objects that are going to be sent over the network.
@@ -53,7 +54,7 @@ public class Network {
     static public class AllReadyResponse{
         public AllReadyResponse()
         {
-
+            // doe normaal
         }
     }
 
@@ -63,7 +64,9 @@ public class Network {
         private Lobby lobby;
 
         public CreatedGameServer()
-        {}
+        {
+            //gassssst
+        }
 
         public CreatedGameServer(String ip, Lobby lobby)
         {
@@ -99,7 +102,9 @@ public class Network {
         }
 
         public JoinLobbyRequest()
-        {}
+        {
+            // niet meer leuk
+        }
 
         public int getIndex() {
             return index;
@@ -123,7 +128,9 @@ public class Network {
     public static class getLobbyRequest{
 
         public getLobbyRequest()
-        {}
+        {
+            // kom op
+        }
     }
 
     public static class JoinLobbyResponse{
@@ -135,7 +142,9 @@ public class Network {
         }
 
         public JoinLobbyResponse()
-        {}
+        {
+            // hou op
+        }
 
         public Lobby getLobby() {
             return lobby;
@@ -155,7 +164,9 @@ public class Network {
             lobbyName = name;
         }
         public CreateLobbyRequest()
-        {}
+        {
+            // jezus
+        }
         public String getLobbyName() {
             return lobbyName;
         }
@@ -182,7 +193,9 @@ public class Network {
             this.lobbyList = lobbyList;
         }
         public CreateLobbyResponse()
-        {}
+        {
+            // gwn leegee
+        }
 
         public List<Lobby> getLobby() {
             return lobbyList;
@@ -198,7 +211,9 @@ public class Network {
         private Player player;
 
         public playerReadyRequest()
-        {}
+        {
+            // bruh
+        }
 
         public playerReadyRequest(Lobby lobby, Player player)
         {
@@ -227,7 +242,9 @@ public class Network {
         private List<Player> readyPlayers;
 
         public playerReadyResponse()
-        {}
+        {
+            // leegggggge sjit
+        }
 
         public playerReadyResponse(List<Player> playerList)
         {
@@ -252,7 +269,9 @@ public class Network {
         }
 
         public GetReadyRequest()
-        {}
+        {
+            // gwn
+        }
 
         public Lobby getLobby() {
             return lobby;
@@ -268,6 +287,7 @@ public class Network {
 
         public GameStartRequest()
         {
+            // is gwn zo
 
         }
 
@@ -349,7 +369,9 @@ public class Network {
         private Map<String, Velocities> movementVectors;
 
         public GameUpdateResponse()
-        {}
+        {
+            /// bruhhh
+        }
 
         public GameUpdateResponse(Map<String, Velocities> movementVectors)
         {
