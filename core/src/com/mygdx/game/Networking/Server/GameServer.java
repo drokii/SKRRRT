@@ -43,7 +43,7 @@ public class GameServer {
 
                 if (object instanceof Network.GameStartRequest) {
                     players.add(((Network.GameStartRequest) object).getNickname());
-                    if (players.size() <= 3) {
+                    if (players.size() >= 2) {
                         server.sendToAllTCP(generateGameStartResponse());
                         velocityMap = new HashMap<>();
 
