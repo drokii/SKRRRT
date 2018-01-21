@@ -1,13 +1,11 @@
-package core.tests.com.mygdx.game.Networking.Server;
+package com.mygdx.game.Networking.Server;
 
 import com.mygdx.game.GameTest;
 import com.mygdx.game.Networking.Client.LoginClient;
 import com.mygdx.game.Networking.Enums.ELogin;
-import com.mygdx.game.Networking.Server.LoginServer;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +20,6 @@ public class LoginServerTest extends GameTest{
         try {
             LoginServer.main(args);
         } catch (IOException e) {
-            LOGGER.log( Level.SEVERE, e.toString(), e );
-        } catch (SQLException e) {
             LOGGER.log( Level.SEVERE, e.toString(), e );
         }
 
