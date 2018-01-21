@@ -187,6 +187,7 @@ public class GameWorld implements ApplicationListener {
                 carList.add(currentCar);
             } else {
                 car = new Car(camera, world, map, player.getValue());
+                stats = new StatisticsHandler(car);
                 gameClient.setCar(car);
             }
         }

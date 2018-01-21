@@ -14,7 +14,7 @@ public class MapBodyBuilderTest extends GameTest {
 
     @Test
     public void mapBodyBuilderTest(){
-        TiledMap tiledMap = new TmxMapLoader().load("core\\assets\\Map\\UnitTestMap.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("assets\\Map\\UnitTestMap.tmx");
         MapBodyBuilder mapBodyBuilder = new MapBodyBuilder();
         Array<Body> objects = mapBodyBuilder.buildShapes(tiledMap, new World(new Vector2(0,0), false));
 
