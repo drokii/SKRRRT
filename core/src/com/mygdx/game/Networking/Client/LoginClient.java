@@ -28,8 +28,8 @@ public class LoginClient {
         client.start();
         try
         {
-            //client.connect(5000, "127.0.0.1", 54555, 54777);
-            client.connect(5000, "145.93.168.253", 54555, 54777);
+            client.connect(5000, "127.0.0.1", 54555, 54777);
+            //client.connect(5000, "145.93.168.253", 54555, 54777);
         }
         catch(IOException e)
         {
@@ -108,7 +108,6 @@ public class LoginClient {
                     LoginResponse response = (LoginResponse) object;
                     if(response.getLoginPassed())
                     {
-
                         System.out.println("logged in");
                         Gdx.app.postRunnable(new Runnable() {
                             @Override
