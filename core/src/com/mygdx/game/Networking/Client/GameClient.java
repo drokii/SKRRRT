@@ -37,7 +37,8 @@ public class GameClient {
         client = new Client(100000, 100000);
         client.start();
         //GET GAMEserver host ip through constructor
-        client.connect(5000, ip, 54376, 56432);
+        //client.connect(5000, ip, 54376, 56432);
+        client.connect(5000, "127.0.0.1", 54376, 56432);
         Network.register(client);
 
         addListeners(client);
@@ -88,7 +89,7 @@ public class GameClient {
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
-            return Map<String, Vector2> spawnpositions = waitForResponse.get();
+            return waitForResponse.get();
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
