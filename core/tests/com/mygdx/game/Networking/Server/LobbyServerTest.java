@@ -1,4 +1,4 @@
-package com.mygdx.game.Networking.Server;
+package core.tests.com.mygdx.game.Networking.Server;
 
 import Menu.Menu;
 import com.mygdx.game.Networking.Client.LobbyClient;

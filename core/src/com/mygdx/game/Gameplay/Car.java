@@ -23,9 +23,10 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
     private SpriteBatch batch;
     private Texture kart;
     private Sprite kartSprite;
-    private World world;
+    private World world;    //sonarqube, variable is used.
     private Body kartBody;
-    private float posX, posY;
+    private float posX;
+    private float posY;
 
     private CarInputProcessorHelper input;
 
@@ -77,7 +78,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     //Constructor for Car
     public Car(OrthographicCamera camera, World world, Map map, Vector2 startPos) {
-        //Reference to map
+        //Reference to Map
         this.map = map;
 
         // Reference to game Camera
@@ -87,17 +88,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         kartSprite = new Sprite(kart);
         kartSprite.setPosition(posX, posY);
 
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(posX, posY);
-        this.world = world;
-        kartBody = world.createBody(bodyDef);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(16, 16);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0.1f;
-        kartBody.createFixture(fixtureDef);
+        Construct(world);
         kartSprite.setCenter(getKartBody().getPosition().x, getKartBody().getPosition().y);
 
         shape.dispose();
@@ -108,10 +99,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         input = new CarInputProcessorHelper(this);
     }
 
-    public Car(World world, Vector2 startPos) {
-        // Reference to game Camera
-        this.camera = new OrthographicCamera();
-
+    public void Construct(World world){
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(posX, posY);
@@ -123,6 +111,13 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
         kartBody.createFixture(fixtureDef);
+    }
+
+    public Car(World world, Vector2 startPos) {
+        // Reference to game Camera
+        this.camera = new OrthographicCamera();
+
+        Construct(world);
 
         shape.dispose();
 

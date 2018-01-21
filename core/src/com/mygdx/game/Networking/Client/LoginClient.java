@@ -72,7 +72,7 @@ public class LoginClient {
         addListenersTest(client);
     }
 
-    //check for server login response
+    //check for Server login response
     public void addListeners(final Client client) {
         client.addListener(new Listener() {
             public void received(final Connection connection, Object object) {

@@ -135,6 +135,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        // sonarqube
     }
 
     @Override
@@ -146,7 +147,7 @@ public class MenuScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
-
+    // duplicated due to implementing screen.
     @Override
     public void resize(int width, int height) {
         /// ok

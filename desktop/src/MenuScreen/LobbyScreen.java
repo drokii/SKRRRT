@@ -196,6 +196,7 @@ public class LobbyScreen implements Screen {
                 textPrompt.setTextPromptListener(new TextPromptListener() {
                     @Override
                     public void cancel() {
+                        // sonarqube
                     }
 
                     @Override
@@ -258,7 +259,7 @@ public class LobbyScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
-
+    // duplicated due to implementing screen.
     @Override
     public void resize(int width, int height) {
         // niet gebruikt weetje wel

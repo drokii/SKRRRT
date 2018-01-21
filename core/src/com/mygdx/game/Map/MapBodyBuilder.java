@@ -13,7 +13,7 @@ public class MapBodyBuilder {
     // The pixels per tile. If your tiles are 16x16, this is set to 16f
 
     public MapBodyBuilder(){
-
+        // Constructor
     }
 
     public Array<Body> buildShapes(TiledMap map, World world) {

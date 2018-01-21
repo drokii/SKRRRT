@@ -4,7 +4,6 @@ import Menu.Player;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.mygdx.game.Gameplay.Enums.ESkin;
 import com.mygdx.game.Networking.Server.PlayerInstance;
 import com.mygdx.game.Networking.Server.Velocities;
 
@@ -18,10 +17,10 @@ public class Network {
         // sonarqube
     }
 
-    static public final int port = 54555;
+    static public final int port = 54555;   //sonarqube
 
     // This registers objects that are going to be sent over the network.
-    static public void register(EndPoint endPoint) {
+    static public void register(EndPoint endPoint) {    //sonarqube
         Kryo kryo = endPoint.getKryo();
         kryo.register(PlayerInstance.class);
         kryo.register(GameUpdateRequest.class);
@@ -40,7 +39,7 @@ public class Network {
         kryo.register(CreatedGameServer.class);
         kryo.register(Map.class);
         kryo.register(Player.class);
-        kryo.register(ESkin.class);
+        kryo.register(com.mygdx.game.Gameplay.Enums.eSkin.class);
         kryo.register(ArrayList.class);
         kryo.register(Lobby.class);
         kryo.register(String.class);
@@ -51,7 +50,7 @@ public class Network {
         kryo.register(Velocities.class);
     }
 
-    static public class AllReadyResponse{
+    static public class AllReadyResponse{ //sonarqube
         public AllReadyResponse()
         {
             // doe normaal

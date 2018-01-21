@@ -1,13 +1,12 @@
 package Menu;
 
 import com.mygdx.game.Gameplay.Car;
-import com.mygdx.game.Gameplay.Enums.ESkin;
 
 import java.io.Serializable;
 
 public class Player implements Serializable{
     private Car car;
-    private ESkin carSkin;
+    private com.mygdx.game.Gameplay.Enums.eSkin carSkin;
     private String name;
     private boolean host;
 

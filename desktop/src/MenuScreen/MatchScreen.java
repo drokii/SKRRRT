@@ -180,6 +180,7 @@ public class MatchScreen implements Screen {
         kickButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //leeg
             }
         });
 
@@ -188,6 +189,7 @@ public class MatchScreen implements Screen {
         settingsButtonInvisible.addListener(new ClickListener(Input.Buttons.LEFT) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //leeg
             }
         });
 
@@ -233,7 +235,7 @@ public class MatchScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
-
+    // duplicated due to implementing screen.
     @Override
     public void resize(int width, int height) {
             /// geen reden

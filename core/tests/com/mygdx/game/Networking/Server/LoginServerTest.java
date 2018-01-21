@@ -1,4 +1,4 @@
-package com.mygdx.game.Networking.Server;
+package core.tests.com.mygdx.game.Networking.Server;
 
 import com.mygdx.game.GameTest;
 import com.mygdx.game.Networking.Client.LoginClient;

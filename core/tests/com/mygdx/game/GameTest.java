@@ -17,12 +17,12 @@ public class GameTest {
     public void init() {
         Gdx.gl =  Mockito.mock(GL20.class);
         application = new HeadlessApplication(new ApplicationListener() {
-            @Override public void create() {}
-            @Override public void resize(int width, int height) {}
-            @Override public void render() {}
-            @Override public void pause() {}
-            @Override public void resume() {}
-            @Override public void dispose() {}
+            @Override public void create() {/*sonarqube*/}
+            @Override public void resize(int width, int height) {/*sonarqube*/}
+            @Override public void render() {/*sonarqube*/}
+            @Override public void pause() {/*sonarqube*/}
+            @Override public void resume() {/*sonarqube*/}
+            @Override public void dispose() {/*sonarqube*/}
         });
     }
 

@@ -38,7 +38,7 @@ public class GameServer {
                 /*
                 If a gamestart request is recieved, the sending player is added to the playerlist
                 If the playerlist contains 2 players, the gamestart response is sent with
-                a map containing players and their spawns.
+                a Map containing players and their spawns.
                 */
 
                 if (object instanceof Network.GameStartRequest) {
@@ -55,8 +55,8 @@ public class GameServer {
 
                 }
                 /*
-                If a gameUpdateRequest is recieved, the server updates the local velocity map and sends the
-                sending player the updated map with the speeds of the other players.
+                If a gameUpdateRequest is recieved, the Server updates the local velocity Map and sends the
+                sending player the updated Map with the speeds of the other players.
                 */
                 if (object instanceof Network.GameUpdateRequest) {
                         String nickname = ((Network.GameUpdateRequest) object).getNickname();

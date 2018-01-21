@@ -131,6 +131,7 @@ public class LogInScreen implements Screen{
         });
     }
 
+    // duplicated due to implementing screen.
     @Override
     public void show() {
         // never used part 2

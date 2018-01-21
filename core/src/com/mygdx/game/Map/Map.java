@@ -12,20 +12,20 @@ import com.mygdx.game.Gameplay.Car;
 
 public class Map implements ApplicationListener{
     /**
-     * The Map class is about the map. So where is the finish line, where are the collisionborders, where is the car located on the map.
-     * @param tiledMap the entire map
-     * @param tiledMapRenderer the map renederer
+     * The Map class is about the Map. So where is the finish line, where are the collisionborders, where is the car located on the Map.
+     * @param tiledMap the entire Map
+     * @param tiledMapRenderer the Map renederer
      * @param collisionLayer the layer that provides the collision tiles
      * @param finishLayer the layer that provides as finish tiles
-     * @param collisionX boolean that holds a value if a certain x value is on the map
-     * @param collisionY boolean that holds a value if a certain y value is on the map
+     * @param collisionX boolean that holds a value if a certain x value is on the Map
+     * @param collisionY boolean that holds a value if a certain y value is on the Map
      * @param oldPos a Vector2 variable that holds the position of the car gets updated when no collision occured.
      * @param camera a camera that follows the car
      */
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private MapBodyBuilder mapBodyBuilder;
 
-    private TiledMapTileLayer collisionLayer;
+    private TiledMapTileLayer collisionLayer; // sonarqube
     private TiledMapTileLayer finishLayer;
 
     private World world;
@@ -68,7 +68,7 @@ public class Map implements ApplicationListener{
 
     @Override
     public void resize(int width, int height) {
-
+        //resizes the view
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Map implements ApplicationListener{
 
     public boolean isCellOnMap(float x, float y, TiledMapTileLayer layer){
         /**
-         * Checks if a cell is existing on the map
+         * Checks if a cell is existing on the Map
          */
         if(layer != null) {
             TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));

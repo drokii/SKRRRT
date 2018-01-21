@@ -62,7 +62,7 @@ public class GameWorld implements ApplicationListener {
         // Connect to gameserver
         gameClient = new GameClient(ip, currentPlayer);
 
-        // Set up map
+        // Set up Map
         map = new Map(camera, world);
 
         // Create cars and assign them to list
@@ -92,12 +92,12 @@ public class GameWorld implements ApplicationListener {
 
     @Override
     public void create() {
-
+        //creates the world
     }
 
     @Override
     public void resize(int width, int height) {
-
+        //resizes the view
     }
 
 
@@ -178,7 +178,7 @@ public class GameWorld implements ApplicationListener {
     }
 
     public void instantiateCars() {
-        //client is hier nog null...
+        //Client is hier nog null...
         java.util.Map<String, Vector2> spawnLocations = gameClient.getGameStartResponse();
 
         for (java.util.Map.Entry<String, Vector2> player : spawnLocations.entrySet()) {

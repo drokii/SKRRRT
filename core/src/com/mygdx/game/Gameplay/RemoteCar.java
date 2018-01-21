@@ -20,7 +20,8 @@ public class RemoteCar extends ApplicationAdapter implements ICar{
     private Sprite kartSprite;
     private World world;
     private Body kartBody;
-    private float posX, posY;
+    private float posX;
+    private float posY;
 
     private Box2DDebugRenderer renderer;
 

@@ -76,7 +76,7 @@ public class GameClient {
     }
 
     /**
-     * Sends a game start request implying that the client is ready to run the game, and then waits for
+     * Sends a game start request implying that the Client is ready to run the game, and then waits for
      * a response from the Game Server. This happens in another thread.
      *
      * @return
@@ -88,9 +88,8 @@ public class GameClient {
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
-            Map<String, Vector2> spawnpositions = waitForResponse.get();
+            return Map<String, Vector2> spawnpositions = waitForResponse.get();
 
-            return spawnpositions;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             LOGGER.log( Level.SEVERE, e.toString(), e );
@@ -101,7 +100,7 @@ public class GameClient {
         }
     }
 
-    public Future<Map<String, Vector2>> waitForResponse() throws InterruptedException {
+    public Future<Map<String, Vector2>> waitForResponse() {
         CompletableFuture<Map<String, Vector2>> completableFuture
                 = new CompletableFuture<>();
 
