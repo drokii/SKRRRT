@@ -12,11 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mygdx.game.Networking.Network.*;
+
 public class GameServer {
 
     private static Server server;
     private List<String> players;
     private Map<String, Velocities> velocityMap;
+    private Map<String, Vector2> positionMap;
 
 
     public GameServer() throws IOException {
@@ -26,8 +29,9 @@ public class GameServer {
         server.start();
         server.bind(54376, 56432);
 
-        Network.register(server);
+        register(server);
         addListenersToServer(server);
+        positionMap = new HashMap<>();
 
     }
 
@@ -41,8 +45,8 @@ public class GameServer {
                 a Map containing players and their spawns.
                 */
 
-                if (object instanceof Network.GameStartRequest) {
-                    players.add(((Network.GameStartRequest) object).getNickname());
+                if (object instanceof GameStartRequest) {
+                    players.add(((GameStartRequest) object).getNickname());
                     if (players.size() >= 2) {
                         server.sendToAllTCP(generateGameStartResponse());
                         velocityMap = new HashMap<>();
@@ -58,23 +62,34 @@ public class GameServer {
                 If a gameUpdateRequest is recieved, the Server updates the local velocity Map and sends the
                 sending player the updated Map with the speeds of the other players.
                 */
-                if (object instanceof Network.GameUpdateRequest) {
-                        String nickname = ((Network.GameUpdateRequest) object).getNickname();
-                        Vector2 linearSpeed = ((Network.GameUpdateRequest) object).getVelocity();
-                        float angularSpeed = ((Network.GameUpdateRequest) object).getAngularVelocity();
-                        velocityMap.remove(nickname);
-                        velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
+                if (object instanceof GameUpdateRequest) {
+                    String nickname = ((GameUpdateRequest) object).getNickname();
+                    Vector2 linearSpeed = ((GameUpdateRequest) object).getVelocity();
+                    float angularSpeed = ((GameUpdateRequest) object).getAngularVelocity();
+                    velocityMap.remove(nickname);
+                    velocityMap.put(nickname, new Velocities(linearSpeed, angularSpeed));
 
-                        Network.GameUpdateResponse gameUpdateResponse = new Network.GameUpdateResponse(velocityMap);
-                        connection.sendTCP(gameUpdateResponse);
+                    GameUpdateResponse gameUpdateResponse = new GameUpdateResponse(velocityMap);
+                    connection.sendTCP(gameUpdateResponse);
                 }
+                if (object instanceof GameUpdatePositionRequest) {
+                    String nickname = ((GameUpdatePositionRequest) object).name;
+                    Vector2 position = ((GameUpdatePositionRequest) object).position;
+                    positionMap.remove(nickname);
+                    positionMap.put(nickname, position);
+
+                    GameUpdatePositionResponse gameUpdateResponse = new GameUpdatePositionResponse();
+                    gameUpdateResponse.positions = positionMap;
+                    connection.sendTCP(gameUpdateResponse);
+                }
+
             }
     });
 }
 
-    private Network.GameStartResponse generateGameStartResponse() {
+    private GameStartResponse generateGameStartResponse() {
 
-        Network.GameStartResponse nsr = new Network.GameStartResponse();
+        GameStartResponse nsr = new GameStartResponse();
         Vector2 v1 = new Vector2(1700, 600);
         Vector2 v2 = new Vector2(1700, 700);
         Vector2 v3 = new Vector2(1700, 760);

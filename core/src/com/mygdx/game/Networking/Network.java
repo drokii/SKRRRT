@@ -381,9 +381,15 @@ public class Network {
             return movementVectors;
         }
 
-        public void setMovementVectors(Map<String, Velocities> movementVectors) {
-            this.movementVectors = movementVectors;
-        }
+    }
+
+    public static class GameUpdatePositionResponse{
+        public Map<String, Vector2> positions;
+    }
+
+    public static class GameUpdatePositionRequest{
+        public String name;
+        public Vector2 position;
     }
 
 }

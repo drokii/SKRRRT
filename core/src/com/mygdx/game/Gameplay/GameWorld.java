@@ -111,15 +111,22 @@ public class GameWorld implements ApplicationListener {
 
         if (car != null) {
             gameClient.setCar(car);
+//            for (RemoteCar currentCar : carList) {
+//                if (gameClient.getVelocitiesMap() != null) {
+//
+//                    Velocities v = gameClient.getVelocitiesMap().get(currentCar.getName());
+//                    currentCar.setLinearVelocity(v.getLinear());
+//                    currentCar.setAngularVelocity(v.getAngular());
+//                    currentCar.render();
+//                }
+//            }
             for (RemoteCar currentCar : carList) {
-                if (gameClient.getVelocitiesMap() != null) {
+                if (gameClient.getPositionsMap() != null) {
 
-                    Velocities v = gameClient.getVelocitiesMap().get(currentCar.getName());
-                    currentCar.setLinearVelocity(v.getLinear());
-                    currentCar.setAngularVelocity(v.getAngular());
+                    Vector2 position = gameClient.getPositionsMap().get(currentCar.getName());
+                    currentCar.getKartBody().setTransform(position, currentCar.getKartBody().getAngle());
                     currentCar.render();
                 }
-
             }
 
             car.render();
