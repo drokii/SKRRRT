@@ -126,6 +126,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
 
     @Override
     public void render() {
+        world.step(Gdx.graphics.getRawDeltaTime() * 6, 10, 2);
         input.render();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();

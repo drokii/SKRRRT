@@ -64,11 +64,11 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (timerRight != null) {
                     timerRight.cancel();
                 }
-                float torque2 = torque -= 0.025f;
+                float torque2 = torque -= 0.0125f;
                 if (torque2 < -1f) {
                     torque = -1f;
                 } else {
-                    torque -= 0.025f;
+                    torque -= 0.0125f;
                 }
 
                 kartBody.setAngularVelocity(torque);
@@ -90,11 +90,11 @@ public class CarInputProcessorHelper implements InputProcessor, ApplicationListe
                 if (timerLeft != null) {
                     timerLeft.cancel();
                 }
-                float torque3 = torque += 0.025f;
+                float torque3 = torque += 0.0125f;
                 if (torque3 > 1f) {
                     torque = 1f;
                 } else {
-                    torque += 0.025f;
+                    torque += 0.0125f;
                 }
 
                 kartBody.setAngularVelocity(torque);
