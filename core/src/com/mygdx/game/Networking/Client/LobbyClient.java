@@ -22,7 +22,7 @@ public class LobbyClient {
         this.menu = menu;
         client = new Client();
         client.start();
-        client.connect(5000, "127.0.0.1", 62452, 62452);
+        client.connect(5000, "145.93.168.88", 62452, 62452);
         Network.register(client);
 
         addListeners(client);

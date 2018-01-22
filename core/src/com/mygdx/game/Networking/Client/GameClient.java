@@ -1,7 +1,6 @@
 package com.mygdx.game.Networking.Client;
 
 import Menu.Player;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -19,8 +18,6 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.mygdx.game.Networking.Network.*;
-
 public class GameClient {
     private static final Logger LOGGER = Logger.getLogger(GameClient.class.getName());
 
@@ -28,12 +25,6 @@ public class GameClient {
     private Player player;
     private Client client;
     private Map<String, Vector2> spawnLocations;
-
-    public Map<String, Vector2> getPositionsMap() {
-        return positionsMap;
-    }
-
-    private Map<String, Vector2> positionsMap;
 
     public Map<String, Velocities> getVelocitiesMap() {
         return velocitiesMap;
@@ -46,9 +37,9 @@ public class GameClient {
         client = new Client(100000, 100000);
         client.start();
         //GET GAMEserver host ip through constructor
-        //client.connect(5000, ip, 54376, 56432);
-        client.connect(5000, "127.0.0.1", 54376, 56432);
-        register(client);
+        client.connect(5000, ip, 54376, 56432);
+        //client.connect(5000, "127.0.0.1", 54376, 56432);
+        Network.register(client);
 
         addListeners(client);
     }
@@ -61,20 +52,16 @@ public class GameClient {
     public void addListeners(Client client) {
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (object instanceof GameStartResponse) {
-                    spawnLocations = ((GameStartResponse) object).getStartPositions();
+                if (object instanceof Network.GameStartResponse) {
+                    spawnLocations = ((Network.GameStartResponse) object).getStartPositions();
 
                 }
-                if (object instanceof GameUpdateResponse) {
+                if (object instanceof Network.GameUpdateResponse) {
 
-                    velocitiesMap = ((GameUpdateResponse) object).getMovementVectors();
+                    velocitiesMap = ((Network.GameUpdateResponse) object).getMovementVectors();
                     if (car != null) {
                         sendUpdate();
                     }
-                }
-
-                if(object instanceof  GameUpdatePositionResponse){
-                    positionsMap = ((GameUpdatePositionResponse) object).positions;
                 }
             }
 
@@ -82,14 +69,7 @@ public class GameClient {
     }
 
     private void sendUpdate() {
-        GameUpdatePositionRequest gameUpdateRequest = new GameUpdatePositionRequest();
-        gameUpdateRequest.name = car.getName();
-        gameUpdateRequest.position = car.getKartBody().getPosition();
-        client.sendTCP(gameUpdateRequest);
-    }
-
-    private void sendPositionUpdate() {
-        GameUpdateRequest gameUpdateRequest = new GameUpdateRequest();
+        Network.GameUpdateRequest gameUpdateRequest = new Network.GameUpdateRequest();
         gameUpdateRequest.setNickname(player.getName());
         gameUpdateRequest.setAngularVelocity(car.getKartBody().getAngularVelocity());
         gameUpdateRequest.setVelocity(car.getKartBody().getLinearVelocity());
@@ -105,7 +85,7 @@ public class GameClient {
     public Map<String, Vector2> getGameStartResponse() {
         try {
 
-            GameStartRequest gsr = new GameStartRequest(player.getName());
+            Network.GameStartRequest gsr = new Network.GameStartRequest(player.getName());
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
