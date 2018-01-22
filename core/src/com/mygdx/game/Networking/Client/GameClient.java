@@ -88,7 +88,7 @@ public class GameClient {
             client.sendTCP(gsr);
 
             Future<Map<String, Vector2>> waitForResponse = waitForResponse();
-            return Map<String, Vector2> spawnpositions = waitForResponse.get();
+            return waitForResponse.get();
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
