@@ -1,6 +1,6 @@
 package com.mygdx.game.Gameplay.Enums;
 
-public enum ESkin {
+public enum eSkin {
     /**
      * Names for different color skins.
      */

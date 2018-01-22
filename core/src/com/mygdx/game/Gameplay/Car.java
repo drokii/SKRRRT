@@ -91,8 +91,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         Construct(world);
         kartSprite.setCenter(getKartBody().getPosition().x, getKartBody().getPosition().y);
 
-        shape.dispose();
-
         kartBody.setTransform(startPos, -1.56f);
 
         // Reference to Input Processor
@@ -111,6 +109,7 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
         kartBody.createFixture(fixtureDef);
+        shape.dispose();
     }
 
     public Car(World world, Vector2 startPos) {
@@ -118,8 +117,6 @@ public class Car extends ApplicationAdapter implements ApplicationListener, ICar
         this.camera = new OrthographicCamera();
 
         Construct(world);
-
-        shape.dispose();
 
         kartBody.setTransform(startPos, -1.56f);
 

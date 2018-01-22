@@ -31,7 +31,7 @@ public class MapTest extends GameTest {
 
     @Test
     public void isCellOnMapTest(){
-        TiledMap tiledMap = new TmxMapLoader().load("core\\assets\\Map\\UnitTestMap.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("assets\\Map\\UnitTestMap.tmx");
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("UnitTestLayer");
 
         //Test the middle of the cell
@@ -54,7 +54,7 @@ public class MapTest extends GameTest {
 
     @Test
     public void isOnFinishLineTest(){
-        TiledMap tiledMap = new TmxMapLoader().load("core\\assets\\Map\\UnitTestMap.tmx");
+        TiledMap tiledMap = new TmxMapLoader().load("assets\\Map\\UnitTestMap.tmx");
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("FinishLayer");
     }
 }
